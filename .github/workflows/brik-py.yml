@@ -21,9 +21,9 @@ jobs:
         run: |
           ./scripts/test-coverage.sh
           pytest --cov=src --cov-branch --cov-report=xml
-      - name: BRIK Certification Hash
+      - name: BRIK Certification Hash (strict docs)
         working-directory: demo-py
-        run: ./scripts/brik-certify.sh
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
       - name: Upload BRIK cert artifacts
         uses: actions/upload-artifact@v4
         with:

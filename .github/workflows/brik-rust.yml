@@ -13,9 +13,9 @@ jobs:
         run: |
           ./scripts/test-coverage.sh
           cargo tarpaulin --workspace --ignore-tests --branch --out Xml --output-dir target/tarpaulin
-      - name: BRIK Certification Hash
+      - name: BRIK Certification Hash (strict docs)
         working-directory: demo-brik
-        run: ./scripts/brik-certify.sh
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
       - name: Upload BRIK cert artifacts
         uses: actions/upload-artifact@v4
         with:

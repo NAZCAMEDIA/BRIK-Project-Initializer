@@ -5,12 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate docs (Rust demo)
+      - name: Validate docs (Rust demo, strict)
         working-directory: demo-brik
-        run: ./scripts/validate-docs.sh || true
-      - name: Validate docs (TS demo)
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+      - name: Validate docs (TS demo, strict)
         working-directory: demo-ts
-        run: ./scripts/validate-docs.sh || true
-      - name: Validate docs (Python demo)
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+      - name: Validate docs (Python demo, strict)
         working-directory: demo-py
-        run: ./scripts/validate-docs.sh || true
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh

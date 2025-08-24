@@ -19,9 +19,9 @@ jobs:
         run: |
           ./scripts/test-coverage.sh
           npx jest --coverage --coverageReporters=cobertura
-      - name: BRIK Certification Hash
+      - name: BRIK Certification Hash (strict docs)
         working-directory: demo-ts
-        run: ./scripts/brik-certify.sh
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
       - name: Upload BRIK cert artifacts
         uses: actions/upload-artifact@v4
         with:
