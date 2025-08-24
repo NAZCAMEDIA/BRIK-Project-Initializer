@@ -12,3 +12,9 @@ jobs:
         working-directory: demo-brik
         run: |
           ./scripts/test-coverage.sh
+          cargo tarpaulin --workspace --ignore-tests --branch --out Xml --output-dir target/tarpaulin
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: demo-brik/target/tarpaulin
+          fail_ci_if_error: true

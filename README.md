@@ -264,23 +264,8 @@ Generadores (carpeta `generators/`):
 - Ejecuta el inicializador en un job temporal o usa un proyecto real y llama `./scripts/validate-docs.sh`.
 - Haz que el pipeline falle si el validador retorna código distinto de 0.
 - Añade jobs de cobertura y auditoría según tu stack.
-- Para Rust (ejemplo) con `cargo-tarpaulin` y umbral 100%:
-
-```
-name: brik-coverage
-on: [push, pull_request]
-jobs:
-  rust-coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo install cargo-tarpaulin
-      - run: |
-          bash init-brik-project.sh demo rust
-          cd demo
-          ./scripts/test-coverage.sh
-```
+- Cobertura 100% multi‑stack con Codecov (opcional para reportes históricos). Para repos privados, agrega `CODECOV_TOKEN` como secreto.
+ 
 
 ---
 
@@ -337,3 +322,13 @@ jobs:
 Hecho con 🧬 y enfoque en Circuitalidad Digital.
 
 Creado por: C-BIAS ENTREPRISES — https://www.c-bias.com
+
+---
+
+## 👤 Sobre C-BIAS ENTREPRISES
+
+- Innovación y desarrollo de software con enfoque en calidad, auditoría y estandarización.
+- Impulsa prácticas de ingeniería rigurosas: documentación viviente, pruebas exhaustivas y automatización.
+- Colabora en ecosistemas multi‑stack (Rust, TypeScript, Python, Go), priorizando seguridad, performance y mantenibilidad.
+
+[![Creado por C-BIAS ENTREPRISES](https://img.shields.io/badge/created_by-C--BIAS%20ENTREPRISES-0a66c2)](https://www.c-bias.com)

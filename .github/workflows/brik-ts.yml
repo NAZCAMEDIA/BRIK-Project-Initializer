@@ -3,14 +3,24 @@ on: [push, pull_request]
 jobs:
   ts-coverage:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: ${{ matrix.node }}
       - name: Install deps
         working-directory: demo-ts
         run: npm install
       - name: Coverage 100% (global + per-file)
         working-directory: demo-ts
-        run: ./scripts/test-coverage.sh
+        run: |
+          ./scripts/test-coverage.sh
+          npx jest --coverage --coverageReporters=cobertura
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: demo-ts/coverage
+          fail_ci_if_error: true
