@@ -1,0 +1,16 @@
+name: brik-docs
+on: [push, pull_request]
+jobs:
+  docs-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate docs (Rust demo)
+        working-directory: demo-brik
+        run: ./scripts/validate-docs.sh || true
+      - name: Validate docs (TS demo)
+        working-directory: demo-ts
+        run: ./scripts/validate-docs.sh || true
+      - name: Validate docs (Python demo)
+        working-directory: demo-py
+        run: ./scripts/validate-docs.sh || true

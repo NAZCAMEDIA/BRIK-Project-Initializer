@@ -1,5 +1,10 @@
 # 🧬 BRIK Project Initializer
 
+[![Rust](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-rust.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-rust.yml)
+[![TypeScript](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-ts.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-ts.yml)
+[![Python](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-py.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-py.yml)
+[![Docs](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-docs.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-docs.yml)
+
 Inicializador universal para crear proyectos con filosofía DAAF‑BRIK‑Circuitalidad Digital: core inmutable, wrappers evolutivos, documentación viviente, auditoría transversal y gestión termodinámica de entropía.
 
 ---
@@ -330,3 +335,5 @@ jobs:
 ---
 
 Hecho con 🧬 y enfoque en Circuitalidad Digital.
+
+Creado por: C-BIAS ENTREPRISES — https://www.c-bias.com

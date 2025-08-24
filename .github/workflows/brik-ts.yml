@@ -1,0 +1,16 @@
+name: brik-ts
+on: [push, pull_request]
+jobs:
+  ts-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - name: Install deps
+        working-directory: demo-ts
+        run: npm install
+      - name: Coverage 100% (global + per-file)
+        working-directory: demo-ts
+        run: ./scripts/test-coverage.sh

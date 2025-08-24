@@ -1,0 +1,14 @@
+name: brik-rust
+on: [push, pull_request]
+jobs:
+  rust-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
+      - name: Coverage 100% (lines+branches)
+        working-directory: demo-brik
+        run: |
+          ./scripts/test-coverage.sh
