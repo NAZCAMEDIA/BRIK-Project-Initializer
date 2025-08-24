@@ -241,6 +241,10 @@ Puedes extenderlos siguiendo la sección “Extender y personalizar”.
 - Usa la carpeta `tests/` para unitarias, integración, property‑based e inmutabilidad.
 - Integra el validador de docs en tu pipeline para garantizar auto‑consistencia.
 
+Al cumplirse estas condiciones, el workflow genera un “sello BRIK”:
+- Archivos: `.brik-cert.json` y `.brik-cert.sha256` (hash SHA‑256).
+- Uso: sirve como huella verificable para seguimiento auditado (p.ej., integrar en una blockchain externa).
+
 ---
 
 ## 🔩 Scripts y generadores
