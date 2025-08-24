@@ -1,0 +1,29 @@
+project:
+  name: "ecommerce-api"
+  version: "1.0.0"
+  philosophy: "DAAF-BRIK-CircuitalidadDigital"
+  generation_mode: "smart"
+  genesis_hash: "f91d466f20d31d5eac7ec5f422ce4a3fa028fb6664eee96e5db096504e143e9b"
+  created_at: "2025-08-24T15:48:22+02:00"
+  
+generation:
+  description: "API de e-commerce completa"
+  integrations: "postgresql,redis,stripe"
+  language: "rust"
+  llm_analyzed: true
+  architecture_classified: true
+  
+principles:
+  circuitality: true
+  consciousness: true
+  thermodynamics: true
+  auditability: true
+  documentation: true
+  
+compliance:
+  coverage_requirement: 100
+  immutability_check: true
+  entropy_monitoring: true
+  ethical_validation: true
+  documentation_completeness: true
+  smart_generation: true

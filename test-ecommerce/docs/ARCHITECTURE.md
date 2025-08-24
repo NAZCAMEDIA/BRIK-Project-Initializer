@@ -1,0 +1,417 @@
+# Architecture Documentation
+
+## Generated Architecture Map
+
+```json
+{
+  "project": {
+    "name": "ecommerce-api",
+    "type": "api",
+    "language": "rust"
+  },
+  "architecture": {
+    "CORE": {
+      "entities": [
+        {
+          "name": "User",
+          "layer": "CORE",
+          "reason": "Entidad fundamental del dominio, lógica de negocio inmutable",
+          "components": [
+            {
+              "type": "domain_entity",
+              "name": "UserEntity",
+              "description": "Entidad usuario con validaciones de negocio",
+              "responsibilities": [
+                "Email validation",
+                "Password hashing",
+                "User creation"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "layer": "CORE",
+          "reason": "Entidad central del e-commerce, reglas de inventario inmutables",
+          "components": [
+            {
+              "type": "domain_entity",
+              "name": "ProductEntity",
+              "description": "Producto con validaciones de precio y stock",
+              "responsibilities": [
+                "Price validation",
+                "Stock management",
+                "Category classification"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "layer": "CORE",
+          "reason": "Agregado principal del dominio con lógica de negocio crítica",
+          "components": [
+            {
+              "type": "domain_entity",
+              "name": "OrderEntity",
+              "description": "Orden con cálculos de total y validaciones",
+              "responsibilities": [
+                "Total calculation",
+                "Status management",
+                "Item validation"
+              ]
+            }
+          ]
+        }
+      ],
+      "business_logic": [
+        {
+          "name": "StockValidation",
+          "layer": "CORE",
+          "reason": "Regla de negocio fundamental que nunca cambia",
+          "implementation": "Validación atómica de stock disponible"
+        },
+        {
+          "name": "OrderTotalCalculation",
+          "layer": "CORE",
+          "reason": "Cálculo crítico que debe ser consistente",
+          "implementation": "Suma inmutable de subtotales de items"
+        }
+      ]
+    },
+    "WRAPPERS": {
+      "integrations": [
+        {
+          "name": "PostgreSQLIntegration",
+          "layer": "WRAPPERS",
+          "reason": "Adaptador externo configurable según entorno",
+          "technology": "postgresql",
+          "configuration_points": [
+            "connection_string",
+            "pool_size",
+            "timeout"
+          ]
+        },
+        {
+          "name": "RedisIntegration",
+          "layer": "WRAPPERS",
+          "reason": "Cache externo que puede cambiar de implementación",
+          "technology": "redis",
+          "configuration_points": [
+            "redis_url",
+            "expire_time",
+            "max_connections"
+          ]
+        },
+        {
+          "name": "StripeIntegration",
+          "layer": "WRAPPERS",
+          "reason": "Servicio de pago externo con configuración específica",
+          "technology": "stripe",
+          "configuration_points": [
+            "api_key",
+            "webhook_secret",
+            "currency"
+          ]
+        }
+      ],
+      "repositories": [
+        {
+          "name": "UserRepository",
+          "layer": "WRAPPERS",
+          "reason": "Abstrae acceso a datos, implementación configurable",
+          "operations": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "find_by_email"
+          ]
+        },
+        {
+          "name": "ProductRepository",
+          "layer": "WRAPPERS",
+          "reason": "Manejo de persistencia de productos",
+          "operations": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "find_by_category",
+            "update_stock"
+          ]
+        },
+        {
+          "name": "OrderRepository",
+          "layer": "WRAPPERS",
+          "reason": "Gestión de órdenes con queries complejas",
+          "operations": [
+            "create",
+            "read",
+            "update",
+            "find_by_user",
+            "find_by_status"
+          ]
+        }
+      ]
+    },
+    "LIVING_LAYER": {
+      "monitoring": [
+        {
+          "name": "PerformanceMonitor",
+          "layer": "LIVING_LAYER",
+          "reason": "Monitoreo adaptativo de performance de API",
+          "capabilities": [
+            "response_time_analysis",
+            "throughput_monitoring",
+            "error_rate_tracking"
+          ]
+        },
+        {
+          "name": "BusinessMetricsAnalyzer",
+          "layer": "LIVING_LAYER",
+          "reason": "Análisis inteligente de métricas de negocio",
+          "capabilities": [
+            "sales_trend_analysis",
+            "inventory_optimization",
+            "user_behavior_insights"
+          ]
+        }
+      ]
+    }
+  },
+  "implementation_plan": {
+    "CORE": {
+      "directory": "src/core",
+      "files": [
+        {
+          "name": "user.rs",
+          "type": "domain_entity",
+          "components": [
+            {
+              "type": "domain_entity",
+              "name": "UserEntity",
+              "description": "Entidad usuario con validaciones de negocio",
+              "responsibilities": [
+                "Email validation",
+                "Password hashing",
+                "User creation"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "product.rs",
+          "type": "domain_entity",
+          "components": [
+            {
+              "type": "domain_entity",
+              "name": "ProductEntity",
+              "description": "Producto con validaciones de precio y stock",
+              "responsibilities": [
+                "Price validation",
+                "Stock management",
+                "Category classification"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "order.rs",
+          "type": "domain_entity",
+          "components": [
+            {
+              "type": "domain_entity",
+              "name": "OrderEntity",
+              "description": "Orden con cálculos de total y validaciones",
+              "responsibilities": [
+                "Total calculation",
+                "Status management",
+                "Item validation"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "business_rules.rs",
+          "type": "business_logic",
+          "rules": [
+            {
+              "name": "StockValidation",
+              "layer": "CORE",
+              "reason": "Regla de negocio fundamental que nunca cambia",
+              "implementation": "Validación atómica de stock disponible"
+            },
+            {
+              "name": "OrderTotalCalculation",
+              "layer": "CORE",
+              "reason": "Cálculo crítico que debe ser consistente",
+              "implementation": "Suma inmutable de subtotales de items"
+            }
+          ]
+        }
+      ],
+      "dependencies": [],
+      "tests": {
+        "coverage_required": 100
+      }
+    },
+    "WRAPPERS": {
+      "directory": "src/components",
+      "files": [
+        {
+          "name": "postgresqlintegration_wrapper.rs",
+          "type": "integration_wrapper",
+          "technology": "postgresql",
+          "config": [
+            "connection_string",
+            "pool_size",
+            "timeout"
+          ]
+        },
+        {
+          "name": "redisintegration_wrapper.rs",
+          "type": "integration_wrapper",
+          "technology": "redis",
+          "config": [
+            "redis_url",
+            "expire_time",
+            "max_connections"
+          ]
+        },
+        {
+          "name": "stripeintegration_wrapper.rs",
+          "type": "integration_wrapper",
+          "technology": "stripe",
+          "config": [
+            "api_key",
+            "webhook_secret",
+            "currency"
+          ]
+        },
+        {
+          "name": "userrepository.rs",
+          "type": "repository",
+          "operations": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "find_by_email"
+          ]
+        },
+        {
+          "name": "productrepository.rs",
+          "type": "repository",
+          "operations": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "find_by_category",
+            "update_stock"
+          ]
+        },
+        {
+          "name": "orderrepository.rs",
+          "type": "repository",
+          "operations": [
+            "create",
+            "read",
+            "update",
+            "find_by_user",
+            "find_by_status"
+          ]
+        }
+      ],
+      "dependencies": [
+        "tokio-postgres",
+        "redis",
+        "stripe-rust"
+      ],
+      "tests": {
+        "coverage_required": 95
+      }
+    },
+    "LIVING_LAYER": {
+      "directory": "src/living-layer",
+      "files": [
+        {
+          "name": "performancemonitor.rs",
+          "type": "living_component",
+          "capabilities": [
+            "response_time_analysis",
+            "throughput_monitoring",
+            "error_rate_tracking"
+          ]
+        },
+        {
+          "name": "businessmetricsanalyzer.rs",
+          "type": "living_component",
+          "capabilities": [
+            "sales_trend_analysis",
+            "inventory_optimization",
+            "user_behavior_insights"
+          ]
+        }
+      ],
+      "dependencies": [
+        "metrics",
+        "monitoring",
+        "llm-client"
+      ],
+      "tests": {
+        "coverage_required": 85
+      }
+    }
+  },
+  "deployment": {
+    "docker_required": true,
+    "environment_configs": {
+      "development": {
+        "log_level": "debug",
+        "db_pool_size": 5
+      },
+      "production": {
+        "log_level": "info",
+        "db_pool_size": 20
+      },
+      "testing": {
+        "log_level": "warn",
+        "db_pool_size": 1
+      }
+    },
+    "health_checks": [
+      "core_integrity",
+      "external_services",
+      "monitoring_systems"
+    ]
+  },
+  "validation": {
+    "validation_passed": true,
+    "warnings": [],
+    "adjustments": []
+  },
+  "metadata": {
+    "classifiedAt": "2025-08-24T13:48:22.094Z",
+    "brikVersion": "5.0",
+    "analyzer": "BRIK Architecture Classifier v1.0"
+  }
+}
+```
+
+## Component Breakdown
+
+### CORE Layer (Immutable)
+- **User**: Entidad fundamental del dominio, lógica de negocio inmutable
+- **Product**: Entidad central del e-commerce, reglas de inventario inmutables
+- **Order**: Agregado principal del dominio con lógica de negocio crítica
+
+### WRAPPERS Layer (Configurable)  
+- **PostgreSQLIntegration**: Adaptador externo configurable según entorno
+- **RedisIntegration**: Cache externo que puede cambiar de implementación
+- **StripeIntegration**: Servicio de pago externo con configuración específica
+
+### LIVING Layer (Adaptive)
+- **PerformanceMonitor**: Monitoreo adaptativo de performance de API
+- **BusinessMetricsAnalyzer**: Análisis inteligente de métricas de negocio

@@ -1,0 +1,42 @@
+{
+  "validation_result": "FAILED",
+  "brik_compliance_score": 55,
+  "summary": {
+    "critical_violations": 0,
+    "error_violations": 1,
+    "warnings": 5,
+    "total_issues": 6
+  },
+  "violations": [
+    {
+      "level": "ERROR",
+      "message": "Archivo requerido no encontrado: CIRCUITALIDAD.md",
+      "timestamp": "2025-08-24T13:48:22.203Z"
+    }
+  ],
+  "warnings": [
+    {
+      "message": "CORE file business_rules.rs debería derivar Debug",
+      "timestamp": "2025-08-24T13:48:22.208Z"
+    },
+    {
+      "message": "WRAPPER orderrepository.rs debería ser configurable",
+      "timestamp": "2025-08-24T13:48:22.210Z"
+    },
+    {
+      "message": "WRAPPER productrepository.rs debería ser configurable",
+      "timestamp": "2025-08-24T13:48:22.210Z"
+    },
+    {
+      "message": "WRAPPER userrepository.rs debería ser configurable",
+      "timestamp": "2025-08-24T13:48:22.211Z"
+    },
+    {
+      "message": "Tests no ejecutables: Command failed: cargo test --quiet 2>&1...",
+      "timestamp": "2025-08-24T13:48:22.315Z"
+    }
+  ],
+  "recommendations": [],
+  "timestamp": "2025-08-24T13:48:22.315Z",
+  "validator_version": "1.0.0"
+}

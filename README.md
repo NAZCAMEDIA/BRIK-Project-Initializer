@@ -57,6 +57,8 @@ Nota macOS: el script usa `sha256sum`. En macOS instala coreutils (`brew install
 
 ## 🚀 Inicio Rápido
 
+### 🎯 Modo Tradicional
+
 1) Clona este repo y entra en él
 
 ```
@@ -72,6 +74,31 @@ bash init-brik-project.sh <nombre_proyecto> <tipo>
 bash init-brik-project.sh mi-proyecto rust
 bash init-brik-project.sh mi-proyecto typescript
 ```
+
+### 🧠 Modo Inteligente (NUEVO)
+
+**Generación automática con LLM a partir de descripción natural:**
+
+```
+bash init-brik-project.sh <nombre_proyecto> --smart \
+  --description "Tu descripción del proyecto en lenguaje natural" \
+  --integrations "lista,de,integraciones" \
+  --language rust|typescript|python
+```
+
+**Ejemplo completo:**
+```
+bash init-brik-project.sh mi-ecommerce --smart \
+  --description "API e-commerce con usuarios, productos y órdenes de compra" \
+  --integrations "postgresql,redis,stripe" \
+  --language rust
+```
+
+El sistema inteligente:
+- 🔍 Analiza la descripción usando LLM (Anthropic Claude/OpenAI GPT)
+- 🏗️ Clasifica componentes en capas BRIK (CORE/WRAPPERS/LIVING)
+- ⚡ Genera código completo con tests al 100%
+- ✅ Valida arquitectura BRIK automáticamente
 
 3) Sigue los pasos finales impresos por el script
 
@@ -223,13 +250,26 @@ cd demo-ts
 
 ## ⚙️ Tipos de proyecto
 
+### 🔧 Modo Tradicional
 - `rust` (implementado):
   - Genera `Cargo.toml`, `src/main.rs` y estructura `src/{core,components,living-layer}`.
   - Dependencias base: `serde`, `tokio`.
 - `typescript`, `python`, `go` (placeholders):
-  - Estructura, docs y scripts se generan; falta completar generadores específicos (`generators/setup-<tipo>.sh`, `generate-technical-docs.sh`, etc.).
+  - Estructura, docs y scripts se generan; falta completar generadores específicos.
 
-Puedes extenderlos siguiendo la sección “Extender y personalizar”.
+### 🧠 Modo Inteligente (--smart)
+- **`rust`** (completamente implementado):
+  - Análisis LLM de dominio y requisitos
+  - Clasificación automática CORE/WRAPPERS/LIVING
+  - Generación completa: entidades, repositorios, servicios, wrappers
+  - Tests unitarios con 100% cobertura
+  - Integración con PostgreSQL, Redis, Stripe, etc.
+
+- **`typescript`, `python`** (en desarrollo):
+  - Estructura inteligente preparada
+  - Próxima implementación de generadores específicos
+
+Puedes extenderlos siguiendo la sección "Extender y personalizar".
 
 ---
 
@@ -252,7 +292,7 @@ Al cumplirse estas condiciones, el workflow genera un “sello BRIK”:
 Script principal:
 - `init-brik-project.sh`: orquesta toda la inicialización.
 
-Generadores (carpeta `generators/`):
+### 🎯 Generadores Tradicionales (carpeta `generators/`):
 - `generate-product-docs.sh`: crea PRD, historias y flujos.
 - `generate-technical-docs.sh`: placeholder para docs técnicas.
 - `generate-operational-docs.sh`: placeholder para docs operativas.
@@ -260,6 +300,13 @@ Generadores (carpeta `generators/`):
 - `generate-core-templates.sh`: placeholder para templates de código base.
 - `generate-scripts.sh`, `generate-dev-config.sh`: placeholders para automatización y config.
 - `setup-rust.sh`: configuración específica para proyectos Rust.
+
+### 🧠 Sistema Inteligente (carpeta `generators/intelligent/`):
+- `domain-analyzer.js`: Análisis LLM de descripciones naturales
+- `architecture-classifier.js`: Clasificación automática en capas BRIK
+- `code-generator.js`: Generación completa de código funcional
+- `architecture-validator.js`: Validación de cumplimiento BRIK
+- `mock-llm.js`: Sistema mock para testing sin API keys
 
 ---
 

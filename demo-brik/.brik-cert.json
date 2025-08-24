@@ -1,0 +1,10 @@
+{
+  "project_name": "demo-brik",
+  "project_type": "rust",
+  "timestamp": "2025-08-24T16:10:06+02:00",
+  "commit_sha": "4aceddecf0044ced5543bb63372b360d455fd3c6",
+  "docs_completion": 100,
+  "coverage_requirement": 100,
+  "coverage_scope": "global+per-file (lines,branches)",
+  "brik_validated": true
+}
