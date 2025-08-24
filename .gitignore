@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Node/TypeScript
+node_modules/
+dist/
+coverage/
+*.log
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.coverage*
+htmlcov/
+
+# Rust
+target/
+
+# Go
+coverage.out
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.code-workspace

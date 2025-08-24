@@ -1,0 +1,20 @@
+project:
+  name: "demo-brik"
+  version: "1.0.0"
+  philosophy: "DAAF-BRIK-CircuitalidadDigital"
+  genesis_hash: "dfb735b79b68074d2dea6627f7f65f58d3a1dfc72f9c7ff09637ca8f7cf653d1"
+  created_at: "2025-08-24T13:10:50+02:00"
+  
+principles:
+  circuitality: true
+  consciousness: true
+  thermodynamics: true
+  auditability: true
+  documentation: true
+  
+compliance:
+  coverage_requirement: 100
+  immutability_check: true
+  entropy_monitoring: true
+  ethical_validation: true
+  documentation_completeness: true
