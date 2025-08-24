@@ -1,0 +1,20 @@
+project:
+  name: "brik-factory-rust"
+  version: "1.0.0"
+  philosophy: "DAAF-BRIK-CircuitalidadDigital"
+  genesis_hash: "6bd6a766f166b9c4fec339b75d6a5f1642c6b9930982323689b859a9ab00dc07"
+  created_at: "2025-08-24T14:17:54+02:00"
+  
+principles:
+  circuitality: true
+  consciousness: true
+  thermodynamics: true
+  auditability: true
+  documentation: true
+  
+compliance:
+  coverage_requirement: 100
+  immutability_check: true
+  entropy_monitoring: true
+  ethical_validation: true
+  documentation_completeness: true

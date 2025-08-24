@@ -1,0 +1,74 @@
+name: brik-ci
+on: [push, pull_request]
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Rust
+      - uses: dtolnay/rust-toolchain@stable
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+      - name: Install rust tools
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        run: cargo install cargo-tarpaulin
+      - name: Rust coverage 100%
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        run: ./scripts/test-coverage.sh rust
+      - name: Rust certify (STRICT_DOCS)
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+
+      # TypeScript / Node.js
+      - uses: actions/setup-node@v4
+        if: ${{ hashFiles('package.json') != '' }}
+        with:
+          node-version: 'lts/*'
+      - name: Install npm deps
+        if: ${{ hashFiles('package.json') != '' }}
+        run: npm ci || npm install
+      - name: TS coverage 100%
+        if: ${{ hashFiles('package.json') != '' }}
+        run: ./scripts/test-coverage.sh typescript
+      - name: TS certify (STRICT_DOCS)
+        if: ${{ hashFiles('package.json') != '' }}
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+
+      # Python
+      - uses: actions/setup-python@v5
+        if: ${{ hashFiles('requirements.txt') != '' || hashFiles('pyproject.toml') != '' }}
+        with:
+          python-version: '3.11'
+      - name: Install pip deps
+        if: ${{ hashFiles('requirements.txt') != '' || hashFiles('pyproject.toml') != '' }}
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Py coverage 100%
+        if: ${{ hashFiles('requirements.txt') != '' || hashFiles('pyproject.toml') != '' }}
+        run: ./scripts/test-coverage.sh python
+      - name: Py certify (STRICT_DOCS)
+        if: ${{ hashFiles('requirements.txt') != '' || hashFiles('pyproject.toml') != '' }}
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+
+      # Go
+      - uses: actions/setup-go@v5
+        if: ${{ hashFiles('go.mod') != '' }}
+        with:
+          go-version: '1.22'
+      - name: Go coverage 100%
+        if: ${{ hashFiles('go.mod') != '' }}
+        run: ./scripts/test-coverage.sh go
+      - name: Go certify (STRICT_DOCS)
+        if: ${{ hashFiles('go.mod') != '' }}
+        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+
+      - name: Upload BRIK cert artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brik-cert
+          path: |
+            .brik-cert.json
+            .brik-cert.sha256
+          if-no-files-found: ignore

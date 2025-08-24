@@ -70,16 +70,27 @@ class BRIKCodeGenerator {
     }
 
     initializeGenerators(language) {
+        let generator;
         switch (language) {
             case 'rust':
-                return new RustCodeGenerator();
+                generator = new RustCodeGenerator();
+                break;
             case 'typescript':
-                return new TypeScriptCodeGenerator();
+                generator = new TypeScriptCodeGenerator();
+                break;
             case 'python':
-                return new PythonCodeGenerator();
+                generator = new PythonCodeGenerator();
+                break;
             default:
                 throw new Error(`Lenguaje no soportado: ${language}`);
         }
+        
+        // Verificar que el generator tiene los métodos requeridos
+        if (!generator || typeof generator.generateEntity !== 'function') {
+            throw new Error(`Generator para ${language} no implementa generateEntity`);
+        }
+        
+        return generator;
     }
 
     /**
