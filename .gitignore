@@ -26,3 +26,7 @@ coverage.out
 *.swp
 *.swo
 *.code-workspace
+
+# BRIK Certification artifacts
+.brik-cert.json
+.brik-cert.sha256
