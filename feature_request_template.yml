@@ -1,0 +1,251 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for BRIK Project Initializer
+title: "[FEATURE] "
+labels: ["type:feature", "P3-medium", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! ✨
+        
+        Please search existing feature requests before creating a new one to avoid duplicates.
+        Consider discussing complex features in GitHub Discussions first.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: A clear and concise summary of the feature you'd like to see
+      placeholder: Brief description of the proposed feature
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: Which area does this feature belong to?
+      options:
+        - Language Support (New programming language)
+        - Integration (External service/tool integration)
+        - AI/LLM Enhancement (Improve intelligent generation)
+        - Template System (Template improvements)
+        - CLI/UX (Command-line interface improvements)
+        - Performance (Speed/efficiency improvements)
+        - Documentation (Documentation improvements)
+        - Testing/Quality (Testing framework improvements)
+        - Security (Security enhancements)
+        - DevOps/CI (Development/deployment improvements)
+        - Architecture (BRIK architecture enhancements)
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What's the current pain point?
+      placeholder: |
+        Describe the problem or limitation you're facing:
+        - What are you trying to accomplish?
+        - What's currently difficult or impossible?
+        - How does this affect your workflow?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution in detail
+      placeholder: |
+        Detailed description of how this feature should work:
+        - What should the user experience be?
+        - How should it integrate with existing functionality?
+        - What commands/options should be added?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What alternative solutions have you considered?
+      placeholder: |
+        Describe alternatives you've thought about:
+        - Other ways to solve the same problem
+        - Existing tools or workarounds you're using
+        - Why the proposed solution is better
+    validations:
+      required: false
+
+  - type: textarea
+    id: use_cases
+    attributes:
+      label: Use Cases
+      description: Provide specific use cases and examples
+      placeholder: |
+        Concrete examples of how this feature would be used:
+        
+        Example 1:
+        - User wants to...
+        - They would run...
+        - The system would...
+        
+        Example 2:
+        - In the scenario where...
+        - This feature would help by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What would make this feature complete and ready to ship?
+      placeholder: |
+        Define what "done" looks like:
+        - [ ] Feature works as described
+        - [ ] Documentation is updated
+        - [ ] Tests are included
+        - [ ] Integration with existing features
+        - [ ] Performance requirements met
+        - [ ] Any other specific requirements
+    validations:
+      required: false
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this feature is to implement?
+      options:
+        - Simple (Small change, minimal impact)
+        - Moderate (Medium-sized feature, some new components)
+        - Complex (Large feature, significant new functionality)
+        - Very Complex (Major architectural changes required)
+        - Unknown (Not sure about implementation complexity)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - P1-critical (Essential for your workflow)
+        - P2-high (Important improvement)
+        - P3-medium (Nice to have)
+        - P4-low (Minor enhancement)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Considerations
+      description: Check all that apply to this feature
+      options:
+        - label: This feature requires new dependencies
+          required: false
+        - label: This feature affects existing APIs
+          required: false
+        - label: This feature requires documentation updates
+          required: false
+        - label: This feature needs new tests
+          required: false
+        - label: This feature impacts performance
+          required: false
+        - label: This feature affects security
+          required: false
+        - label: This feature requires LLM/AI integration
+          required: false
+        - label: This feature affects multiple programming languages
+          required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Your involvement in implementing this feature
+      options:
+        - label: I am willing to work on implementing this feature
+          required: false
+        - label: I can help with testing this feature
+          required: false
+        - label: I can help with documentation for this feature
+          required: false
+        - label: I have domain expertise that could help with this feature
+          required: false
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups / Examples
+      description: Any visual mockups, code examples, or command-line examples
+      placeholder: |
+        Provide examples of how this would work:
+        
+        ```bash
+        # Command line example
+        bash init-brik-project.sh my-app --new-feature-flag
+        ```
+        
+        ```json
+        // Configuration example
+        {
+          "newFeature": {
+            "enabled": true,
+            "options": ["option1", "option2"]
+          }
+        }
+        ```
+        
+        Or describe the UI/UX flow...
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Related Resources
+      description: Links to relevant documentation, similar features, or research
+      placeholder: |
+        - Link to similar features in other tools
+        - Relevant documentation or specifications
+        - Research or articles that inspired this feature
+        - Related GitHub issues or discussions
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Any other context, constraints, or information that would be helpful
+      placeholder: |
+        Additional information:
+        - Specific constraints or requirements
+        - Timeline considerations
+        - Business or technical context
+        - Related features or dependencies
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission Checklist
+      description: Please confirm before submitting
+      options:
+        - label: I have searched existing issues and feature requests
+          required: true
+        - label: I have provided a clear problem statement and solution
+          required: true
+        - label: I have included specific use cases and examples
+          required: true
+        - label: I understand this is a feature request and not a bug report
+          required: true
