@@ -1,0 +1,82 @@
+{
+  "overall": {
+    "status": "PASSED",
+    "score": 86,
+    "l3_compliant": true,
+    "timestamp": "2025-08-30T10:16:17.698Z",
+    "duration_ms": 0
+  },
+  "tests": {
+    "structure_validation": {
+      "status": "FAILED",
+      "score": 100,
+      "details": {
+        "total_tests": 0,
+        "passed_tests": 0,
+        "failed_tests": 0,
+        "test_results": [
+          {
+            "assertionResults": [],
+            "coverage": {},
+            "endTime": 1756548980835,
+            "message": "  ● Test suite failed to run\n\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m46\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m46\u001b[0m       /.*[Cc]ore.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m47\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m47\u001b[0m       /.*[Cc]ontrol.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m48\u001b[0m       /.*[Oo]rchestrat.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m49\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m49\u001b[0m       /.*[Bb]ase[Cc]ontroller.*/\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m63\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m63\u001b[0m       /.*[Ll]ogger.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m64\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m64\u001b[0m       /.*[Cc]ircuit.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m65\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m65\u001b[0m       /.*[Mm]etrics.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m66\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m66\u001b[0m       /.*[Cc]onnect.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m67\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m67\u001b[0m       /.*[Cc]ache.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m68\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m68\u001b[0m       /.*[Gg]uard.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m69\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m69\u001b[0m       /.*[Ss]ecur.*[Ss]hield.*/\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m80\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m80\u001b[0m       /.*[Ll][Ll][Mm].*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m81\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m81\u001b[0m       /.*[Dd]iagnostic.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m82\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m82\u001b[0m       /.*[Ee]volution.*/,\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m83\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'RegExp' is not assignable to type 'string'.\n\n    \u001b[7m83\u001b[0m       /.*[Cc]onversation.*/\n    \u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m129\u001b[0m:\u001b[93m22\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2683: \u001b[0m'this' implicitly has type 'any' because it does not have a type annotation.\n\n    \u001b[7m129\u001b[0m     findings: typeof this.findings;\n    \u001b[7m   \u001b[0m \u001b[91m                     ~~~~\u001b[0m\n\n      \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m129\u001b[0m:\u001b[93m5\u001b[0m\n        \u001b[7m129\u001b[0m     findings: typeof this.findings;\n        \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~\u001b[0m\n        An outer value of 'this' is shadowed by this container.\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m187\u001b[0m:\u001b[93m19\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'test' does not exist on type 'string'.\n\n    \u001b[7m187\u001b[0m       if (pattern.test(fileName) || pattern.test(content)) {\n    \u001b[7m   \u001b[0m \u001b[91m                  ~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m187\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'test' does not exist on type 'string'.\n\n    \u001b[7m187\u001b[0m       if (pattern.test(fileName) || pattern.test(content)) {\n    \u001b[7m   \u001b[0m \u001b[91m                                            ~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m214\u001b[0m:\u001b[93m19\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'test' does not exist on type 'string'.\n\n    \u001b[7m214\u001b[0m       if (pattern.test(fileName) || pattern.test(content)) {\n    \u001b[7m   \u001b[0m \u001b[91m                  ~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m214\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'test' does not exist on type 'string'.\n\n    \u001b[7m214\u001b[0m       if (pattern.test(fileName) || pattern.test(content)) {\n    \u001b[7m   \u001b[0m \u001b[91m                                            ~~~~\u001b[0m\n    \u001b[96m../../tests/contract/contract_structure.spec.ts\u001b[0m:\u001b[93m389\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'beforeAll'.\n\n    \u001b[7m389\u001b[0m   beforeAll(async () => {\n    \u001b[7m   \u001b[0m \u001b[91m  ~~~~~~~~~\u001b[0m\n",
+            "name": "/Users/nazcamedia/conductor/brik-project-initializer/tests/contract/contract_structure.spec.ts",
+            "startTime": 1756548980835,
+            "status": "failed",
+            "summary": ""
+          }
+        ]
+      }
+    },
+    "cross_language_compilation": {
+      "status": "PENDING",
+      "score": 0,
+      "details": null
+    },
+    "security_audit": {
+      "status": "FAILED",
+      "score": 60,
+      "details": {
+        "output": "\n\u001b[0;34m===================================================\u001b[0m\n\u001b[0;34m 🛡️ BRIK L3 SECURITY AUDIT\u001b[0m\n\u001b[0;34m===================================================\u001b[0m\n\n\u001b[0;34m[INFO]\u001b[0m Checking required tools...\n\n\u001b[0;34m===================================================\u001b[0m\n\u001b[0;34m 🔍 SCANNING FOR SECRETS AND SENSITIVE DATA\u001b[0m\n\u001b[0;34m===================================================\u001b[0m\n\n\u001b[0;34m[INFO]\u001b[0m Scanning for secrets in source files...\n\u001b[0;34m[INFO]\u001b[0m Checking for sensitive files...\n\u001b[0;32m[SUCCESS]\u001b[0m No secrets detected\n\n\u001b[0;34m===================================================\u001b[0m\n\u001b[0;34m 📦 SCANNING DEPENDENCIES FOR VULNERABILITIES\u001b[0m\n\u001b[0;34m===================================================\u001b[0m\n\n\u001b[0;32m[SUCCESS]\u001b[0m No dependency vulnerabilities detected\n\n\u001b[0;34m===================================================\u001b[0m\n\u001b[0;34m 🔒 ANALYZING CODE FOR SECURITY ISSUES\u001b[0m\n\u001b[0;34m===================================================\u001b[0m\n\n\u001b[0;34m[INFO]\u001b[0m Scanning for security anti-patterns...\n\u001b[0;34m[INFO]\u001b[0m Checking for insecure configurations...\n\u001b[0;32m[SUCCESS]\u001b[0m No code security issues detected\n\n\u001b[0;34m===================================================\u001b[0m\n\u001b[0;34m ⚙️ VALIDATING CONFIGURATION SECURITY\u001b[0m\n\u001b[0;34m===================================================\u001b[0m\n\n",
+        "method": "script_output"
+      }
+    },
+    "hash_generation": {
+      "status": "PASSED",
+      "score": 100,
+      "details": {
+        "hash": "9fc55b9790171640d210198a74ae6f5f30f97b3980c62f9a8e9a77e63af0af74",
+        "algorithm": "sha256",
+        "reproducible": true,
+        "files_processed": 195
+      }
+    },
+    "dependency_analysis": {
+      "status": "PASSED",
+      "score": 90,
+      "details": {
+        "ecosystems": []
+      }
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "category": "Security",
+      "action": "Address security vulnerabilities and remove exposed secrets",
+      "impact": "Security compliance mandatory for L3"
+    }
+  ],
+  "certification": {
+    "level": "L3",
+    "requirements_met": [
+      "hash_generation",
+      "dependency_analysis"
+    ],
+    "requirements_failed": [
+      "structure_validation",
+      "security_audit"
+    ],
+    "next_steps": []
+  }
+}

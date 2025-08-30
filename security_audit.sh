@@ -28,14 +28,13 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(pwd)}"
 AUDIT_REPORT_FILE="${PROJECT_ROOT}/security-audit-report.json"
 TEMP_DIR="/tmp/brik-security-audit-$$"
 
-# Security audit results
-declare -A AUDIT_RESULTS=(
-    ["secrets_scan"]="pending"
-    ["dependency_scan"]="pending"  
-    ["code_analysis"]="pending"
-    ["config_validation"]="pending"
-    ["infrastructure_check"]="pending"
-)
+# Security audit results and counters
+secrets_scan_result="pending"
+dependency_scan_result="pending"
+code_analysis_result="pending"
+config_validation_result="pending"
+infrastructure_check_result="pending"
+secrets_found=0
 
 declare -a SECURITY_ISSUES=()
 declare -a RECOMMENDATIONS=()
@@ -100,7 +99,7 @@ add_recommendation() {
 scan_secrets() {
     log_header "🔍 SCANNING FOR SECRETS AND SENSITIVE DATA"
     
-    local secrets_found=0
+    secrets_found=0
     
     # Common secret patterns
     declare -a SECRET_PATTERNS=(
@@ -196,10 +195,10 @@ scan_secrets() {
     
     # Update audit results
     if [ $secrets_found -eq 0 ]; then
-        AUDIT_RESULTS["secrets_scan"]="passed"
+        secrets_scan_result="passed"
         log_success "No secrets detected"
     else
-        AUDIT_RESULTS["secrets_scan"]="failed"
+        secrets_scan_result="failed"
         log_error "$secrets_found potential secrets/sensitive files found"
         add_recommendation "HIGH" "Remove or properly secure all detected secrets and sensitive files"
     fi
@@ -296,10 +295,10 @@ scan_dependencies() {
     
     # Update audit results
     if [ $vulnerabilities_found -eq 0 ]; then
-        AUDIT_RESULTS["dependency_scan"]="passed"
+        dependency_scan_result="passed"
         log_success "No dependency vulnerabilities detected"
     else
-        AUDIT_RESULTS["dependency_scan"]="failed"
+        dependency_scan_result="failed"
         log_error "$vulnerabilities_found dependency vulnerabilities found"
         add_recommendation "HIGH" "Update vulnerable dependencies to patched versions"
     fi
@@ -402,10 +401,10 @@ analyze_code_security() {
     
     # Update audit results
     if [ $security_issues_found -eq 0 ]; then
-        AUDIT_RESULTS["code_analysis"]="passed"
+        code_analysis_result="passed"
         log_success "No code security issues detected"
     else
-        AUDIT_RESULTS["code_analysis"]="warning"
+        code_analysis_result="warning"
         log_warning "$security_issues_found potential security issues found in code"
         add_recommendation "MEDIUM" "Review and fix identified security anti-patterns and insecure configurations"
     fi
@@ -490,10 +489,10 @@ validate_configuration_security() {
     
     # Update audit results
     if [ $config_issues -eq 0 ]; then
-        AUDIT_RESULTS["config_validation"]="passed"
+        config_validation_result="passed"
         log_success "Configuration security validation passed"
     else
-        AUDIT_RESULTS["config_validation"]="warning"
+        config_validation_result="warning"
         log_warning "$config_issues configuration security issues found"
         add_recommendation "MEDIUM" "Fix configuration security issues including Docker, CI/CD, and file permissions"
     fi
@@ -602,10 +601,10 @@ check_infrastructure_security() {
     
     # Update audit results
     if [ $infra_issues -eq 0 ]; then
-        AUDIT_RESULTS["infrastructure_check"]="passed"
+        infrastructure_check_result="passed"
         log_success "Infrastructure security checks passed"
     else
-        AUDIT_RESULTS["infrastructure_check"]="warning"
+        infrastructure_check_result="warning"
         log_warning "$infra_issues infrastructure security issues found"
         add_recommendation "MEDIUM" "Address infrastructure security issues including exposed services and hardcoded configurations"
     fi
@@ -624,11 +623,12 @@ generate_audit_report() {
     local total_checks=5
     local passed_checks=0
     
-    for result in "${AUDIT_RESULTS[@]}"; do
-        if [ "$result" = "passed" ]; then
-            ((passed_checks++))
-        fi
-    done
+    # Check individual results
+    [[ "$secrets_scan_result" = "passed" ]] && ((passed_checks++))
+    [[ "$dependency_scan_result" = "passed" ]] && ((passed_checks++))
+    [[ "$code_analysis_result" = "passed" ]] && ((passed_checks++))
+    [[ "$config_validation_result" = "passed" ]] && ((passed_checks++))
+    [[ "$infrastructure_check_result" = "passed" ]] && ((passed_checks++))
     
     local security_score=$(( (passed_checks * 100) / total_checks ))
     local overall_status="FAILED"
@@ -661,15 +661,13 @@ generate_audit_report() {
 EOF
 
     # Add audit results
-    local first=true
-    for check in "${!AUDIT_RESULTS[@]}"; do
-        if [ "$first" = "true" ]; then
-            first=false
-        else
-            echo "," >> "$AUDIT_REPORT_FILE"
-        fi
-        echo "    \"$check\": \"${AUDIT_RESULTS[$check]}\"" >> "$AUDIT_REPORT_FILE"
-    done
+    cat >> "$AUDIT_REPORT_FILE" << EOF
+    "secrets_scan": "$secrets_scan_result",
+    "dependency_scan": "$dependency_scan_result",
+    "code_analysis": "$code_analysis_result",
+    "config_validation": "$config_validation_result",
+    "infrastructure_check": "$infrastructure_check_result"
+EOF
 
     cat >> "$AUDIT_REPORT_FILE" << EOF
   },
