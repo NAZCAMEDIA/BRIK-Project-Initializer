@@ -1,0 +1,36 @@
+name: "Reporte de bug"
+description: "Crear un reporte de error"
+title: "[BUG] Título descriptivo"
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomar el tiempo de reportar un problema.
+  - type: input
+    id: resumen
+    attributes:
+      label: Resumen
+      description: Describe el bug brevemente.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducir
+      description: Lista los pasos necesarios para reproducir el problema.
+    validations:
+      required: true
+  - type: textarea
+    id: comportamiento
+    attributes:
+      label: Comportamiento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto adicional
+      description: Información extra como logs o capturas.
+    validations:
+      required: false
