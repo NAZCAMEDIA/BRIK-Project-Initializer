@@ -7,10 +7,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate docs (Rust demo, strict)
         working-directory: demo-brik
-        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+        run: |
+          chmod +x ./scripts/brik-certify.sh
+          STRICT_DOCS=1 ./scripts/brik-certify.sh
       - name: Validate docs (TS demo, strict)
         working-directory: demo-ts
-        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+        run: |
+          chmod +x ./scripts/brik-certify.sh
+          STRICT_DOCS=1 ./scripts/brik-certify.sh
       - name: Validate docs (Python demo, strict)
         working-directory: demo-py
-        run: STRICT_DOCS=1 ./scripts/brik-certify.sh
+        run: |
+          chmod +x ./scripts/brik-certify.sh
+          STRICT_DOCS=1 ./scripts/brik-certify.sh

@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-08-30T10:16:01.527Z",
+  "totalScore": 42,
+  "status": "FAILED",
+  "results": {
+    "typescript": {
+      "status": "failed",
+      "score": 0,
+      "details": "0/2 demos compiled successfully"
+    },
+    "python": {
+      "status": "passed",
+      "score": 100,
+      "details": "1/1 demos validated successfully"
+    },
+    "rust": {
+      "status": "failed",
+      "score": 25,
+      "details": "1/4 demos compiled successfully"
+    }
+  }
+}

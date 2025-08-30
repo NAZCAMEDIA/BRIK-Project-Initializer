@@ -1,0 +1,25 @@
+{
+  "brik_hash": "9fc55b9790171640d210198a74ae6f5f30f97b3980c62f9a8e9a77e63af0af74",
+  "algorithm": "sha256",
+  "generated_at": "2025-08-30T10:16:19.008Z",
+  "generator_version": "1.0.0",
+  "project_root": "refactor-plan",
+  "components": {
+    "source_files_count": 195,
+    "configuration_files_count": 2,
+    "documentation_files_count": 5,
+    "total_project_size": 1136401,
+    "total_files_included": 195
+  },
+  "verification": {
+    "reproducible": true,
+    "cross_platform": true,
+    "algorithm_secure": true
+  },
+  "brik_certification": {
+    "project_name": "brik-project-initializer",
+    "version": "5.0",
+    "certification_level": "CERTIFIED",
+    "architecture": "brik-meta-system"
+  }
+}

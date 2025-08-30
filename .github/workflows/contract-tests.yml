@@ -92,6 +92,8 @@ jobs:
           MATRIX=$(echo $MATRIX | jq '. + [{"from": "typescript", "to": "python", "test_type": "schema_contract"}]')
         fi
         
+        # Ensure matrix is properly formatted
+        echo "Generated matrix: $MATRIX"
         echo "test-matrix=$MATRIX" >> $GITHUB_OUTPUT
 
   # 🦀 Rust Contract Validation
@@ -133,16 +135,13 @@ jobs:
         # Fallback: Create basic contract from code analysis
         mkdir -p ../tests/contract/schemas
         
-        cat > ../tests/contract/schemas/rust-api.json << 'EOF'
-        {
-          "service": "rust-brik",
-          "version": "1.0.0",
-          "endpoints": [],
-          "models": [],
-          "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-          "hash": "$(find src -name '*.rs' | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)"
-        }
-        EOF
+        # Generate contract with proper variable expansion
+        TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        HASH_VALUE=$(find src -name '*.rs' 2>/dev/null | sort | xargs sha256sum 2>/dev/null | sha256sum | cut -d' ' -f1 || echo 'no-rust-files')
+        
+        cat > ../tests/contract/schemas/rust-api.json << EOF
+{"service":"rust-brik","version":"1.0.0","endpoints":[],"models":[],"generated_at":"$TIMESTAMP","hash":"$HASH_VALUE"}
+EOF
         
     - name: "📤 Upload Rust contract"
       uses: actions/upload-artifact@v4
@@ -187,16 +186,13 @@ jobs:
         # Fallback: Create basic contract
         mkdir -p ../tests/contract/schemas
         
-        cat > ../tests/contract/schemas/typescript-api.json << 'EOF'
-        {
-          "service": "typescript-brik",
-          "version": "1.0.0",
-          "endpoints": [],
-          "models": [],
-          "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-          "hash": "$(find src -name '*.ts' -o -name '*.tsx' | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)"
-        }
-        EOF
+        # Generate contract with proper variable expansion
+        TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        HASH_VALUE=$(find src -name '*.ts' -o -name '*.tsx' 2>/dev/null | sort | xargs sha256sum 2>/dev/null | sha256sum | cut -d' ' -f1 || echo 'no-ts-files')
+        
+        cat > ../tests/contract/schemas/typescript-api.json << EOF
+{"service":"typescript-brik","version":"1.0.0","endpoints":[],"models":[],"generated_at":"$TIMESTAMP","hash":"$HASH_VALUE"}
+EOF
         
     - name: "📤 Upload TypeScript contract"
       uses: actions/upload-artifact@v4

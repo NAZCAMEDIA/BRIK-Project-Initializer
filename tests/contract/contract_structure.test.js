@@ -11,30 +11,11 @@
  * DEPLOYMENT: Move to tests/contract/contract_structure.spec.ts
  */
 
-import { describe, it, expect } from '@jest/globals';
-import * as fs from 'fs';
-import * as path from 'path';
+const { describe, it, expect, beforeAll } = require('@jest/globals');
+const fs = require('fs');
+const path = require('path');
 
-interface BrikStructureRequirements {
-  core: {
-    required: string[];
-    patterns: string[];
-  };
-  wrappers: {
-    essential: string[];
-    patterns: string[];
-  };
-  living_layer: {
-    components: string[];
-    patterns: string[];
-  };
-  documentation: {
-    required: string[];
-    optional: string[];
-  };
-}
-
-const BRIK_L3_REQUIREMENTS: BrikStructureRequirements = {
+const BRIK_L3_REQUIREMENTS = {
   core: {
     required: [
       'BrikCore',
@@ -43,10 +24,10 @@ const BRIK_L3_REQUIREMENTS: BrikStructureRequirements = {
       'BaseController'
     ],
     patterns: [
-      /.*[Cc]ore.*/,
-      /.*[Cc]ontrol.*/,
-      /.*[Oo]rchestrat.*/,
-      /.*[Bb]ase[Cc]ontroller.*/
+      new RegExp('.*[Cc]ore.*'),
+      new RegExp('.*[Cc]ontrol.*'),
+      new RegExp('.*[Oo]rchestrat.*'),
+      new RegExp('.*[Bb]ase[Cc]ontroller.*')
     ]
   },
   wrappers: {
@@ -60,13 +41,13 @@ const BRIK_L3_REQUIREMENTS: BrikStructureRequirements = {
       'SecureShield'
     ],
     patterns: [
-      /.*[Ll]ogger.*/,
-      /.*[Cc]ircuit.*/,
-      /.*[Mm]etrics.*/,
-      /.*[Cc]onnect.*/,
-      /.*[Cc]ache.*/,
-      /.*[Gg]uard.*/,
-      /.*[Ss]ecur.*[Ss]hield.*/
+      new RegExp('.*[Ll]ogger.*'),
+      new RegExp('.*[Cc]ircuit.*'),
+      new RegExp('.*[Mm]etrics.*'),
+      new RegExp('.*[Cc]onnect.*'),
+      new RegExp('.*[Cc]ache.*'),
+      new RegExp('.*[Gg]uard.*'),
+      new RegExp('.*[Ss]ecur.*[Ss]hield.*')
     ]
   },
   living_layer: {
@@ -77,10 +58,10 @@ const BRIK_L3_REQUIREMENTS: BrikStructureRequirements = {
       'ConversationState'
     ],
     patterns: [
-      /.*[Ll][Ll][Mm].*/,
-      /.*[Dd]iagnostic.*/,
-      /.*[Ee]volution.*/,
-      /.*[Cc]onversation.*/
+      new RegExp('.*[Ll][Ll][Mm].*'),
+      new RegExp('.*[Dd]iagnostic.*'),
+      new RegExp('.*[Ee]volution.*'),
+      new RegExp('.*[Cc]onversation.*')
     ]
   },
   documentation: {
@@ -100,16 +81,7 @@ const BRIK_L3_REQUIREMENTS: BrikStructureRequirements = {
 };
 
 class BrikStructureValidator {
-  private projectRoot: string;
-  private findings: {
-    core: string[];
-    wrappers: string[];
-    living_layer: string[];
-    documentation: string[];
-    violations: string[];
-  };
-
-  constructor(projectRoot: string) {
+  constructor(projectRoot) {
     this.projectRoot = projectRoot;
     this.findings = {
       core: [],
@@ -126,7 +98,13 @@ class BrikStructureValidator {
   async validateStructure(): Promise<{
     compliance: boolean;
     score: number;
-    findings: typeof this.findings;
+    findings: {
+      core: string[];
+      wrappers: string[];
+      living_layer: string[];
+      documentation: string[];
+      violations: string[];
+    };
     recommendations: string[];
   }> {
     await this.scanProjectStructure();
