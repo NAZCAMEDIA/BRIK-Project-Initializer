@@ -170,7 +170,10 @@ jobs:
           echo "COVERAGE=${COVERAGE}" >> $GITHUB_ENV
         else
           echo "Coverage file not found, checking alternative methods..."
-          COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1 | grep -o '[0-9]*' || echo "0")
+          RAW_COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1 || echo "0")
+          # Strip ANSI color codes first, then extract only digits
+          CLEAN_COVERAGE=$(echo "$RAW_COVERAGE" | sed 's/\x1b\[[0-9;]*m//g')
+          COVERAGE=$(echo "$CLEAN_COVERAGE" | sed 's/[^0-9]//g')
           echo "Coverage extracted: ${COVERAGE}%"
           echo "COVERAGE=${COVERAGE}" >> $GITHUB_ENV
         fi
@@ -319,7 +322,10 @@ jobs:
           echo "L3_COVERAGE=${COVERAGE}" >> $GITHUB_ENV
         else
           echo "Using fallback coverage extraction..."
-          COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1 | grep -o '[0-9]*' || echo "0")
+          RAW_COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1 || echo "0")
+          # Strip ANSI color codes first, then extract only digits
+          CLEAN_COVERAGE=$(echo "$RAW_COVERAGE" | sed 's/\x1b\[[0-9;]*m//g')
+          COVERAGE=$(echo "$CLEAN_COVERAGE" | sed 's/[^0-9]//g')
           echo "L3 Coverage: ${COVERAGE}%"
           echo "L3_COVERAGE=${COVERAGE}" >> $GITHUB_ENV
         fi
