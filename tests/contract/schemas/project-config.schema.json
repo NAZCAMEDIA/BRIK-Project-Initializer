@@ -1,0 +1,337 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://brik.nazcamedia.com/schemas/project-config.v1.0.0.json",
+  "title": "BRIK Project Configuration Schema V1.0.0",
+  "description": "JSON Schema para validar BRIK project configuration across languages",
+  "type": "object",
+  "required": [
+    "name",
+    "description", 
+    "version",
+    "language",
+    "architecture",
+    "certification_level",
+    "coverage_target",
+    "features",
+    "integrations",
+    "generated_at",
+    "generator_version",
+    "llm_enhanced"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]$",
+      "description": "Project name (alphanumeric with hyphens/underscores)"
+    },
+    "description": {
+      "type": "string", 
+      "minLength": 10,
+      "maxLength": 500,
+      "description": "Project description"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "description": "Semantic version (e.g., 1.0.0, 1.0.0-alpha.1)"
+    },
+    "language": {
+      "type": "string",
+      "enum": ["rust", "typescript", "python"],
+      "description": "Target programming language"
+    },
+    "architecture": {
+      "type": "string", 
+      "enum": ["traditional", "intelligent"],
+      "description": "Project architecture type"
+    },
+    "certification_level": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3"],
+      "description": "BRIK certification level target"
+    },
+    "coverage_target": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Test coverage target percentage"
+    },
+    "features": {
+      "type": "array",
+      "description": "Array of enabled features",
+      "items": {
+        "type": "object",
+        "required": ["name", "enabled", "configuration"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "description": "Feature name"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether feature is enabled"
+          },
+          "configuration": {
+            "type": "object",
+            "description": "Feature-specific configuration",
+            "additionalProperties": true
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Other features this depends on"
+          },
+          "compatibility": {
+            "type": "object",
+            "properties": {
+              "min_version": {
+                "type": "string",
+                "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)",
+                "description": "Minimum version requirement"
+              },
+              "languages": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["rust", "typescript", "python"]
+                },
+                "description": "Compatible languages"
+              }
+            },
+            "description": "Feature compatibility information"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "integrations": {
+      "type": "array",
+      "description": "Array of external integrations",
+      "items": {
+        "type": "object",
+        "required": ["type", "provider", "configuration", "required"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["database", "api", "storage", "monitoring", "authentication"],
+            "description": "Integration type"
+          },
+          "provider": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "description": "Integration provider name"
+          },
+          "configuration": {
+            "type": "object",
+            "description": "Provider-specific configuration",
+            "additionalProperties": true
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether integration is required"
+          },
+          "health_check": {
+            "type": "object",
+            "properties": {
+              "endpoint": {
+                "type": "string",
+                "format": "uri",
+                "description": "Health check endpoint URL"
+              },
+              "timeout_ms": {
+                "type": "number",
+                "minimum": 100,
+                "maximum": 30000,
+                "description": "Health check timeout in milliseconds"
+              }
+            },
+            "description": "Health check configuration"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when project was generated"
+    },
+    "generator_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)",
+      "description": "Version of BRIK generator used"
+    },
+    "llm_enhanced": {
+      "type": "boolean",
+      "description": "Whether LLM enhancement was used during generation"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Project author name (optional)"
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "description": "Repository URL (optional)"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50,
+      "description": "Project license (optional)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 20,
+        "pattern": "^[a-zA-Z0-9-_]+$"
+      },
+      "uniqueItems": true,
+      "maxItems": 10,
+      "description": "Project tags (optional)"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "name": "example-rust-project",
+      "description": "Example Rust project generated with BRIK",
+      "version": "1.0.0",
+      "language": "rust",
+      "architecture": "traditional",
+      "certification_level": "L2",
+      "coverage_target": 90,
+      "features": [
+        {
+          "name": "cli",
+          "enabled": true,
+          "configuration": {
+            "framework": "clap"
+          }
+        },
+        {
+          "name": "logging",
+          "enabled": true,
+          "configuration": {
+            "level": "info",
+            "format": "json"
+          }
+        }
+      ],
+      "integrations": [
+        {
+          "type": "database",
+          "provider": "postgresql",
+          "configuration": {
+            "version": "13",
+            "pool_size": 10
+          },
+          "required": true,
+          "health_check": {
+            "endpoint": "postgres://localhost:5432/healthcheck",
+            "timeout_ms": 5000
+          }
+        }
+      ],
+      "generated_at": "2024-08-30T10:00:00Z",
+      "generator_version": "1.0.0",
+      "llm_enhanced": false,
+      "author": "BRIK Generator",
+      "license": "MIT",
+      "tags": ["rust", "cli", "database"]
+    },
+    {
+      "name": "example-typescript-project", 
+      "description": "Example TypeScript project with LLM enhancement",
+      "version": "0.1.0-alpha",
+      "language": "typescript",
+      "architecture": "intelligent",
+      "certification_level": "L3",
+      "coverage_target": 100,
+      "features": [
+        {
+          "name": "api_server",
+          "enabled": true,
+          "configuration": {
+            "framework": "express",
+            "port": 3000
+          },
+          "dependencies": ["logging", "monitoring"]
+        },
+        {
+          "name": "authentication",
+          "enabled": true,
+          "configuration": {
+            "strategy": "jwt",
+            "secret_key": "${JWT_SECRET}"
+          }
+        }
+      ],
+      "integrations": [
+        {
+          "type": "api",
+          "provider": "openai",
+          "configuration": {
+            "model": "gpt-4",
+            "max_tokens": 2000
+          },
+          "required": false
+        },
+        {
+          "type": "monitoring",
+          "provider": "datadog",
+          "configuration": {
+            "api_key": "${DATADOG_API_KEY}",
+            "service_name": "example-ts-service"
+          },
+          "required": true,
+          "health_check": {
+            "endpoint": "https://api.datadoghq.com/api/v1/validate",
+            "timeout_ms": 3000
+          }
+        }
+      ],
+      "generated_at": "2024-08-30T15:30:00Z",
+      "generator_version": "1.0.0",
+      "llm_enhanced": true,
+      "author": "AI Enhanced Generator",
+      "repository": "https://github.com/example/typescript-project",
+      "license": "Apache-2.0",
+      "tags": ["typescript", "api", "ai-enhanced", "microservice"]
+    }
+  ],
+  "definitions": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "description": "Semantic version following semver.org specification"
+    },
+    "iso8601DateTime": {
+      "type": "string", 
+      "format": "date-time",
+      "description": "ISO 8601 date-time string"
+    },
+    "projectIdentifier": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]$",
+      "description": "Valid project identifier (alphanumeric with hyphens/underscores)"
+    }
+  },
+  "meta": {
+    "version": "1.0.0",
+    "created": "2024-08-30",
+    "author": "BRIK Generator Team",
+    "description": "JSON Schema para BRIK project configuration validation across Rust, TypeScript, and Python implementations"
+  }
+}

@@ -190,7 +190,7 @@ jobs:
       if: matrix.node == '20' && matrix.os == 'ubuntu-latest'
       working-directory: demo-ts
       run: |
-        npx typedoc --out docs src/
+        npm run docs
         
     - name: "📊 Generate coverage report L2"
       if: matrix.node == '20' && matrix.os == 'ubuntu-latest'

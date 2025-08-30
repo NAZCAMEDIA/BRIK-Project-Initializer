@@ -1,0 +1,28 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/core/index.ts"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "name": "BRIK TypeScript Demo",
+  "includeVersion": true,
+  "excludePrivate": false,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "readme": "none",
+  "theme": "default",
+  "hideGenerator": false,
+  "disableSources": false,
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/node_modules/**"
+  ],
+  "externalPattern": [
+    "**/node_modules/**"
+  ],
+  "sort": ["source-order"],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  }
+}
