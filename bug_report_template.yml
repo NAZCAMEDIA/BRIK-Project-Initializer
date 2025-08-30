@@ -1,0 +1,181 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in BRIK Project Initializer
+title: "[BUG] "
+labels: ["type:bug", "P2-high", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! 🐛
+        
+        Please search existing issues before creating a new one to avoid duplicates.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe what happened and what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the behavior
+      placeholder: |
+        1. Run command `bash init-brik-project.sh my-project...`
+        2. See error in terminal...
+        3. Check generated files...
+        4. Error occurs when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: Describe the expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened instead
+      placeholder: Describe what actually happened
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which component is affected by this bug?
+      options:
+        - Traditional Generator
+        - Intelligent Generator (LLM Pipeline)
+        - Domain Analyzer
+        - Architecture Classifier
+        - Code Generator
+        - Template System
+        - Certification System
+        - CLI Interface
+        - Documentation
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Target Language
+      description: Which language were you generating code for?
+      options:
+        - Rust
+        - TypeScript
+        - Python
+        - Multiple Languages
+        - Language Independent
+        - Other (specify in description)
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Please provide your environment details
+      placeholder: |
+        - OS: [e.g., macOS 14.0, Ubuntu 22.04, Windows 11]
+        - Shell: [e.g., bash, zsh, PowerShell]
+        - Node.js version: [e.g., 18.17.0]
+        - Python version: [e.g., 3.11.0]
+        - Rust version: [e.g., 1.70.0]
+        - BRIK version: [e.g., 0.8.0]
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs / Output
+      description: Please copy and paste any relevant log output or error messages
+      placeholder: Paste error logs here...
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Any relevant configuration files or command options used
+      placeholder: |
+        Command used: bash init-brik-project.sh my-project --smart --description "..." --integrations "postgresql,redis"
+        
+        Configuration files:
+        - .brik-config.json
+        - package.json
+        - etc.
+      render: markdown
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: additional_info
+    attributes:
+      label: Additional Information
+      description: Please check all that apply
+      options:
+        - label: This bug affects project generation
+          required: false
+        - label: This bug affects existing generated projects
+          required: false
+        - label: This bug only occurs with specific integrations
+          required: false
+        - label: This bug only occurs in intelligent mode
+          required: false
+        - label: This bug is a regression (worked in previous version)
+          required: false
+        - label: This bug affects security or sensitive data
+          required: false
+        - label: I have searched for existing issues before creating this one
+          required: true
+        - label: I am willing to submit a PR to fix this issue
+          required: false
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: If you found a temporary workaround, please describe it
+      placeholder: Describe any workaround you found...
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or related issues
+      placeholder: Any additional context that might be helpful...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Assessment
+      description: How critical is this bug for your use case?
+      options:
+        - P1-critical (Blocks development completely)
+        - P2-high (Major impact on functionality)
+        - P3-medium (Minor inconvenience, has workaround)
+        - P4-low (Cosmetic or edge case)
+    validations:
+      required: true

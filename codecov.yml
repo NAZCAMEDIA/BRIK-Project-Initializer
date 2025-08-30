@@ -1,0 +1,287 @@
+# 📊 BRIK Codecov Configuration
+# Fleet-Coordinator: Coverage optimization for multi-language BRIK projects
+# Configures coverage reporting for Rust, TypeScript, and Python with L0-L3 gates
+
+codecov:
+  # Basic configuration
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+  
+  # Branch configuration
+  branch: main
+  
+  # Bot configuration
+  bot: "codecov-brik"
+  
+  # Token handling (set in GitHub secrets)
+  token: null  # Will be provided via CODECOV_TOKEN env var
+
+# Coverage configuration
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  
+  # Status checks configuration
+  status:
+    # Project-wide coverage
+    project:
+      default:
+        target: 85%
+        threshold: 5%
+        base: auto
+        flags:
+          - unit
+        paths:
+          - "demo-brik/src"
+          - "demo-ts/src"
+          - "demo-py/src"
+      
+      # Language-specific targets
+      rust:
+        target: 90%
+        threshold: 2%
+        flags:
+          - rust-l0
+          - rust-l1 
+          - rust-l2
+          - rust-l3
+        paths:
+          - "demo-brik/src"
+      
+      typescript:
+        target: 85%
+        threshold: 3%
+        flags:
+          - typescript-l0
+          - typescript-l1
+          - typescript-l2
+          - typescript-l3
+        paths:
+          - "demo-ts/src"
+      
+      python:
+        target: 88%
+        threshold: 2%
+        flags:
+          - python-l0
+          - python-l1
+          - python-l2
+          - python-l3
+        paths:
+          - "demo-py/src"
+    
+    # Patch coverage (for PRs)
+    patch:
+      default:
+        target: 80%
+        threshold: 10%
+        base: auto
+      
+      rust:
+        target: 85%
+        flags:
+          - rust-l1
+          - rust-l2
+        paths:
+          - "demo-brik/src"
+      
+      typescript:
+        target: 80%
+        flags:
+          - typescript-l1
+          - typescript-l2
+        paths:
+          - "demo-ts/src"
+      
+      python:
+        target: 82%
+        flags:
+          - python-l1
+          - python-l2
+        paths:
+          - "demo-py/src"
+    
+    # Changes coverage (for new code)
+    changes:
+      default:
+        target: 90%
+        threshold: 5%
+        base: auto
+
+# Flag configuration for different test levels
+flags:
+  # Rust flags
+  rust-l0:
+    paths:
+      - demo-brik/src
+    carryforward: false
+  
+  rust-l1:
+    paths:
+      - demo-brik/src
+    carryforward: false
+  
+  rust-l2:
+    paths:
+      - demo-brik/src
+    carryforward: false
+  
+  rust-l3:
+    paths:
+      - demo-brik/src
+    carryforward: false
+  
+  # TypeScript flags
+  typescript-l0:
+    paths:
+      - demo-ts/src
+    carryforward: false
+  
+  typescript-l1:
+    paths:
+      - demo-ts/src
+    carryforward: false
+  
+  typescript-l2:
+    paths:
+      - demo-ts/src
+    carryforward: false
+  
+  typescript-l3:
+    paths:
+      - demo-ts/src
+    carryforward: false
+  
+  # Python flags
+  python-l0:
+    paths:
+      - demo-py/src
+    carryforward: false
+  
+  python-l1:
+    paths:
+      - demo-py/src
+    carryforward: false
+  
+  python-l2:
+    paths:
+      - demo-py/src
+    carryforward: false
+  
+  python-l3:
+    paths:
+      - demo-py/src
+    carryforward: false
+  
+  # Integration flags
+  integration:
+    paths:
+      - tests/
+    carryforward: false
+  
+  unit:
+    paths:
+      - "demo-brik/src"
+      - "demo-ts/src"
+      - "demo-py/src"
+    carryforward: false
+
+# Comment configuration
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: false
+  require_base: no
+  require_head: yes
+  
+  # Custom comment template
+  template: |
+    ## 📊 BRIK Coverage Report
+    
+    **Overall Coverage**: {{coverage}}% ({{diff}}%)
+    
+    ### Language Breakdown
+    
+    | Language   | Coverage | Change | L0 Gate | L1 Gate | L2 Gate | L3 Gate |
+    |------------|----------|--------|---------|---------|---------|----------|
+    | Rust       | {{flags.rust-l3.coverage}}% | {{flags.rust-l3.diff}}% | {{'✅' if flags.rust-l0.coverage >= 70 else '❌'}} | {{'✅' if flags.rust-l1.coverage >= 80 else '❌'}} | {{'✅' if flags.rust-l2.coverage >= 90 else '❌'}} | {{'✅' if flags.rust-l3.coverage >= 99 else '❌'}} |
+    | TypeScript | {{flags.typescript-l3.coverage}}% | {{flags.typescript-l3.diff}}% | {{'✅' if flags.typescript-l0.coverage >= 70 else '❌'}} | {{'✅' if flags.typescript-l1.coverage >= 80 else '❌'}} | {{'✅' if flags.typescript-l2.coverage >= 90 else '❌'}} | {{'✅' if flags.typescript-l3.coverage >= 99 else '❌'}} |
+    | Python     | {{flags.python-l3.coverage}}% | {{flags.python-l3.diff}}% | {{'✅' if flags.python-l0.coverage >= 70 else '❌'}} | {{'✅' if flags.python-l1.coverage >= 80 else '❌'}} | {{'✅' if flags.python-l2.coverage >= 90 else '❌'}} | {{'✅' if flags.python-l3.coverage >= 99 else '❌'}} |
+    
+    ### BRIK Certification Status
+    
+    - **L0 Basic**: {{'✅ PASSED' if coverage >= 70 else '❌ FAILED'}} (≥70% required)
+    - **L1 Lint**: {{'✅ PASSED' if coverage >= 80 else '❌ FAILED'}} (≥80% required)
+    - **L2 Complete**: {{'✅ PASSED' if coverage >= 90 else '❌ FAILED'}} (≥90% required)
+    - **L3 Certification**: {{'✅ PASSED' if coverage >= 99 else '❌ FAILED'}} (≥99% required)
+    
+    {{files}}
+    
+    ---
+    
+    *Generated by Fleet-Coordinator Coverage System*
+
+# Ignore patterns
+ignore:
+  - "**/*.md"
+  - "**/*.txt"
+  - "**/*.yml"
+  - "**/*.yaml"
+  - "**/node_modules/**"
+  - "**/target/**"
+  - "**/__pycache__/**"
+  - "**/venv/**"
+  - "**/.venv/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/coverage/**"
+  - "**/.git/**"
+  - "**/.github/**"
+  - "**/scripts/**"
+  - "**/docs/**"
+  - "**/examples/**"
+  - "**/benchmarks/**"
+  - "**/fixtures/**"
+  - "**/mocks/**"
+  - "**/*.test.*"
+  - "**/*.spec.*"
+  - "**/test_*"
+  - "**/tests/**"
+  - "**/*_test.*"
+  - "**/*_spec.*"
+
+# GitHub configuration
+github_checks:
+  annotations: true
+
+# Slack/notification configuration (optional)
+# notifications:
+#   slack:
+#     default:
+#       url: "secret:SLACK_WEBHOOK_URL"
+#       threshold: 1%
+#       message: |
+#         BRIK Coverage Report: {{coverage}}% ({{diff}}%)
+#         Project: {{repo.name}}
+#         Branch: {{branch}}
+#         Commit: {{commit}}
+
+# Experimental features
+ui:
+  hide_density: ["demo-brik/target", "demo-ts/node_modules", "demo-py/__pycache__"]
+  hide_complexity: ["demo-brik/target", "demo-ts/dist", "demo-py/build"]
+
+# Profiling (for performance optimization)
+profiling:
+  critical_files_paths:
+    - "demo-brik/src/core"
+    - "demo-ts/src/core"
+    - "demo-py/src/core"
+  
+  # Files that must have 100% coverage for L3 certification
+  critical_coverage:
+    - "demo-brik/src/core/*.rs"
+    - "demo-ts/src/core/*.ts"
+    - "demo-py/src/core/*.py"
