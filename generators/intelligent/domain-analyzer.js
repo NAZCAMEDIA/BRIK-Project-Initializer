@@ -142,7 +142,10 @@ INSTRUCCIONES CRÍTICAS:
                 console.log('⚠️ No API key found, using mock LLM for testing...');
             }
             const { MockLLM } = require('./mock-llm.js');
-            return MockLLM.getDomainAnalysisResponse("e-commerce API", "postgresql,redis,stripe");
+            // Usar parámetros reales del prompt en lugar de hardcoded
+            const description = this.extractDescriptionFromPrompt(prompt);
+            const integrations = this.extractIntegrationsFromPrompt(prompt);
+            return MockLLM.getDomainAnalysisResponse(description, integrations);
         }
         
         try {
@@ -159,7 +162,10 @@ INSTRUCCIONES CRÍTICAS:
                 console.log('🔄 Falling back to mock LLM...');
             }
             const { MockLLM } = require('./mock-llm.js');
-            return MockLLM.getDomainAnalysisResponse("e-commerce API", "postgresql,redis,stripe");
+            // Usar parámetros reales del prompt en lugar de hardcoded
+            const description = this.extractDescriptionFromPrompt(prompt);
+            const integrations = this.extractIntegrationsFromPrompt(prompt);
+            return MockLLM.getDomainAnalysisResponse(description, integrations);
         }
     }
 
@@ -265,6 +271,31 @@ INSTRUCCIONES CRÍTICAS:
         if (analysis.domain.businessRules.length > 0) confidence += 0.1;
         
         return Math.min(confidence, 1.0);
+    }
+
+    /**
+     * Extrae la descripción del proyecto del prompt para MockLLM
+     */
+    extractDescriptionFromPrompt(prompt) {
+        const descriptionMatch = prompt.match(/DESCRIPCIÓN DEL PROYECTO:\s*"([^"]+)"/i);
+        return descriptionMatch ? descriptionMatch[1] : "API genérica";
+    }
+    
+    /**
+     * Extrae las integraciones especificadas del prompt para MockLLM
+     */
+    extractIntegrationsFromPrompt(prompt) {
+        const integrationsMatch = prompt.match(/INTEGRACIONES ESPECIFICADAS:\s*([\s\S]*?)(?=\n\n|LENGUAJE OBJETIVO)/i);
+        if (integrationsMatch) {
+            const integrationsText = integrationsMatch[1];
+            const integrations = integrationsText
+                .split('\n')
+                .map(line => line.replace(/^-\s*/, '').trim())
+                .filter(line => line && line !== 'Ninguna especificada')
+                .join(',');
+            return integrations || "postgresql";
+        }
+        return "postgresql";
     }
 
     async saveAnalysis(analysis, filename) {

@@ -1,0 +1,10 @@
+[package]
+name = "test-auto-cert"
+version = "1.0.0"
+edition = "2021"
+description = "BRIK project with DAAF-Circuitalidad Digital philosophy"
+
+[dependencies]
+
+[features]
+default = []

@@ -1,0 +1,20 @@
+project:
+  name: "test-auto-cert"
+  version: "1.0.0"
+  philosophy: "DAAF-BRIK-CircuitalidadDigital"
+  genesis_hash: "6e2a1bd316c3c359cf28cc5faf97bddca5fc54d221ff0ecce02b53e155d3919c"
+  created_at: "2025-08-24T18:47:18+02:00"
+  
+principles:
+  circuitality: true
+  consciousness: true
+  thermodynamics: true
+  auditability: true
+  documentation: true
+  
+compliance:
+  coverage_requirement: 100
+  immutability_check: true
+  entropy_monitoring: true
+  ethical_validation: true
+  documentation_completeness: true

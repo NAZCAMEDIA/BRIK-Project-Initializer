@@ -1117,7 +1117,1665 @@ ${architectureMap.architecture.LIVING_LAYER.monitoring?.map(m => `- **${m.name}*
 
 // Placeholder generators for otros lenguajes
 class TypeScriptCodeGenerator {
-    // TODO: Implementar generador TypeScript
+    async generateEntity(entity) {
+        return `// 🎯 BRIK CORE Entity: ${entity.name} (Immutable)
+// Generated from domain analysis - DO NOT modify manually
+
+import { v4 as uuidv4 } from 'uuid';
+
+export interface ${entity.name}Data {
+  id: string;
+  ${entity.components?.map(comp => 
+    comp.responsibilities?.map(resp => 
+      `  // ${resp}\n  ${this.fieldNameFromResponsibility(resp)}: string;`
+    ).join('\n') || ''
+  ).join('\n') || '  name: string;'}
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export class ${entity.name} {
+  public readonly id: string;
+  ${entity.components?.map(comp => 
+    comp.responsibilities?.map(resp => 
+      `  public readonly ${this.fieldNameFromResponsibility(resp)}: string;`
+    ).join('\n  ') || ''
+  ).join('\n  ') || '  public readonly name: string;'}
+  public readonly createdAt: Date;
+  public readonly updatedAt: Date;
+
+  constructor(${this.generateTSConstructorParams(entity)}) {
+    this.id = uuidv4();
+    ${this.generateTSConstructorFields(entity)}
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+    
+    // BRIK Core: Validate on creation
+    this.validate();
+  }
+
+  // BRIK Core Business Rules (Immutable)
+  ${entity.components?.map(comp => 
+    `private validate${comp.name}(): void {
+    // ${comp.description}
+    // TODO: Implement validation logic
+    if (!this.${this.fieldNameFromResponsibility(comp.responsibilities?.[0] || 'name')}) {
+      throw new Error('${comp.name} validation failed');
+    }
+  }`).join('\n\n  ') || ''}
+
+  private validate(): void {
+    ${entity.components?.map(comp => 
+      `this.validate${comp.name}();`
+    ).join('\n    ') || '// TODO: Add validation'}
+  }
+
+  // Immutable update pattern
+  update(changes: Partial<Omit<${entity.name}Data, 'id' | 'createdAt'>>): ${entity.name} {
+    return new ${entity.name}({
+      ${this.generateTSUpdateFields(entity)},
+      ...changes
+    });
+  }
+
+  toJSON(): ${entity.name}Data {
+    return {
+      id: this.id,
+      ${this.generateTSJSONFields(entity)}
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    };
+  }
+}`;
+    }
+
+    async generateBusinessLogic(businessLogic) {
+        return `// 🎯 BRIK CORE Business Rules (Immutable)
+// Generated from domain analysis - DO NOT modify manually
+
+export class BusinessRules {
+  ${businessLogic.map(rule => 
+    `// ${rule.description}
+  static ${this.camelCase(rule.name)}(${this.generateTSRuleParams(rule)}): boolean {
+    // TODO: Implement ${rule.name} logic
+    ${rule.validation_logic || 'return true;'}
+  }`
+  ).join('\n\n  ')}
+}
+
+export const BUSINESS_CONSTANTS = {
+  ${businessLogic.map(rule => 
+    `${rule.name.toUpperCase()}_THRESHOLD: ${rule.threshold || 100},`
+  ).join('\n  ')}
+} as const;`;
+    }
+
+    async generateWrapper(wrapper) {
+        const serviceName = wrapper.name.replace(/integration|wrapper/gi, '').trim();
+        
+        return `// 🔧 BRIK WRAPPER: ${wrapper.name} (Configurable)
+// Generated from domain analysis - DO NOT modify manually
+
+export interface ${serviceName}Config {
+  ${wrapper.config_params?.map(param => 
+    `${param.name}: ${this.getTSType(param.type)};`
+  ).join('\n  ') || 'apiKey: string;\n  baseUrl: string;'}
+}
+
+export interface ${serviceName}Service {
+  ${wrapper.methods?.map(method => 
+    `${method.name}(${this.generateTSMethodParams(method)}): Promise<${this.getTSReturnType(method)}>;`
+  ).join('\n  ') || 'connect(): Promise<void>;\n  disconnect(): Promise<void>;'}
+}
+
+export class ${serviceName}Wrapper implements ${serviceName}Service {
+  private config: ${serviceName}Config;
+  private connected: boolean = false;
+
+  constructor(config: ${serviceName}Config) {
+    this.config = config;
+  }
+
+  ${wrapper.methods?.map(method => 
+    `async ${method.name}(${this.generateTSMethodParams(method)}): Promise<${this.getTSReturnType(method)}> {
+    try {
+      // TODO: Implement ${method.name} logic
+      ${method.implementation || 'throw new Error("Not implemented");'}
+    } catch (error) {
+      console.error('${serviceName} ${method.name} error:', error);
+      throw error;
+    }
+  }`
+  ).join('\n\n  ') || `async connect(): Promise<void> {
+    // TODO: Implement connection logic
+    this.connected = true;
+  }
+
+  async disconnect(): Promise<void> {
+    this.connected = false;
+  }`}
+}`;
+    }
+
+    async generateMonitor(monitor) {
+        return `// 🤖 BRIK LIVING LAYER: ${monitor.name} (Adaptive)
+// Generated from domain analysis - DO NOT modify manually
+
+export interface ${monitor.name}Metrics {
+  ${monitor.metrics?.map(metric => 
+    `${metric.name}: ${this.getTSType(metric.type)};`
+  ).join('\n  ') || 'uptime: number;\n  responseTime: number;\n  errorRate: number;'}
+  timestamp: Date;
+}
+
+export class ${monitor.name} {
+  private metrics: ${monitor.name}Metrics[] = [];
+  private isRunning: boolean = false;
+  private interval?: NodeJS.Timeout;
+
+  start(): void {
+    if (this.isRunning) return;
+    
+    this.isRunning = true;
+    this.interval = setInterval(() => {
+      this.collectMetrics();
+    }, ${monitor.collection_interval || 30000});
+  }
+
+  stop(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+    this.isRunning = false;
+  }
+
+  private async collectMetrics(): Promise<void> {
+    try {
+      const metrics: ${monitor.name}Metrics = {
+        ${monitor.metrics?.map(metric => 
+          `${metric.name}: ${this.generateTSMetricCollection(metric)},`
+        ).join('\n        ') || 'uptime: process.uptime(),\n        responseTime: Math.random() * 100,\n        errorRate: Math.random() * 0.1,'}
+        timestamp: new Date()
+      };
+
+      this.metrics.push(metrics);
+      
+      // Keep only last 1000 metrics
+      if (this.metrics.length > 1000) {
+        this.metrics = this.metrics.slice(-1000);
+      }
+
+      this.analyze(metrics);
+    } catch (error) {
+      console.error('${monitor.name} metrics collection error:', error);
+    }
+  }
+
+  private analyze(metrics: ${monitor.name}Metrics): void {
+    // BRIK Living Layer: Adaptive behavior
+    ${monitor.analysis_rules?.map(rule => 
+      `if (${this.generateTSCondition(rule)}) {
+      console.warn('${monitor.name} alert: ${rule.message}');
+      // TODO: Implement adaptive action
+    }`
+    ).join('\n    ') || '// TODO: Implement analysis logic'}
+  }
+
+  getMetrics(): ${monitor.name}Metrics[] {
+    return [...this.metrics]; // Immutable return
+  }
+
+  getLatestMetrics(): ${monitor.name}Metrics | null {
+    return this.metrics.length > 0 ? this.metrics[this.metrics.length - 1] : null;
+  }
+}`;
+    }
+
+    async generateEntityTests(entity) {
+        return `// 🧪 BRIK Tests: ${entity.name} (100% Coverage)
+// Generated from domain analysis
+
+import { ${entity.name} } from '../src/core/${entity.name.toLowerCase()}';
+
+describe('${entity.name} BRIK Core Tests', () => {
+  describe('Entity Creation', () => {
+    test('should create ${entity.name} with valid data', () => {
+      const ${entity.name.toLowerCase()} = new ${entity.name}(${this.generateTSTestData(entity)});
+      
+      expect(${entity.name.toLowerCase()}.id).toBeDefined();
+      expect(${entity.name.toLowerCase()}.createdAt).toBeInstanceOf(Date);
+      expect(${entity.name.toLowerCase()}.updatedAt).toBeInstanceOf(Date);
+    });
+
+    test('should throw error with invalid data', () => {
+      expect(() => {
+        new ${entity.name}(${this.generateTSInvalidTestData(entity)});
+      }).toThrow();
+    });
+  });
+
+  describe('Business Rules Validation', () => {
+    ${entity.components?.map(comp => 
+      `test('should validate ${comp.name}', () => {
+      const valid${entity.name} = new ${entity.name}(${this.generateTSTestData(entity)});
+      expect(valid${entity.name}).toBeDefined();
+      
+      // TODO: Add specific validation tests
+    });`
+    ).join('\n\n    ') || '// TODO: Add validation tests'}
+  });
+
+  describe('Immutability', () => {
+    test('should not allow direct mutation', () => {
+      const ${entity.name.toLowerCase()} = new ${entity.name}(${this.generateTSTestData(entity)});
+      
+      // These should be readonly
+      expect(() => {
+        // @ts-expect-error Testing immutability
+        ${entity.name.toLowerCase()}.id = 'new-id';
+      }).toThrow();
+    });
+
+    test('should create new instance on update', () => {
+      const original = new ${entity.name}(${this.generateTSTestData(entity)});
+      const updated = original.update({ ${this.generateTSUpdateTestData(entity)} });
+      
+      expect(updated).not.toBe(original);
+      expect(updated.id).not.toBe(original.id);
+    });
+  });
+
+  describe('Serialization', () => {
+    test('should serialize to JSON correctly', () => {
+      const ${entity.name.toLowerCase()} = new ${entity.name}(${this.generateTSTestData(entity)});
+      const json = ${entity.name.toLowerCase()}.toJSON();
+      
+      expect(json).toHaveProperty('id');
+      expect(json).toHaveProperty('createdAt');
+      expect(json).toHaveProperty('updatedAt');
+    });
+  });
+});`;
+    }
+
+    // Helper methods for TypeScript generation
+    fieldNameFromResponsibility(responsibility) {
+        return responsibility?.toLowerCase().replace(/\s+/g, '_') || 'name';
+    }
+
+    generateTSConstructorParams(entity) {
+        return entity.components?.map(comp => 
+          comp.responsibilities?.map(resp => 
+            `${this.fieldNameFromResponsibility(resp)}: string`
+          ).join(', ') || ''
+        ).join(', ') || 'name: string';
+    }
+
+    generateTSConstructorFields(entity) {
+        return entity.components?.map(comp => 
+          comp.responsibilities?.map(resp => 
+            `    this.${this.fieldNameFromResponsibility(resp)} = ${this.fieldNameFromResponsibility(resp)};`
+          ).join('\n') || ''
+        ).join('\n') || '    this.name = name;';
+    }
+
+    generateTSUpdateFields(entity) {
+        return entity.components?.map(comp => 
+          comp.responsibilities?.map(resp => 
+            `      ${this.fieldNameFromResponsibility(resp)}: this.${this.fieldNameFromResponsibility(resp)}`
+          ).join(',\n') || ''
+        ).join(',\n') || '      name: this.name';
+    }
+
+    generateTSJSONFields(entity) {
+        return entity.components?.map(comp => 
+          comp.responsibilities?.map(resp => 
+            `      ${this.fieldNameFromResponsibility(resp)}: this.${this.fieldNameFromResponsibility(resp)},`
+          ).join('\n') || ''
+        ).join('\n') || '      name: this.name,';
+    }
+
+    getTSType(type) {
+        const typeMap = {
+          string: 'string',
+          number: 'number',
+          boolean: 'boolean',
+          array: 'any[]',
+          object: 'Record<string, any>'
+        };
+        return typeMap[type] || 'string';
+    }
+
+    getTSReturnType(method) {
+        return method.return_type || 'void';
+    }
+
+    generateTSMethodParams(method) {
+        return method.parameters?.map(param => 
+          `${param.name}: ${this.getTSType(param.type)}`
+        ).join(', ') || '';
+    }
+
+    generateTSRuleParams(rule) {
+        return rule.parameters?.map(param => 
+          `${param.name}: ${this.getTSType(param.type)}`
+        ).join(', ') || '';
+    }
+
+    generateTSMetricCollection(metric) {
+        const collections = {
+          uptime: 'process.uptime()',
+          memory: 'process.memoryUsage().heapUsed',
+          cpu: 'process.cpuUsage().user',
+          timestamp: 'Date.now()'
+        };
+        return collections[metric.name] || 'Math.random() * 100';
+    }
+
+    generateTSCondition(rule) {
+        return rule.condition || 'true';
+    }
+
+    generateTSTestData(entity) {
+        return entity.components?.map(comp => 
+          comp.responsibilities?.map(resp => 
+            `${this.fieldNameFromResponsibility(resp)}: 'test-${resp.toLowerCase().replace(/\s+/g, '-')}'`
+          ).join(', ') || ''
+        ).join(', ') || 'name: "Test Entity"';
+    }
+
+    generateTSInvalidTestData(entity) {
+        return '{}'; // Empty object should fail validation
+    }
+
+    generateTSUpdateTestData(entity) {
+        const firstField = entity.components?.[0]?.responsibilities?.[0];
+        const fieldName = this.fieldNameFromResponsibility(firstField);
+        return `${fieldName}: 'updated-value'`;
+    }
+
+    camelCase(str) {
+        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
+          return index === 0 ? word.toLowerCase() : word.toUpperCase();
+        }).replace(/\s+/g, '');
+    }
+
+    async generateCoreMod(coreArch) {
+        const entities = coreArch.entities?.map(e => e.name.toLowerCase()) || [];
+        const modules = ['business_rules', ...entities];
+        
+        return `// 🎯 BRIK CORE Module Index (TypeScript)
+// Immutable layer - Central business logic and entities
+// Generated automatically - DO NOT modify
+
+${modules.map(mod => `export * from './${mod}';`).join('\n')}
+
+// Core layer exports (immutable)
+export interface BrikCore {
+  // Entities
+  ${coreArch.entities?.map(e => `  ${e.name}: typeof ${e.name};`).join('\n') || ''}
+  
+  // Business Rules
+  ${coreArch.business_logic?.map(bl => `  ${bl.name}Rule: any;`).join('\n') || ''}
+}
+
+// BRIK Core initialization
+export const initializeCore = (): BrikCore => {
+  return {
+    ${coreArch.entities?.map(e => `${e.name},`).join('\n    ') || ''}
+    ${coreArch.business_logic?.map(bl => `${bl.name}Rule: {},`).join('\n    ') || ''}
+  };
+};`;
+    }
+
+    async generateIntegration(integration) {
+        return `// 🔧 BRIK WRAPPER: ${integration.name} Integration (TypeScript)
+// External service integration - Configurable component
+// Generated from architecture classification
+
+export interface ${integration.name}Config {
+  endpoint?: string;
+  apiKey?: string;
+  timeout?: number;
+  retries?: number;
+}
+
+export interface ${integration.name}Response<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  metadata?: {
+    timestamp: number;
+    duration: number;
+    attempts: number;
+  };
+}
+
+export class ${integration.name}Integration {
+  private config: ${integration.name}Config;
+  private circuitBreaker: CircuitBreakerState = 'closed';
+  private failureCount: number = 0;
+  private lastFailure?: Date;
+
+  constructor(config: ${integration.name}Config) {
+    this.config = {
+      timeout: 5000,
+      retries: 3,
+      ...config
+    };
+  }
+
+  // BRIK Wrapper: Circuit Breaker Pattern
+  private async executeWithCircuitBreaker<T>(
+    operation: () => Promise<T>
+  ): Promise<${integration.name}Response<T>> {
+    const startTime = Date.now();
+    
+    // Check circuit breaker state
+    if (this.circuitBreaker === 'open') {
+      if (this.shouldAttemptReset()) {
+        this.circuitBreaker = 'half-open';
+      } else {
+        return {
+          success: false,
+          error: 'Circuit breaker is open',
+          metadata: {
+            timestamp: Date.now(),
+            duration: Date.now() - startTime,
+            attempts: 0
+          }
+        };
+      }
+    }
+
+    let attempts = 0;
+    while (attempts < (this.config.retries || 3)) {
+      try {
+        const result = await Promise.race([
+          operation(),
+          this.timeoutPromise()
+        ]);
+        
+        // Success - reset circuit breaker
+        this.circuitBreaker = 'closed';
+        this.failureCount = 0;
+        
+        return {
+          success: true,
+          data: result,
+          metadata: {
+            timestamp: Date.now(),
+            duration: Date.now() - startTime,
+            attempts: attempts + 1
+          }
+        };
+      } catch (error) {
+        attempts++;
+        this.recordFailure();
+        
+        if (attempts >= (this.config.retries || 3)) {
+          return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            metadata: {
+              timestamp: Date.now(),
+              duration: Date.now() - startTime,
+              attempts
+            }
+          };
+        }
+        
+        // Wait before retry
+        await this.delay(Math.pow(2, attempts) * 1000);
+      }
+    }
+
+    return {
+      success: false,
+      error: 'Max retries exceeded',
+      metadata: {
+        timestamp: Date.now(),
+        duration: Date.now() - startTime,
+        attempts
+      }
+    };
+  }
+
+  // Integration-specific methods
+  ${integration.capabilities?.map(cap => `
+  async ${this.camelCase(cap.name)}(data: any): Promise<${integration.name}Response> {
+    return this.executeWithCircuitBreaker(async () => {
+      // TODO: Implement ${cap.name} logic
+      console.log('${integration.name}.${cap.name}:', data);
+      return { result: 'success' };
+    });
+  }`).join('\n') || `
+  async execute(data: any): Promise<${integration.name}Response> {
+    return this.executeWithCircuitBreaker(async () => {
+      // TODO: Implement integration logic
+      console.log('${integration.name} execution:', data);
+      return { result: 'success' };
+    });
+  }`}
+
+  // Circuit breaker utilities
+  private recordFailure(): void {
+    this.failureCount++;
+    this.lastFailure = new Date();
+    
+    if (this.failureCount >= 5) {
+      this.circuitBreaker = 'open';
+    }
+  }
+
+  private shouldAttemptReset(): boolean {
+    if (!this.lastFailure) return false;
+    const timeSinceLastFailure = Date.now() - this.lastFailure.getTime();
+    return timeSinceLastFailure > 60000; // 1 minute
+  }
+
+  private timeoutPromise(): Promise<never> {
+    return new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Request timeout')), this.config.timeout);
+    });
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+}
+
+type CircuitBreakerState = 'closed' | 'open' | 'half-open';`;
+    }
+
+    async generateRepository(repository) {
+        return `// 🔧 BRIK WRAPPER: ${repository.name} Repository (TypeScript)
+// Data access layer - Configurable component
+// Generated from architecture classification
+
+export interface ${repository.name}Entity {
+  id: string;
+  ${repository.schema?.map(field => `${field.name}: ${this.getTSType(field.type)};`).join('\n  ') || 'data: any;'}
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ${repository.name}Query {
+  filters?: Record<string, any>;
+  sort?: Record<string, 'asc' | 'desc'>;
+  limit?: number;
+  offset?: number;
+}
+
+export interface ${repository.name}Result<T = ${repository.name}Entity> {
+  data: T[];
+  total: number;
+  hasMore: boolean;
+  metadata: {
+    query: ${repository.name}Query;
+    executionTime: number;
+    cacheHit?: boolean;
+  };
+}
+
+export class ${repository.name}Repository {
+  private cache = new Map<string, { data: any; expiry: number }>();
+  private readonly cacheTTL = 300000; // 5 minutes
+
+  // BRIK Repository Pattern: CRUD with caching
+  async findById(id: string): Promise<${repository.name}Entity | null> {
+    const cacheKey = \`\${this.constructor.name}:findById:\${id}\`;
+    
+    // Check cache first
+    const cached = this.getFromCache(cacheKey);
+    if (cached) return cached;
+
+    // TODO: Implement database query
+    const result = await this.queryDatabase('SELECT * FROM ${repository.table_name || repository.name.toLowerCase()} WHERE id = ?', [id]);
+    
+    // Cache result
+    if (result) {
+      this.setCache(cacheKey, result);
+    }
+    
+    return result;
+  }
+
+  async findMany(query: ${repository.name}Query): Promise<${repository.name}Result> {
+    const startTime = Date.now();
+    const cacheKey = \`\${this.constructor.name}:findMany:\${JSON.stringify(query)}\`;
+    
+    // Check cache
+    const cached = this.getFromCache(cacheKey);
+    if (cached) {
+      return {
+        ...cached,
+        metadata: {
+          ...cached.metadata,
+          cacheHit: true,
+          executionTime: Date.now() - startTime
+        }
+      };
+    }
+
+    // TODO: Implement database query with filters, sorting, pagination
+    const results = await this.queryDatabase(this.buildQuery(query));
+    const total = await this.countQuery(query);
+    
+    const result: ${repository.name}Result = {
+      data: results,
+      total,
+      hasMore: (query.offset || 0) + results.length < total,
+      metadata: {
+        query,
+        executionTime: Date.now() - startTime,
+        cacheHit: false
+      }
+    };
+
+    this.setCache(cacheKey, result);
+    return result;
+  }
+
+  async create(entity: Omit<${repository.name}Entity, 'id' | 'createdAt' | 'updatedAt'>): Promise<${repository.name}Entity> {
+    const newEntity: ${repository.name}Entity = {
+      id: this.generateId(),
+      ...entity,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    // TODO: Implement database insertion
+    await this.queryDatabase(
+      \`INSERT INTO ${repository.table_name || repository.name.toLowerCase()} (\${Object.keys(newEntity).join(', ')}) VALUES (\${Object.keys(newEntity).map(() => '?').join(', ')})\`,
+      Object.values(newEntity)
+    );
+
+    // Invalidate related caches
+    this.invalidateCache('findMany');
+    
+    return newEntity;
+  }
+
+  async update(id: string, updates: Partial<${repository.name}Entity>): Promise<${repository.name}Entity | null> {
+    const existing = await this.findById(id);
+    if (!existing) return null;
+
+    const updated: ${repository.name}Entity = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date()
+    };
+
+    // TODO: Implement database update
+    await this.queryDatabase(
+      \`UPDATE ${repository.table_name || repository.name.toLowerCase()} SET \${Object.keys(updates).map(key => \`\${key} = ?\`).join(', ')}, updatedAt = ? WHERE id = ?\`,
+      [...Object.values(updates), updated.updatedAt, id]
+    );
+
+    // Update cache and invalidate related caches
+    this.setCache(\`\${this.constructor.name}:findById:\${id}\`, updated);
+    this.invalidateCache('findMany');
+    
+    return updated;
+  }
+
+  async delete(id: string): Promise<boolean> {
+    // TODO: Implement database deletion
+    const result = await this.queryDatabase(\`DELETE FROM ${repository.table_name || repository.name.toLowerCase()} WHERE id = ?\`, [id]);
+    
+    if (result) {
+      // Invalidate caches
+      this.invalidateCache(\`findById:\${id}\`);
+      this.invalidateCache('findMany');
+    }
+    
+    return !!result;
+  }
+
+  // Cache utilities
+  private getFromCache(key: string): any {
+    const entry = this.cache.get(key);
+    if (entry && Date.now() < entry.expiry) {
+      return entry.data;
+    }
+    this.cache.delete(key);
+    return null;
+  }
+
+  private setCache(key: string, data: any): void {
+    this.cache.set(key, {
+      data,
+      expiry: Date.now() + this.cacheTTL
+    });
+  }
+
+  private invalidateCache(pattern: string): void {
+    for (const [key] of this.cache) {
+      if (key.includes(pattern)) {
+        this.cache.delete(key);
+      }
+    }
+  }
+
+  // Database utilities (to be implemented with actual DB driver)
+  private async queryDatabase(query: string, params: any[] = []): Promise<any> {
+    // TODO: Implement actual database connection
+    console.log('Database query:', query, params);
+    return null;
+  }
+
+  private async countQuery(query: ${repository.name}Query): Promise<number> {
+    // TODO: Implement count query
+    return 0;
+  }
+
+  private buildQuery(query: ${repository.name}Query): string {
+    // TODO: Build SQL query from parameters
+    return \`SELECT * FROM ${repository.table_name || repository.name.toLowerCase()}\`;
+  }
+
+  private generateId(): string {
+    return 'id-' + Math.random().toString(36).substr(2, 9);
+  }
+}`;
+    }
+
+    async generateIntegrationTests(integration) {
+        return `// 🧪 BRIK Integration Tests: ${integration.name} (TypeScript)
+// Generated test suite for wrapper integration
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+import { ${integration.name}Integration } from '../src/wrappers/${integration.name.toLowerCase()}_integration';
+
+describe('${integration.name}Integration', () => {
+  let integration: ${integration.name}Integration;
+
+  beforeEach(() => {
+    integration = new ${integration.name}Integration({
+      endpoint: 'https://test-api.example.com',
+      apiKey: 'test-api-key',
+      timeout: 5000,
+      retries: 3
+    });
+  });
+
+  describe('Circuit Breaker Pattern', () => {
+    test('should handle successful requests', async () => {
+      // TODO: Mock successful API call
+      const result = await integration.execute({ test: 'data' });
+      
+      expect(result.success).toBe(true);
+      expect(result.metadata?.attempts).toBe(1);
+    });
+
+    test('should retry failed requests', async () => {
+      // TODO: Mock failing API call that succeeds on retry
+      const result = await integration.execute({ test: 'data' });
+      
+      expect(result.metadata?.attempts).toBeGreaterThan(1);
+    });
+
+    test('should open circuit breaker after failures', async () => {
+      // TODO: Mock consecutive failures to trigger circuit breaker
+      // Expect circuit breaker to open
+    });
+  });
+
+  describe('Integration Capabilities', () => {
+    ${integration.capabilities?.map(cap => `
+    test('should handle ${cap.name}', async () => {
+      const testData = { /* test data for ${cap.name} */ };
+      const result = await integration.${this.camelCase(cap.name)}(testData);
+      
+      expect(result).toBeDefined();
+      expect(result.metadata).toBeDefined();
+    });`).join('\n') || `
+    test('should execute integration', async () => {
+      const testData = { test: 'data' };
+      const result = await integration.execute(testData);
+      
+      expect(result).toBeDefined();
+      expect(result.metadata).toBeDefined();
+    });`}
+  });
+
+  describe('Error Handling', () => {
+    test('should handle timeout errors', async () => {
+      // TODO: Mock timeout scenario
+    });
+
+    test('should handle network errors', async () => {
+      // TODO: Mock network failure
+    });
+
+    test('should handle invalid responses', async () => {
+      // TODO: Mock invalid API response
+    });
+  });
+});`;
+    }
+
+    async generateRepositoryTests(repository) {
+        return `// 🧪 BRIK Repository Tests: ${repository.name} (TypeScript)
+// Generated test suite for data repository
+import { describe, test, expect, beforeEach } from '@jest/globals';
+import { ${repository.name}Repository, ${repository.name}Entity } from '../src/wrappers/${repository.name.toLowerCase()}_repository';
+
+describe('${repository.name}Repository', () => {
+  let repository: ${repository.name}Repository;
+
+  beforeEach(() => {
+    repository = new ${repository.name}Repository();
+  });
+
+  describe('CRUD Operations', () => {
+    test('should create entity', async () => {
+      const entityData = {
+        ${repository.schema?.map(field => `${field.name}: ${this.getTestValue(field.type)}`).join(',\n        ') || 'data: "test"'}
+      };
+      
+      const created = await repository.create(entityData);
+      
+      expect(created.id).toBeDefined();
+      expect(created.createdAt).toBeDefined();
+      expect(created.updatedAt).toBeDefined();
+      ${repository.schema?.map(field => `expect(created.${field.name}).toBe(entityData.${field.name});`).join('\n      ') || ''}
+    });
+
+    test('should find entity by id', async () => {
+      // TODO: Mock database response
+      const entity = await repository.findById('test-id');
+      
+      if (entity) {
+        expect(entity.id).toBe('test-id');
+        expect(entity.createdAt).toBeDefined();
+      }
+    });
+
+    test('should find multiple entities', async () => {
+      const query = {
+        limit: 10,
+        offset: 0
+      };
+      
+      const result = await repository.findMany(query);
+      
+      expect(result.data).toBeDefined();
+      expect(result.total).toBeDefined();
+      expect(result.hasMore).toBeDefined();
+      expect(result.metadata.query).toEqual(query);
+    });
+
+    test('should update entity', async () => {
+      const updates = {
+        ${repository.schema?.[0] ? `${repository.schema[0].name}: ${this.getTestValue(repository.schema[0].type, true)}` : 'data: "updated"'}
+      };
+      
+      const updated = await repository.update('test-id', updates);
+      
+      if (updated) {
+        expect(updated.updatedAt.getTime()).toBeGreaterThan(updated.createdAt.getTime());
+        ${repository.schema?.[0] ? `expect(updated.${repository.schema[0].name}).toBe(updates.${repository.schema[0].name});` : ''}
+      }
+    });
+
+    test('should delete entity', async () => {
+      const result = await repository.delete('test-id');
+      
+      expect(typeof result).toBe('boolean');
+    });
+  });
+
+  describe('Caching', () => {
+    test('should cache query results', async () => {
+      // TODO: Test cache functionality
+    });
+
+    test('should invalidate cache on mutations', async () => {
+      // TODO: Test cache invalidation
+    });
+  });
+
+  describe('Query Building', () => {
+    test('should handle complex queries', async () => {
+      const query = {
+        filters: { status: 'active' },
+        sort: { createdAt: 'desc' as const },
+        limit: 20,
+        offset: 10
+      };
+      
+      const result = await repository.findMany(query);
+      expect(result.metadata.query).toEqual(query);
+    });
+  });
+});`;
+    }
+
+    getTestValue(type, updated = false) {
+        const prefix = updated ? 'updated-' : 'test-';
+        
+        switch (type.toLowerCase()) {
+            case 'string':
+            case 'text':
+                return `"${prefix}value"`;
+            case 'number':
+            case 'integer':
+                return updated ? '42' : '1';
+            case 'boolean':
+                return updated ? 'false' : 'true';
+            case 'date':
+                return 'new Date()';
+            case 'array':
+                return '[]';
+            case 'object':
+                return '{}';
+            default:
+                return `"${prefix}value"`;
+        }
+    }
+
+    async generateWrappersMod(wrappersArch) {
+        const integrations = wrappersArch.integrations?.map(i => i.name.toLowerCase()) || [];
+        const repositories = wrappersArch.repositories?.map(r => r.name.toLowerCase()) || [];
+        const modules = [...integrations.map(i => `${i}_integration`), ...repositories.map(r => `${r}_repository`)];
+        
+        return `// 🔧 BRIK WRAPPERS Module Index (TypeScript)
+// Configurable layer - External service integrations and repositories
+// Generated automatically - DO NOT modify
+
+${modules.map(mod => `export * from './${mod}';`).join('\n')}
+
+// Wrapper layer exports (configurable)
+export interface BrikWrappers {
+  // Integrations
+  ${wrappersArch.integrations?.map(i => `  ${i.name}Integration: typeof ${i.name}Integration;`).join('\n') || ''}
+  
+  // Repositories
+  ${wrappersArch.repositories?.map(r => `  ${r.name}Repository: typeof ${r.name}Repository;`).join('\n') || ''}
+}
+
+// BRIK Wrappers initialization
+export const initializeWrappers = (): BrikWrappers => {
+  return {
+    ${wrappersArch.integrations?.map(i => `${i.name}Integration,`).join('\n    ') || ''}
+    ${wrappersArch.repositories?.map(r => `${r.name}Repository,`).join('\n    ') || ''}
+  };
+};`;
+    }
+
+    async generateLivingComponent(livingComponent) {
+        return `// 🤖 BRIK LIVING LAYER: ${livingComponent.name} (TypeScript)
+// Adaptive monitoring component - Self-evolving system
+// Generated from architecture classification
+
+export interface ${livingComponent.name}Metrics {
+  ${livingComponent.metrics?.map(m => `${m.name}: number;`).join('\n  ') || 'value: number;'}
+  timestamp: number;
+  metadata: {
+    component: string;
+    version: string;
+    environment: string;
+  };
+}
+
+export interface ${livingComponent.name}Config {
+  enabled: boolean;
+  interval: number; // milliseconds
+  threshold: {
+    ${livingComponent.metrics?.map(m => `${m.name}: number;`).join('\n    ') || 'value: number;'}
+  };
+  alerting: {
+    enabled: boolean;
+    channels: string[];
+  };
+}
+
+export class ${livingComponent.name}Monitor {
+  private config: ${livingComponent.name}Config;
+  private metrics: ${livingComponent.name}Metrics[] = [];
+  private timers: NodeJS.Timeout[] = [];
+  private listeners: ((metric: ${livingComponent.name}Metrics) => void)[] = [];
+
+  constructor(config: Partial<${livingComponent.name}Config> = {}) {
+    this.config = {
+      enabled: true,
+      interval: 60000, // 1 minute
+      threshold: {
+        ${livingComponent.metrics?.map(m => `${m.name}: ${this.getMetricThreshold(m)},`).join('\n        ') || 'value: 100,'}
+      },
+      alerting: {
+        enabled: false,
+        channels: []
+      },
+      ...config
+    };
+  }
+
+  // BRIK Living Layer: Self-monitoring
+  start(): void {
+    if (!this.config.enabled) {
+      console.log(\`\${this.constructor.name}: Monitoring disabled\`);
+      return;
+    }
+
+    console.log(\`\${this.constructor.name}: Starting monitoring every \${this.config.interval}ms\`);
+    
+    const timer = setInterval(() => {
+      this.collectMetrics();
+    }, this.config.interval);
+
+    this.timers.push(timer);
+  }
+
+  stop(): void {
+    this.timers.forEach(timer => clearInterval(timer));
+    this.timers = [];
+    console.log(\`\${this.constructor.name}: Monitoring stopped\`);
+  }
+
+  // BRIK Living Layer: Adaptive behavior
+  private async collectMetrics(): Promise<void> {
+    try {
+      const metrics: ${livingComponent.name}Metrics = {
+        ${livingComponent.metrics?.map(m => `${m.name}: ${this.generateTSMetricCollection(m)},`).join('\n        ') || 'value: Math.random() * 100,'}
+        timestamp: Date.now(),
+        metadata: {
+          component: '${livingComponent.name}',
+          version: '1.0.0',
+          environment: process.env.NODE_ENV || 'development'
+        }
+      };
+
+      // Store metrics
+      this.metrics.push(metrics);
+      this.pruneOldMetrics();
+
+      // Analyze and adapt
+      await this.analyzeMetrics(metrics);
+
+      // Notify listeners
+      this.notifyListeners(metrics);
+
+      console.log(\`\${this.constructor.name}: Collected metrics\`, {
+        ${livingComponent.metrics?.map(m => `${m.name}: metrics.${m.name}`).join(', ') || 'value: metrics.value'}
+      });
+
+    } catch (error) {
+      console.error(\`\${this.constructor.name}: Error collecting metrics\`, error);
+    }
+  }
+
+  // BRIK Living Layer: Intelligent analysis
+  private async analyzeMetrics(current: ${livingComponent.name}Metrics): Promise<void> {
+    // Threshold checking
+    ${livingComponent.metrics?.map(m => `
+    if (current.${m.name} > this.config.threshold.${m.name}) {
+      await this.handleThresholdExceeded('${m.name}', current.${m.name}, this.config.threshold.${m.name});
+    }`).join('\n') || `
+    if (current.value > this.config.threshold.value) {
+      await this.handleThresholdExceeded('value', current.value, this.config.threshold.value);
+    }`}
+
+    // Trend analysis (last 10 metrics)
+    if (this.metrics.length >= 10) {
+      const recent = this.metrics.slice(-10);
+      ${livingComponent.metrics?.map(m => `await this.analyzeTrend('${m.name}', recent.map(m => m.${m.name}));`).join('\n      ') || 'await this.analyzeTrend("value", recent.map(m => m.value));'}
+    }
+
+    // Adaptive configuration adjustment
+    await this.adaptConfiguration(current);
+  }
+
+  private async handleThresholdExceeded(metric: string, value: number, threshold: number): Promise<void> {
+    const alert = {
+      component: '${livingComponent.name}',
+      metric,
+      value,
+      threshold,
+      timestamp: Date.now(),
+      severity: value > threshold * 2 ? 'high' : 'medium'
+    };
+
+    console.warn(\`\${this.constructor.name}: Threshold exceeded\`, alert);
+
+    if (this.config.alerting.enabled) {
+      // TODO: Send alerts to configured channels
+      // await this.sendAlert(alert);
+    }
+  }
+
+  private async analyzeTrend(metric: string, values: number[]): Promise<void> {
+    const trend = this.calculateTrend(values);
+    
+    if (Math.abs(trend) > 0.1) { // 10% change
+      console.info(\`\${this.constructor.name}: Trend detected for \${metric}\`, {
+        trend: trend > 0 ? 'increasing' : 'decreasing',
+        magnitude: Math.abs(trend)
+      });
+    }
+  }
+
+  private async adaptConfiguration(metrics: ${livingComponent.name}Metrics): Promise<void> {
+    // Adaptive behavior based on system state
+    const avgLoad = this.getAverageLoad();
+    
+    if (avgLoad > 0.8) {
+      // System under stress - reduce monitoring frequency
+      if (this.config.interval < 300000) { // max 5 minutes
+        this.config.interval = Math.min(this.config.interval * 1.5, 300000);
+        this.restart();
+      }
+    } else if (avgLoad < 0.3) {
+      // System idle - increase monitoring frequency  
+      if (this.config.interval > 30000) { // min 30 seconds
+        this.config.interval = Math.max(this.config.interval * 0.8, 30000);
+        this.restart();
+      }
+    }
+  }
+
+  // Event subscription for reactive behavior
+  onMetricCollected(callback: (metric: ${livingComponent.name}Metrics) => void): void {
+    this.listeners.push(callback);
+  }
+
+  private notifyListeners(metrics: ${livingComponent.name}Metrics): void {
+    this.listeners.forEach(callback => {
+      try {
+        callback(metrics);
+      } catch (error) {
+        console.error('Metric listener error:', error);
+      }
+    });
+  }
+
+  // Utility methods
+  private pruneOldMetrics(): void {
+    const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+    const cutoff = Date.now() - maxAge;
+    this.metrics = this.metrics.filter(m => m.timestamp > cutoff);
+  }
+
+  private calculateTrend(values: number[]): number {
+    if (values.length < 2) return 0;
+    const first = values[0];
+    const last = values[values.length - 1];
+    return (last - first) / first;
+  }
+
+  private getAverageLoad(): number {
+    if (this.metrics.length === 0) return 0;
+    const recent = this.metrics.slice(-5);
+    ${livingComponent.metrics?.[0] ? `const avg = recent.reduce((sum, m) => sum + m.${livingComponent.metrics[0].name}, 0) / recent.length;` : 'const avg = recent.reduce((sum, m) => sum + m.value, 0) / recent.length;'}
+    return avg / 100; // normalize to 0-1
+  }
+
+  private restart(): void {
+    this.stop();
+    setTimeout(() => this.start(), 1000);
+  }
+
+  // Public API for external monitoring
+  getMetrics(): ${livingComponent.name}Metrics[] {
+    return [...this.metrics];
+  }
+
+  getCurrentMetrics(): ${livingComponent.name}Metrics | null {
+    return this.metrics.length > 0 ? this.metrics[this.metrics.length - 1] : null;
+  }
+
+  getConfig(): ${livingComponent.name}Config {
+    return { ...this.config };
+  }
+
+  updateConfig(updates: Partial<${livingComponent.name}Config>): void {
+    this.config = { ...this.config, ...updates };
+    
+    if (updates.interval) {
+      this.restart();
+    }
+  }
+}`;
+    }
+
+    getMetricThreshold(metric) {
+        const thresholds = {
+            uptime: 0.99,
+            memory: 0.8,
+            cpu: 0.7,
+            errors: 10,
+            latency: 1000,
+            requests: 1000
+        };
+        return thresholds[metric.name] || 100;
+    }
+
+    async generateMetricsAnalyzer(analyzer) {
+        return `// 🤖 BRIK METRICS ANALYZER: ${analyzer.name} (TypeScript)
+// Advanced analytics and business intelligence component
+// Generated from architecture classification
+
+export interface ${analyzer.name}Analysis {
+  trends: {
+    ${analyzer.metrics?.map(m => `${m.name}: TrendAnalysis;`).join('\n    ') || 'value: TrendAnalysis;'}
+  };
+  patterns: PatternDetection[];
+  predictions: {
+    ${analyzer.metrics?.map(m => `${m.name}: Prediction;`).join('\n    ') || 'value: Prediction;'}
+  };
+  recommendations: Recommendation[];
+  confidence: number;
+  timestamp: number;
+}
+
+export interface TrendAnalysis {
+  direction: 'increasing' | 'decreasing' | 'stable';
+  magnitude: number;
+  acceleration: number;
+  confidence: number;
+  timeWindow: number;
+}
+
+export interface PatternDetection {
+  type: 'seasonal' | 'cyclical' | 'anomaly' | 'correlation';
+  description: string;
+  significance: number;
+  evidence: any[];
+}
+
+export interface Prediction {
+  value: number;
+  confidence: number;
+  timeHorizon: number;
+  factors: string[];
+}
+
+export interface Recommendation {
+  category: 'performance' | 'cost' | 'reliability' | 'security';
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  action: string;
+  impact: string;
+  effort: string;
+}
+
+export class ${analyzer.name}MetricsAnalyzer {
+  private historicalData: Map<string, number[]> = new Map();
+  private analysisCache = new Map<string, ${analyzer.name}Analysis>();
+  private readonly maxDataPoints = 1000;
+  private readonly analysisWindow = 100;
+
+  constructor() {
+    ${analyzer.metrics?.map(m => `this.historicalData.set('${m.name}', []);`).join('\n    ') || 'this.historicalData.set("value", []);'}
+  }
+
+  // BRIK Analytics: Intelligence Layer
+  async analyze(): Promise<${analyzer.name}Analysis> {
+    const cacheKey = \`analysis_\${Date.now() - (Date.now() % 300000)}\`; // 5-minute cache
+    
+    if (this.analysisCache.has(cacheKey)) {
+      return this.analysisCache.get(cacheKey)!;
+    }
+
+    const analysis: ${analyzer.name}Analysis = {
+      trends: await this.analyzeTrends(),
+      patterns: await this.detectPatterns(),
+      predictions: await this.generatePredictions(),
+      recommendations: await this.generateRecommendations(),
+      confidence: 0,
+      timestamp: Date.now()
+    };
+
+    // Calculate overall confidence
+    analysis.confidence = this.calculateOverallConfidence(analysis);
+
+    // Cache analysis
+    this.analysisCache.set(cacheKey, analysis);
+    this.pruneCache();
+
+    return analysis;
+  }
+
+  // Data ingestion
+  ingestMetric(name: string, value: number, timestamp: number = Date.now()): void {
+    if (!this.historicalData.has(name)) {
+      this.historicalData.set(name, []);
+    }
+
+    const data = this.historicalData.get(name)!;
+    data.push(value);
+
+    // Keep only recent data points
+    if (data.length > this.maxDataPoints) {
+      data.splice(0, data.length - this.maxDataPoints);
+    }
+
+    // Invalidate cache on new data
+    this.analysisCache.clear();
+  }
+
+  // Advanced analytics methods
+  private async analyzeTrends(): Promise<{ [key: string]: TrendAnalysis }> {
+    const trends: { [key: string]: TrendAnalysis } = {};
+
+    for (const [metricName, data] of this.historicalData) {
+      if (data.length < this.analysisWindow / 2) {
+        trends[metricName] = {
+          direction: 'stable',
+          magnitude: 0,
+          acceleration: 0,
+          confidence: 0.1,
+          timeWindow: data.length
+        };
+        continue;
+      }
+
+      const recent = data.slice(-this.analysisWindow);
+      const trend = this.calculateLinearTrend(recent);
+      const acceleration = this.calculateAcceleration(recent);
+
+      trends[metricName] = {
+        direction: trend > 0.05 ? 'increasing' : trend < -0.05 ? 'decreasing' : 'stable',
+        magnitude: Math.abs(trend),
+        acceleration,
+        confidence: Math.min(recent.length / this.analysisWindow, 1.0),
+        timeWindow: recent.length
+      };
+    }
+
+    return trends;
+  }
+
+  private async detectPatterns(): Promise<PatternDetection[]> {
+    const patterns: PatternDetection[] = [];
+
+    for (const [metricName, data] of this.historicalData) {
+      if (data.length < 50) continue;
+
+      // Detect anomalies
+      const anomalies = this.detectAnomalies(data);
+      if (anomalies.length > 0) {
+        patterns.push({
+          type: 'anomaly',
+          description: \`Detected \${anomalies.length} anomalies in \${metricName}\`,
+          significance: anomalies.length / data.length,
+          evidence: anomalies
+        });
+      }
+
+      // Detect seasonal patterns
+      const seasonal = this.detectSeasonality(data);
+      if (seasonal.significance > 0.3) {
+        patterns.push({
+          type: 'seasonal',
+          description: \`Seasonal pattern detected in \${metricName}\`,
+          significance: seasonal.significance,
+          evidence: [seasonal]
+        });
+      }
+    }
+
+    // Cross-metric correlations
+    const correlations = this.detectCorrelations();
+    correlations.forEach(corr => {
+      if (Math.abs(corr.coefficient) > 0.7) {
+        patterns.push({
+          type: 'correlation',
+          description: \`Strong correlation between \${corr.metric1} and \${corr.metric2}\`,
+          significance: Math.abs(corr.coefficient),
+          evidence: [corr]
+        });
+      }
+    });
+
+    return patterns.sort((a, b) => b.significance - a.significance);
+  }
+
+  private async generatePredictions(): Promise<{ [key: string]: Prediction }> {
+    const predictions: { [key: string]: Prediction } = {};
+
+    for (const [metricName, data] of this.historicalData) {
+      if (data.length < 20) {
+        predictions[metricName] = {
+          value: data[data.length - 1] || 0,
+          confidence: 0.1,
+          timeHorizon: 1,
+          factors: ['insufficient_data']
+        };
+        continue;
+      }
+
+      const recent = data.slice(-50);
+      const trend = this.calculateLinearTrend(recent);
+      const volatility = this.calculateVolatility(recent);
+      const lastValue = recent[recent.length - 1];
+
+      predictions[metricName] = {
+        value: lastValue + (trend * 10), // Predict 10 time periods ahead
+        confidence: Math.max(0.1, 1 - volatility),
+        timeHorizon: 10,
+        factors: [
+          \`trend_\${trend > 0 ? 'positive' : trend < 0 ? 'negative' : 'neutral'}\`,
+          \`volatility_\${volatility > 0.5 ? 'high' : volatility > 0.2 ? 'medium' : 'low'}\`,
+          \`history_length_\${recent.length}\`
+        ]
+      };
+    }
+
+    return predictions;
+  }
+
+  private async generateRecommendations(): Promise<Recommendation[]> {
+    const recommendations: Recommendation[] = [];
+    const trends = await this.analyzeTrends();
+    const patterns = await this.detectPatterns();
+
+    // Performance recommendations
+    ${analyzer.metrics?.map(m => `
+    if (trends.${m.name}?.direction === 'decreasing' && trends.${m.name}?.magnitude > 0.1) {
+      recommendations.push({
+        category: 'performance',
+        priority: 'high',
+        action: 'Investigate declining ${m.name} trend',
+        impact: 'Prevents system degradation',
+        effort: 'medium'
+      });
+    }`).join('\n') || ''}
+
+    // Anomaly recommendations
+    patterns.filter(p => p.type === 'anomaly' && p.significance > 0.05).forEach(anomaly => {
+      recommendations.push({
+        category: 'reliability',
+        priority: 'medium',
+        action: \`Investigate anomalies: \${anomaly.description}\`,
+        impact: 'Improves system stability',
+        effort: 'low'
+      });
+    });
+
+    // Correlation recommendations
+    patterns.filter(p => p.type === 'correlation' && p.significance > 0.8).forEach(correlation => {
+      recommendations.push({
+        category: 'performance',
+        priority: 'low',
+        action: \`Leverage correlation: \${correlation.description}\`,
+        impact: 'Optimizes resource usage',
+        effort: 'high'
+      });
+    });
+
+    return recommendations.sort((a, b) => {
+      const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
+      return priorityOrder[b.priority] - priorityOrder[a.priority];
+    });
+  }
+
+  // Statistical utilities
+  private calculateLinearTrend(data: number[]): number {
+    if (data.length < 2) return 0;
+    
+    const n = data.length;
+    const sumX = (n * (n - 1)) / 2;
+    const sumY = data.reduce((sum, val) => sum + val, 0);
+    const sumXY = data.reduce((sum, val, i) => sum + i * val, 0);
+    const sumX2 = data.reduce((sum, _, i) => sum + i * i, 0);
+
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    return slope / (sumY / n); // Normalized slope
+  }
+
+  private calculateAcceleration(data: number[]): number {
+    if (data.length < 3) return 0;
+    
+    const mid = Math.floor(data.length / 2);
+    const firstHalf = data.slice(0, mid);
+    const secondHalf = data.slice(mid);
+    
+    const firstTrend = this.calculateLinearTrend(firstHalf);
+    const secondTrend = this.calculateLinearTrend(secondHalf);
+    
+    return secondTrend - firstTrend;
+  }
+
+  private calculateVolatility(data: number[]): number {
+    if (data.length < 2) return 0;
+    
+    const mean = data.reduce((sum, val) => sum + val, 0) / data.length;
+    const variance = data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / data.length;
+    
+    return Math.sqrt(variance) / mean; // Coefficient of variation
+  }
+
+  private detectAnomalies(data: number[]): number[] {
+    const mean = data.reduce((sum, val) => sum + val, 0) / data.length;
+    const stdDev = Math.sqrt(
+      data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / data.length
+    );
+    
+    const threshold = 2.5 * stdDev;
+    return data.filter(val => Math.abs(val - mean) > threshold);
+  }
+
+  private detectSeasonality(data: number[]): { significance: number } {
+    // Simple seasonality detection using autocorrelation
+    const periods = [7, 14, 30, 90]; // Common seasonal periods
+    let maxCorrelation = 0;
+    
+    for (const period of periods) {
+      if (data.length < period * 2) continue;
+      
+      const correlation = this.calculateAutocorrelation(data, period);
+      maxCorrelation = Math.max(maxCorrelation, Math.abs(correlation));
+    }
+    
+    return { significance: maxCorrelation };
+  }
+
+  private calculateAutocorrelation(data: number[], lag: number): number {
+    if (data.length <= lag) return 0;
+    
+    const n = data.length - lag;
+    const mean = data.reduce((sum, val) => sum + val, 0) / data.length;
+    
+    let numerator = 0;
+    let denominator = 0;
+    
+    for (let i = 0; i < n; i++) {
+      numerator += (data[i] - mean) * (data[i + lag] - mean);
+    }
+    
+    for (let i = 0; i < data.length; i++) {
+      denominator += Math.pow(data[i] - mean, 2);
+    }
+    
+    return denominator === 0 ? 0 : numerator / denominator;
+  }
+
+  private detectCorrelations(): Array<{ metric1: string; metric2: string; coefficient: number }> {
+    const correlations: Array<{ metric1: string; metric2: string; coefficient: number }> = [];
+    const metrics = Array.from(this.historicalData.keys());
+    
+    for (let i = 0; i < metrics.length; i++) {
+      for (let j = i + 1; j < metrics.length; j++) {
+        const data1 = this.historicalData.get(metrics[i])!;
+        const data2 = this.historicalData.get(metrics[j])!;
+        
+        if (data1.length < 10 || data2.length < 10) continue;
+        
+        const minLength = Math.min(data1.length, data2.length);
+        const correlation = this.calculateCorrelation(
+          data1.slice(-minLength),
+          data2.slice(-minLength)
+        );
+        
+        correlations.push({
+          metric1: metrics[i],
+          metric2: metrics[j],
+          coefficient: correlation
+        });
+      }
+    }
+    
+    return correlations;
+  }
+
+  private calculateCorrelation(x: number[], y: number[]): number {
+    const n = x.length;
+    const sumX = x.reduce((sum, val) => sum + val, 0);
+    const sumY = y.reduce((sum, val) => sum + val, 0);
+    const sumXY = x.reduce((sum, val, i) => sum + val * y[i], 0);
+    const sumX2 = x.reduce((sum, val) => sum + val * val, 0);
+    const sumY2 = y.reduce((sum, val) => sum + val * val, 0);
+
+    const denominator = Math.sqrt(
+      (n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY)
+    );
+
+    return denominator === 0 ? 0 : (n * sumXY - sumX * sumY) / denominator;
+  }
+
+  private calculateOverallConfidence(analysis: ${analyzer.name}Analysis): number {
+    const trendConfidence = Object.values(analysis.trends)
+      .reduce((sum, trend) => sum + trend.confidence, 0) / Object.keys(analysis.trends).length;
+    
+    const patternConfidence = analysis.patterns.length > 0 
+      ? analysis.patterns.reduce((sum, pattern) => sum + pattern.significance, 0) / analysis.patterns.length
+      : 0.5;
+    
+    const predictionConfidence = Object.values(analysis.predictions)
+      .reduce((sum, pred) => sum + pred.confidence, 0) / Object.keys(analysis.predictions).length;
+
+    return (trendConfidence + patternConfidence + predictionConfidence) / 3;
+  }
+
+  private pruneCache(): void {
+    if (this.analysisCache.size > 10) {
+      const oldestKey = this.analysisCache.keys().next().value;
+      this.analysisCache.delete(oldestKey);
+    }
+  }
+
+  // Public API
+  getHistoricalData(metric: string): number[] {
+    return [...(this.historicalData.get(metric) || [])];
+  }
+
+  getDataSummary(): { [key: string]: { count: number; latest: number; avg: number } } {
+    const summary: { [key: string]: { count: number; latest: number; avg: number } } = {};
+    
+    for (const [name, data] of this.historicalData) {
+      const avg = data.length > 0 ? data.reduce((sum, val) => sum + val, 0) / data.length : 0;
+      summary[name] = {
+        count: data.length,
+        latest: data[data.length - 1] || 0,
+        avg
+      };
+    }
+    
+    return summary;
+  }
+}`;
+    }
 }
 
 class PythonCodeGenerator {

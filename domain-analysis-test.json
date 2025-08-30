@@ -1,0 +1,87 @@
+{
+  "projectName": "todo-list-api",
+  "description": "API simple de to-do list con tareas",
+  "domain": {
+    "entities": [
+      {
+        "name": "List",
+        "description": "Lista de tareas que puede ser gestionada por los usuarios",
+        "attributes": [
+          "id: UUID",
+          "title: String",
+          "description: String",
+          "completed: Boolean",
+          "priority: TaskPriority",
+          "created_at: DateTime",
+          "updated_at: DateTime"
+        ],
+        "relationships": [
+          {
+            "entity": "User",
+            "type": "ManyToOne"
+          }
+        ],
+        "businessRules": [
+          "Title no puede estar vacío",
+          "Priority debe ser válida (Low, Medium, High)",
+          "Completed por defecto es false"
+        ]
+      }
+    ],
+    "useCases": [
+      {
+        "name": "CreateList",
+        "description": "Crear nueva lista de tareas",
+        "actor": "User",
+        "inputs": [
+          "data: Object"
+        ],
+        "outputs": [
+          "list_id: UUID"
+        ],
+        "businessLogic": [
+          "Validar datos requeridos",
+          "Aplicar reglas de negocio",
+          "Crear lista",
+          "Retornar ID generado"
+        ]
+      }
+    ],
+    "businessRules": [
+      {
+        "name": "ListValidation",
+        "description": "Lista debe tener título válido",
+        "applies_to": [
+          "List"
+        ],
+        "condition": "list.title.length > 0",
+        "action": "Rechazar lista sin título"
+      }
+    ],
+    "integrations": [
+      {
+        "name": "SQLite",
+        "type": "database",
+        "description": "Base de datos ligera para desarrollo y testing",
+        "operations": [
+          "CRUD",
+          "queries"
+        ]
+      }
+    ]
+  },
+  "technical": {
+    "architecture_type": "api",
+    "data_persistence": "sqlite",
+    "auth_required": false,
+    "real_time": false,
+    "scalability_requirements": "low",
+    "performance_requirements": "standard"
+  },
+  "metadata": {
+    "analyzedAt": "2025-08-24T12:00:00.000Z",
+    "targetLanguage": "rust",
+    "llmProvider": "mock",
+    "analyzer": "BRIK Domain Analyzer v1.0"
+  }
+}

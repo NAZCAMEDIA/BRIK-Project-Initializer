@@ -1,0 +1,1 @@
+/Users/nazcamedia/.config/codex/AGENTS.md
