@@ -271,12 +271,14 @@ jobs:
     - name: "📊 Generate final coverage report"
       working-directory: demo-brik
       run: |
+        chmod +x ./scripts/test-coverage.sh
         ./scripts/test-coverage.sh
         cargo tarpaulin --workspace --ignore-tests --branch --out Xml --output-dir target/tarpaulin
         
     - name: "🔐 BRIK Certification Hash (strict docs)"
       working-directory: demo-brik
       run: |
+        chmod +x ./scripts/brik-certify.sh
         STRICT_DOCS=1 ./scripts/brik-certify.sh
         
     - name: "✅ Verify L3 coverage (100%)"

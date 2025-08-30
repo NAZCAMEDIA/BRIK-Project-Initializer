@@ -71,7 +71,7 @@ jobs:
     - name: "✅ Verify L0 coverage (≥70%)"
       working-directory: demo-ts
       run: |
-        COVERAGE=$(npx jest --coverage --silent | grep -o 'All files.*[0-9]*\.[0-9]*' | grep -o '[0-9]*\.[0-9]*' | head -1)
+        COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1)
         echo "Coverage: ${COVERAGE}%"
         if (( $(echo "$COVERAGE >= 70.0" | bc -l) )); then
           echo "✅ L0 PASSED: Coverage $COVERAGE% ≥ 70%"
@@ -133,7 +133,7 @@ jobs:
     - name: "✅ Verify L1 coverage (≥80%)"
       working-directory: demo-ts
       run: |
-        COVERAGE=$(npx jest --coverage --silent | grep -o 'All files.*[0-9]*\.[0-9]*' | grep -o '[0-9]*\.[0-9]*' | head -1)
+        COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1)
         echo "Coverage: ${COVERAGE}%"
         if (( $(echo "$COVERAGE >= 80.0" | bc -l) )); then
           echo "✅ L1 PASSED: Coverage $COVERAGE% ≥ 80%"
@@ -202,7 +202,7 @@ jobs:
       if: matrix.node == '20' && matrix.os == 'ubuntu-latest'
       working-directory: demo-ts
       run: |
-        COVERAGE=$(npx jest --coverage --silent | grep -o 'All files.*[0-9]*\.[0-9]*' | grep -o '[0-9]*\.[0-9]*' | head -1)
+        COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1)
         echo "Coverage: ${COVERAGE}%"
         if (( $(echo "$COVERAGE >= 90.0" | bc -l) )); then
           echo "✅ L2 PASSED: Coverage $COVERAGE% ≥ 90%"
@@ -262,18 +262,20 @@ jobs:
     - name: "📊 Generate final coverage report"
       working-directory: demo-ts
       run: |
+        chmod +x ./scripts/test-coverage.sh
         ./scripts/test-coverage.sh
         npx jest --coverage --coverageReporters=cobertura
         
     - name: "🔐 BRIK Certification Hash (strict docs)"
       working-directory: demo-ts
       run: |
+        chmod +x ./scripts/brik-certify.sh
         STRICT_DOCS=1 ./scripts/brik-certify.sh
         
     - name: "✅ Verify L3 coverage (100%)"
       working-directory: demo-ts
       run: |
-        COVERAGE=$(npx jest --coverage --silent | grep -o 'All files.*[0-9]*\.[0-9]*' | grep -o '[0-9]*\.[0-9]*' | head -1)
+        COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1)
         echo "Coverage: ${COVERAGE}%"
         if (( $(echo "$COVERAGE >= 99.0" | bc -l) )); then
           echo "✅ L3 PASSED: Coverage $COVERAGE% ≥ 99% (effectively 100%)"
@@ -286,7 +288,7 @@ jobs:
       working-directory: demo-ts
       run: |
         echo "🏆 BRIK L3 CERTIFICATION COMPLETE"
-        COVERAGE=$(npx jest --coverage --silent | grep -o 'All files.*[0-9]*\.[0-9]*' | grep -o '[0-9]*\.[0-9]*' | head -1)
+        COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | awk '{print $1}' | head -1)
         echo "📊 Coverage: $COVERAGE%"
         echo "🔐 BRIK Hash: $(cat .brik-cert.sha256 2>/dev/null || echo 'Not generated')"
         echo "✅ Contract Tests: $([ -f '../tests/contract/contract_compile_all.sh' ] && echo 'PASSED' || echo 'SKIPPED')"
