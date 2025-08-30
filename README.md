@@ -450,6 +450,8 @@ bash init-brik-project.sh test-go --smart \
 
 ## 🙌 Contribuir
 
+Consulta la guía [CONTRIBUTING.md](CONTRIBUTING.md) para instrucciones completas en español e inglés.
+
 ### 🚀 Contribuciones Bienvenidas
 - ✨ **Nuevos lenguajes**: TypeScript, Python, Go, Java
 - 🔌 **Integraciones**: AWS, GCP, Azure services  
