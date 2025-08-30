@@ -7,6 +7,8 @@
 
 **Generador inteligente de proyectos BRIK con IA**: Transforma descripciones en lenguaje natural en código completo y funcional siguiendo la filosofía DAAF-BRIK-Circuitalidad Digital.
 
+📋 La planificación por fases y gates BRIK se detalla en [docs/PLAN_V1.md](docs/PLAN_V1.md).
+
 ## 🚀 ¿Qué es BRIK Intelligent?
 
 **BRIK Intelligent** es un generador de código **revolucionario** que combina:
