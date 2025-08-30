@@ -27,7 +27,7 @@ on:
 env:
   PYTHONUNBUFFERED: 1
   PYTHONDONTWRITEBYTECODE: 1
-  PIP_NO_CACHE_DIR: 1
+  # NOTE: PIP_NO_CACHE_DIR removed to enable caching with setup-python@v5
   PIP_DISABLE_PIP_VERSION_CHECK: 1
 
 jobs:
