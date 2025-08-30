@@ -1,0 +1,30 @@
+name: "Solicitud de mejora"
+description: "Proponer una nueva funcionalidad"
+title: "[FEATURE] Título descriptivo"
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por proponer una idea.
+  - type: input
+    id: resumen
+    attributes:
+      label: Resumen
+      description: Describe brevemente la mejora propuesta.
+    validations:
+      required: true
+  - type: textarea
+    id: motivacion
+    attributes:
+      label: Motivación
+      description: ¿Qué problema resuelve?
+    validations:
+      required: true
+  - type: textarea
+    id: detalles
+    attributes:
+      label: Detalles adicionales
+      description: Información extra o contexto.
+    validations:
+      required: false
