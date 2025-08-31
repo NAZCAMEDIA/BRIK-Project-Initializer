@@ -5,7 +5,8 @@
 
 ## Compromiso de Implementación
 - ✅ **100% Cobertura de Código**: Cada línea es un circuito verificado
-- ✅ **Inmutabilidad del Core**: Núcleo fijo post-deployment
+- ✅ **Inmutabilidad del CORE**: Núcleo fijo post-deployment
+- ✅ **CORE + WRAPPERS + LIVING LAYER**: Arquitectura de 3 capas BRIK
 - ✅ **Living Code Layer**: Consciencia integrada
 - ✅ **Termodinámica Digital**: Gestión de entropía
 - ✅ **Auditoría Cuántica**: Trazabilidad total

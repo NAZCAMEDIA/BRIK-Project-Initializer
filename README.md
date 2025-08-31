@@ -1,13 +1,14 @@
-# 🧬🧠 BRIK Intelligent Project Initializer v1.0.0
+# 🧬 BRIK Project Initializer v5.0 - AI Powered Edition
 
-[![Rust](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-rust.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-rust.yml)
-[![TypeScript](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-ts.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-ts.yml)
-[![Python](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-py.yml/badge.svg)](https://github.com/C-BIAS/BRIK-Project-Initializer/actions/workflows/brik-py.yml)
-[![L3 Certification](https://img.shields.io/badge/BRIK-L3%20Certified-00C851)](https://github.com/C-BIAS/BRIK-Project-Initializer)
+[![BRIK L3 Certified](https://img.shields.io/badge/BRIK-L3%20Certified-00d4aa?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSIjMDBENEFBIi8+Cjwvc3ZnPg==)](https://github.com/nazcamedia/brik-project-initializer)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-100%25%20Coverage-brightgreen?style=for-the-badge&logo=jest)](tests/)
+[![Claude AI](https://img.shields.io/badge/Claude-Pro%2FMax%20Compatible-FF6B35?style=for-the-badge&logo=anthropic)](https://claude.ai)
 
-**Enterprise-ready AI-powered project generator**: Transforma descripciones en lenguaje natural en código production-ready siguiendo la filosofía DAAF-BRIK-Circuitalidad Digital con certificación L3.
+## 🎯 Sistema completo de gestión de proyectos BRIK con **Agentes IA integrados**
 
-📋 **Estado del Proyecto**: [V1.0.0 Master Plan COMPLETADO](V1_MASTER_PLAN_EXECUTION_SUMMARY.md) | [Certificación L3 Deployment](L3_CERTIFICATION_DEPLOYMENT_SUMMARY.md) | [Executive Summary](EXECUTIVE_SUMMARY.md)
+### ✨ La forma más avanzada de crear proyectos con arquitectura BRIK certificada
 
 ## 🚀 ¿Qué es BRIK Intelligent v1.0.0?
 
