@@ -1,29 +1,15 @@
 {
-<<<<<<< HEAD
-  "brik_hash": "38e98afedc081914aa425ca2e92a4404f1299ee962224291dd700b520a459b3c",
+  "brik_hash": "de0ce561ff8e00d692444862cebddcd2eaafdc2e3ae8acd92fde4fae7667a4cc",
   "algorithm": "sha256",
-  "generated_at": "2025-08-31T10:50:26.676Z",
+  "generated_at": "2025-08-31T21:38:51.416Z",
   "generator_version": "1.0.0",
   "project_root": "BRIK-Project-Initializer",
   "components": {
-    "source_files_count": 216,
-    "configuration_files_count": 2,
-    "documentation_files_count": 5,
-    "total_project_size": 1637490,
-    "total_files_included": 216
-=======
-  "brik_hash": "b24fad1074a843b2f1030ec7077cb2897304973e43eaa33531995d4ead206abf",
-  "algorithm": "sha256",
-  "generated_at": "2025-08-31T13:21:56.039Z",
-  "generator_version": "1.0.0",
-  "project_root": "inicio-proyecto",
-  "components": {
-    "source_files_count": 229,
+    "source_files_count": 279,
     "configuration_files_count": 3,
-    "documentation_files_count": 5,
-    "total_project_size": 1850815,
-    "total_files_included": 229
->>>>>>> origin/main
+    "documentation_files_count": 6,
+    "total_project_size": 2208234,
+    "total_files_included": 279
   },
   "verification": {
     "reproducible": true,

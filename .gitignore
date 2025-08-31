@@ -30,3 +30,13 @@ coverage.out
 # BRIK Certification artifacts
 .brik-cert.json
 .brik-cert.sha256
+
+
+# Security
+*.key
+*.pem
+.env.local
+.env.production
+secrets/
+private/
+*.secret
