@@ -72,13 +72,18 @@ jobs:
       working-directory: demo-ts
       run: |
         COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1)
-        # Strip ANSI color codes first, then extract only digits
-        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/[^0-9]//g')
-        echo "Coverage: ${COVERAGE}%"
-        if (( $(echo "$COVERAGE >= 70.0" | bc -l) )); then
-          echo "✅ L0 PASSED: Coverage $COVERAGE% ≥ 70%"
+        # Extrae el número usando regex y elimina caracteres ANSI y %
+        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | grep -oE '[0-9]+' | head -1)
+        
+        echo "Coverage for demo-ts: ${COVERAGE}%"
+        if [ -z "$COVERAGE" ] || [ "$COVERAGE" -eq 0 ]; then
+          echo "⚠️ Could not extract coverage, checking jest output..."
+          npm test -- --coverage --watchAll=false --verbose
+          exit 1
+        elif [ "$COVERAGE" -ge 70 ]; then
+          echo "✅ L0 PASSED: Coverage ${COVERAGE}% ≥ 70%"
         else
-          echo "❌ L0 FAILED: Coverage $COVERAGE% < 70%"
+          echo "❌ L0 FAILED: Coverage ${COVERAGE}% < 70%"
           exit 1
         fi
         
@@ -136,13 +141,18 @@ jobs:
       working-directory: demo-ts
       run: |
         COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1)
-        # Strip ANSI color codes first, then extract only digits
-        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/[^0-9]//g')
-        echo "Coverage: ${COVERAGE}%"
-        if (( $(echo "$COVERAGE >= 80.0" | bc -l) )); then
-          echo "✅ L1 PASSED: Coverage $COVERAGE% ≥ 80%"
+        # Extrae el número usando regex y elimina caracteres ANSI y %
+        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | grep -oE '[0-9]+' | head -1)
+        
+        echo "Coverage for demo-ts: ${COVERAGE}%"
+        if [ -z "$COVERAGE" ] || [ "$COVERAGE" -eq 0 ]; then
+          echo "⚠️ Could not extract coverage, checking jest output..."
+          npm test -- --coverage --watchAll=false --verbose
+          exit 1
+        elif [ "$COVERAGE" -ge 80 ]; then
+          echo "✅ L1 PASSED: Coverage ${COVERAGE}% ≥ 80%"
         else
-          echo "❌ L1 FAILED: Coverage $COVERAGE% < 80%"
+          echo "❌ L1 FAILED: Coverage ${COVERAGE}% < 80%"
           exit 1
         fi
         
@@ -207,13 +217,18 @@ jobs:
       working-directory: demo-ts
       run: |
         COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1)
-        # Strip ANSI color codes first, then extract only digits
-        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/[^0-9]//g')
-        echo "Coverage: ${COVERAGE}%"
-        if (( $(echo "$COVERAGE >= 90.0" | bc -l) )); then
-          echo "✅ L2 PASSED: Coverage $COVERAGE% ≥ 90%"
+        # Extrae el número usando regex y elimina caracteres ANSI y %
+        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | grep -oE '[0-9]+' | head -1)
+        
+        echo "Coverage for demo-ts: ${COVERAGE}%"
+        if [ -z "$COVERAGE" ] || [ "$COVERAGE" -eq 0 ]; then
+          echo "⚠️ Could not extract coverage, checking jest output..."
+          npm test -- --coverage --watchAll=false --verbose
+          exit 1
+        elif [ "$COVERAGE" -ge 90 ]; then
+          echo "✅ L2 PASSED: Coverage ${COVERAGE}% ≥ 90%"
         else
-          echo "❌ L2 FAILED: Coverage $COVERAGE% < 90%"
+          echo "❌ L2 FAILED: Coverage ${COVERAGE}% < 90%"
           exit 1
         fi
         
@@ -282,13 +297,18 @@ jobs:
       working-directory: demo-ts
       run: |
         COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1)
-        # Strip ANSI color codes first, then extract only digits
-        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/[^0-9]//g')
-        echo "Coverage: ${COVERAGE}%"
-        if (( $(echo "$COVERAGE >= 99.0" | bc -l) )); then
-          echo "✅ L3 PASSED: Coverage $COVERAGE% ≥ 99% (effectively 100%)"
+        # Extrae el número usando regex y elimina caracteres ANSI y %
+        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | grep -oE '[0-9]+' | head -1)
+        
+        echo "Coverage for demo-ts: ${COVERAGE}%"
+        if [ -z "$COVERAGE" ] || [ "$COVERAGE" -eq 0 ]; then
+          echo "⚠️ Could not extract coverage, checking jest output..."
+          npm test -- --coverage --watchAll=false --verbose
+          exit 1
+        elif [ "$COVERAGE" -ge 99 ]; then
+          echo "✅ L3 PASSED: Coverage ${COVERAGE}% ≥ 99% (effectively 100%)"
         else
-          echo "❌ L3 FAILED: Coverage $COVERAGE% < 99%"
+          echo "❌ L3 FAILED: Coverage ${COVERAGE}% < 99%"
           exit 1
         fi
         
@@ -297,8 +317,8 @@ jobs:
       run: |
         echo "🏆 BRIK L3 CERTIFICATION COMPLETE"
         COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1)
-        # Strip ANSI color codes first, then extract only digits
-        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/[^0-9]//g')
+        # Extrae el número usando regex y elimina caracteres ANSI y %
+        COVERAGE=$(echo "$COVERAGE" | sed 's/\x1b\[[0-9;]*m//g' | grep -oE '[0-9]+' | head -1)
         echo "📊 Coverage: $COVERAGE%"
         echo "🔐 BRIK Hash: $(cat .brik-cert.sha256 2>/dev/null || echo 'Not generated')"
         echo "✅ Contract Tests: $([ -f '../tests/contract/contract_compile_all.sh' ] && echo 'PASSED' || echo 'SKIPPED')"
