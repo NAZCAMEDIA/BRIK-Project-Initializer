@@ -2,7 +2,7 @@
 
 **Versión:** 1.0.0  
 **Filosofía:** DAAF-BRIK-Circuitalidad Digital  
-**Estado:** OBLIGATORIO para certificación BRIK  
+**Estado:** OBLIGATORIO para certificación BRIK
 
 ---
 
@@ -22,6 +22,7 @@
 ## 📋 1. Documentación de Producto
 
 ### Contexto y Visión
+
 - [x] **Documento de Requisitos de Producto (PRD)**
   - [ ] Visión y objetivos del producto
   - [ ] Problemática que resuelve
@@ -29,17 +30,18 @@
   - [ ] Métricas de éxito clave
 
 ### Experiencia de Usuario
+
 - [x] **Historias de Usuario / Casos de Uso**
   - [ ] Personas y arquetipos de usuario
   - [ ] Journeys y escenarios de uso
   - [ ] Casos extremos y edge cases
-  
 - [x] **Criterios de Aceptación**
   - [ ] Definición de "terminado" (DoD)
   - [ ] Criterios funcionales específicos
   - [ ] Criterios no funcionales (rendimiento, usabilidad)
 
 ### Diseño de Interacción
+
 - [x] **Flujos de Usuario**
   - [ ] Diagramas de flujo principales
   - [ ] Estados y transiciones del sistema
@@ -55,6 +57,7 @@
 ## 🏗️ 2. Documentación Técnica
 
 ### Arquitectura del Sistema
+
 - [x] **Documento de Arquitectura de Software**
   - [ ] Diagramas C4 (Context, Container, Component, Code)
   - [ ] Patrones arquitectónicos utilizados
@@ -62,6 +65,7 @@
   - [ ] Integración con filosofía BRIK (Core + Wrappers)
 
 ### Especificaciones Detalladas
+
 - [x] **Especificaciones Técnicas de Módulos y APIs**
   - [ ] Contratos de interfaces (OpenAPI/Swagger)
   - [ ] Documentación de endpoints REST/GraphQL
@@ -75,6 +79,7 @@
   - [ ] Estrategias de migración
 
 ### Diseño y Procesos
+
 - [x] **Diagramas de Secuencia y Procesos**
   - [ ] Flujos críticos del sistema
   - [ ] Interacciones entre componentes
@@ -86,6 +91,7 @@
   - [ ] Historial de cambios arquitectónicos
 
 ### Calidad y Estándares
+
 - [x] **Guías de Estilo de Código**
   - [ ] Convenciones de naming y estructura
   - [ ] Patrones de diseño recomendados
@@ -103,6 +109,7 @@
 ## 🔧 3. Documentación Operativa
 
 ### Calidad y Testing
+
 - [x] **Estrategia de Pruebas (Unitarias, Integración, E2E)**
   - [ ] Pirámide de testing definida
   - [ ] Objetivos de cobertura (mín. 85%, target 95%, core 100%)
@@ -110,6 +117,7 @@
   - [ ] Estrategias de testing en producción
 
 ### Infraestructura y Deploy
+
 - [x] **Plan de Despliegue e Infraestructura**
   - [ ] Arquitectura de infraestructura (IaC)
   - [ ] Estrategias de deployment (blue-green, canary)
@@ -123,6 +131,7 @@
   - [ ] Docker/containerización completa
 
 ### Operación y Mantenimiento
+
 - [x] **Manual de Operación / Soporte**
   - [ ] Procedimientos operativos estándar
   - [ ] Troubleshooting y resolución de problemas
@@ -130,6 +139,7 @@
   - [ ] Escalamiento y gestión de capacidad
 
 ### Colaboración
+
 - [x] **Guía de Contribución (CONTRIBUTING.md)**
   - [ ] Proceso de contribución paso a paso
   - [ ] Estándares de commits y pull requests
@@ -147,6 +157,7 @@
 ## 📚 4. Documentación Complementaria
 
 ### Gestión de Riesgos
+
 - [x] **Documento de Riesgos Técnicos y Mitigaciones**
   - [ ] Análisis de riesgos técnicos
   - [ ] Planes de contingencia
@@ -154,6 +165,7 @@
   - [ ] Estrategias de mitigación implementadas
 
 ### Análisis y Benchmarking
+
 - [x] **Benchmarking / Análisis Comparativo**
   - [ ] Comparación con soluciones existentes
   - [ ] Análisis de performance y escalabilidad
@@ -161,6 +173,7 @@
   - [ ] Métricas de rendimiento baseline
 
 ### Investigación y Referencias
+
 - [x] **Documentación de Investigación / Referencias Externas**
   - [ ] Investigación previa y estado del arte
   - [ ] Referencias técnicas y papers relevantes
@@ -205,7 +218,7 @@
 
 ---
 
-**🧬 COMPROMISO BRIK**: *"La documentación no es un afterthought, es el ADN del proyecto. Cada línea de código sin documentar es una deuda técnica que compromete la filosofía de Circuitalidad Digital."*
+**🧬 COMPROMISO BRIK**: _"La documentación no es un afterthought, es el ADN del proyecto. Cada línea de código sin documentar es una deuda técnica que compromete la filosofía de Circuitalidad Digital."_
 
 ---
 

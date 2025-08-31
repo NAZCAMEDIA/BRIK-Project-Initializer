@@ -12,14 +12,8 @@
   "theme": "default",
   "hideGenerator": false,
   "disableSources": false,
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/node_modules/**"
-  ],
-  "externalPattern": [
-    "**/node_modules/**"
-  ],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/node_modules/**"],
+  "externalPattern": ["**/node_modules/**"],
   "sort": ["source-order"],
   "navigation": {
     "includeCategories": true,

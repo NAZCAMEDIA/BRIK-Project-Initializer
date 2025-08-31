@@ -1,51 +1,76 @@
 {
-  "name": "@brik/claude-ai-cli",
-  "version": "1.0.0",
-  "description": "Claude AI with omniscient BRIK knowledge - Conversational CLI for DAAF-BRIK-Circuitalidad architecture",
-  "main": "brik-ai.js",
+  "name": "brik-project-initializer",
+  "version": "5.1.0",
+  "description": "🧬 Sistema completo de gestión de proyectos BRIK con Agentes IA integrados + Claude Omnisciente",
+  "main": "brik-cli-subscription.js",
   "bin": {
-    "brik-ai": "./brik-ai.js",
-    "brik": "./brik-ai.js"
+    "brik": "./brik-cli-subscription.js",
+    "brik-sdk": "./brik-cli-sdk.js",
+    "brik-traditional": "./brik-cli.js",
+    "brik-ai": "./brik-ai.js"
   },
   "scripts": {
-    "start": "node brik-ai.js",
-    "dev": "node brik-ai.js",
-    "test": "node test/test-system.js",
-    "test-knowledge": "node src/knowledge/loader.js",
-    "test-context": "node src/claude/context-manager.js",
+    "start": "node brik-cli-subscription.js",
+    "start:sdk": "node brik-cli-sdk.js",
+    "start:traditional": "node brik-cli.js",
+    "start:ai": "node brik-ai.js",
+    "postinstall": "npx playwright install chromium",
+    "test": "node tests/test-ai-integration.js",
+    "test:system": "node test/test-system.js",
+    "test:knowledge": "node src/knowledge/loader.js",
+    "test:context": "node src/claude/context-manager.js",
+    "validate": "node l3_certification_suite.js",
+    "setup": "npm install && node scripts/setup-ai.js",
+    "configure": "node scripts/configure-ai.js",
     "install-global": "npm install -g .",
     "link": "npm link"
   },
   "keywords": [
     "brik",
-    "claude",
-    "ai",
-    "cli",
-    "conversational",
     "architecture",
+    "ai",
+    "claude",
+    "gemini",
+    "openai",
+    "codex",
+    "project-generator",
+    "code-generator",
+    "certification",
     "daaf",
     "circuitalidad",
-    "omniscient",
-    "development"
+    "conversational",
+    "omniscient"
   ],
-  "author": "NAZCAMEDIA - ECO System",
+  "author": "NAZCAMEDIA",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^4.1.2",
+    "@anthropic-ai/sdk": "^0.24.3",
+    "@google/generative-ai": "^0.17.0",
+    "openai": "^4.52.0",
+    "playwright": "^1.42.0",
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
     "figlet": "^1.6.0"
   },
   "devDependencies": {
+    "@types/node": "^20.10.5",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
     "jest": "^29.7.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NAZCAMEDIA/BRIK-Project-Initializer"
+    "url": "https://github.com/nazcamedia/brik-project-initializer.git"
   },
   "bugs": {
-    "url": "https://github.com/NAZCAMEDIA/BRIK-Project-Initializer/issues"
+    "url": "https://github.com/nazcamedia/brik-project-initializer/issues"
   },
-  "homepage": "https://github.com/NAZCAMEDIA/BRIK-Project-Initializer#readme"
+  "homepage": "https://github.com/nazcamedia/brik-project-initializer#readme",
+  "preferGlobal": true
 }
