@@ -1,0 +1,91 @@
+name: BRIK L3 Certification
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+
+jobs:
+  l3-certification:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        pip install safety
+        cargo install cargo-audit
+        
+    - name: Run L3 Certification Suite
+      run: npm run l3:certify
+      
+    - name: Upload certification report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: l3-certification-report-${{ matrix.node-version }}
+        path: |
+          brik-l3-certification-report.json
+          brik-l3-certification-report.html
+          security-audit-report.json
+          .brik-cert.sha256
+          .brik-hash-report.json
+        
+    - name: Comment PR with results
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      with:
+        script: |
+          const fs = require('fs');
+          if (fs.existsSync('brik-l3-certification-report.json')) {
+            const report = JSON.parse(fs.readFileSync('brik-l3-certification-report.json', 'utf8'));
+            const status = report.overall.l3_compliant ? '✅ PASSED' : '❌ FAILED';
+            const score = report.overall.score;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🎯 BRIK L3 Certification Results
+              
+**Status:** ${status}
+**Score:** ${score}/100
+**Level:** ${report.certification.level}
+
+### Test Results:
+${Object.entries(report.tests).map(([name, result]) => 
+  `- ${result.status === 'PASSED' ? '✅' : '❌'} ${name}: ${result.score}%`
+).join('\n')}
+
+${report.recommendations.length > 0 ? 
+`### Recommendations:
+${report.recommendations.slice(0, 3).map(rec => `- **${rec.priority}:** ${rec.action}`).join('\n')}` : ''}`
+            });
+          }

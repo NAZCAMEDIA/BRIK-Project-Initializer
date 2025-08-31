@@ -1,0 +1,352 @@
+# BRIK L3 Certification - Dependabot Configuration
+# 
+# Automated dependency updates for security and maintenance
+# Supports multi-language BRIK projects with intelligent scheduling
+# 
+# DEPLOYMENT: Move to .github/dependabot.yml
+
+version: 2
+updates:
+  # Node.js/TypeScript ecosystem
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "@security-team"
+    assignees:
+      - "@dev-leads"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+      - "automerge-candidate"
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    versioning-strategy: "increase"
+    groups:
+      # Critical security updates - highest priority
+      security-patches:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+      # Framework updates - group together
+      frameworks:
+        patterns:
+          - "react*"
+          - "@types/react*"
+          - "vue*"
+          - "angular*"
+          - "@angular/*"
+          - "next*"
+          - "nuxt*"
+          - "svelte*"
+        update-types:
+          - "major"
+          - "minor"
+      # Build tools - group together
+      build-tools:
+        patterns:
+          - "webpack*"
+          - "vite*"
+          - "rollup*"
+          - "esbuild*"
+          - "babel*"
+          - "@babel/*"
+          - "typescript*"
+          - "@typescript-eslint/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Testing frameworks - group together
+      testing:
+        patterns:
+          - "jest*"
+          - "@jest/*"
+          - "vitest*"
+          - "cypress*"
+          - "playwright*"
+          - "@testing-library/*"
+          - "mocha*"
+          - "chai*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Linting and formatting - group together
+      linting:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+          - "prettier*"
+          - "stylelint*"
+          - "lint-staged*"
+          - "husky*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Ignore major version updates for stable packages
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
+      # Ignore specific problematic packages
+      - dependency-name: "fsevents"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+
+  # Python ecosystem
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "10:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "@security-team"
+    commit-message:
+      prefix: "deps(python)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+      - "security"
+    open-pull-requests-limit: 3
+    groups:
+      # Python security patches
+      python-security:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+      # Core Python frameworks
+      python-frameworks:
+        patterns:
+          - "django*"
+          - "flask*"
+          - "fastapi*"
+          - "pydantic*"
+          - "sqlalchemy*"
+        update-types:
+          - "major"
+          - "minor"
+      # Python development tools
+      python-dev-tools:
+        patterns:
+          - "pytest*"
+          - "black*"
+          - "flake8*"
+          - "mypy*"
+          - "pylint*"
+          - "isort*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Rust ecosystem
+  - package-ecosystem: "cargo"
+    directory: "/brik-factory-rust"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "11:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "@rust-team"
+    commit-message:
+      prefix: "deps(rust)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "rust"
+      - "security"
+    open-pull-requests-limit: 3
+    groups:
+      # Rust security patches
+      rust-security:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+      # Core Rust crates
+      rust-core:
+        patterns:
+          - "tokio*"
+          - "serde*"
+          - "clap*"
+          - "reqwest*"
+          - "actix*"
+        update-types:
+          - "major"
+          - "minor"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+      time: "12:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "@devops-team"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "ci/cd"
+    open-pull-requests-limit: 2
+    groups:
+      # GitHub Actions security updates
+      actions-security:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+      # Standard actions
+      standard-actions:
+        patterns:
+          - "actions/*"
+          - "github/*"
+        update-types:
+          - "major"
+          - "minor"
+      # Third-party actions
+      third-party-actions:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "actions/*"
+          - "github/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "13:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "@devops-team"
+    commit-message:
+      prefix: "deps(docker)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "infrastructure"
+    open-pull-requests-limit: 2
+    groups:
+      # Base images
+      base-images:
+        patterns:
+          - "node*"
+          - "python*"
+          - "rust*"
+          - "alpine*"
+          - "ubuntu*"
+          - "debian*"
+        update-types:
+          - "major"
+          - "minor"
+
+  # Terraform (if present)
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "14:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "@devops-team"
+      - "@security-team"
+    commit-message:
+      prefix: "deps(terraform)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "terraform"
+      - "infrastructure"
+    open-pull-requests-limit: 2
+
+  # Demo projects - TypeScript
+  - package-ecosystem: "npm"
+    directory: "/demo-ts"
+    schedule:
+      interval: "monthly"
+      day: "first monday"
+      time: "09:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    commit-message:
+      prefix: "deps(demo-ts)"
+    labels:
+      - "dependencies"
+      - "demo"
+      - "typescript"
+    open-pull-requests-limit: 2
+
+  # Demo projects - Python
+  - package-ecosystem: "pip"
+    directory: "/demo-py"
+    schedule:
+      interval: "monthly"
+      day: "first tuesday"
+      time: "10:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    commit-message:
+      prefix: "deps(demo-py)"
+    labels:
+      - "dependencies"
+      - "demo"
+      - "python"
+    open-pull-requests-limit: 2
+
+  # Test projects
+  - package-ecosystem: "npm"
+    directory: "/test-auto-cert"
+    schedule:
+      interval: "monthly"
+      day: "second monday"
+      time: "09:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    commit-message:
+      prefix: "deps(test)"
+    labels:
+      - "dependencies"
+      - "testing"
+    open-pull-requests-limit: 1
+
+  - package-ecosystem: "npm"
+    directory: "/test-ecommerce"
+    schedule:
+      interval: "monthly"
+      day: "second tuesday"
+      time: "10:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    commit-message:
+      prefix: "deps(test-ecommerce)"
+    labels:
+      - "dependencies"
+      - "testing"
+    open-pull-requests-limit: 1

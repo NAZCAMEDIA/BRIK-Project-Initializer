@@ -1,0 +1,30 @@
+{
+  "name": "brik-project-initializer",
+  "version": "5.0.0",
+  "description": "BRIK Project Initializer with L3 Certification",
+  "main": "init-brik-project.sh",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "l3:certify": "node scripts/l3_certification_suite.js",
+    "l3:hash": "node scripts/generate_brik_hash.js",
+    "l3:hash:verify": "node scripts/generate_brik_hash.js --verify",
+    "l3:security": "bash tests/contract/security_audit.sh",
+    "l3:structure": "npx jest tests/contract/contract_structure.spec.ts",
+    "l3:cross-lang": "node tests/contract/cross_language_compile.test.js"
+  },
+  "keywords": [
+    "brik",
+    "project",
+    "initializer",
+    "certification"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2"
+  }
+}

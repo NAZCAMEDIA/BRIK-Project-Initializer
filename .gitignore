@@ -26,3 +26,7 @@ coverage.out
 *.swp
 *.swo
 *.code-workspace
+# L3 Certification artifacts
+brik-l3-certification-report.*
+security-audit-report.json
+.brik-hash-report.json
