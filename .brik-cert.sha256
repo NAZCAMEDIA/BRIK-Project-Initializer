@@ -1,9 +1,19 @@
 # BRIK L3 Certification Hash
+<<<<<<< HEAD
+# Generated: 2025-08-31T10:50:26.676Z
+# Algorithm: SHA256
+# Project: BRIK-Project-Initializer
+=======
 # Generated: 2025-08-31T13:21:56.039Z
 # Algorithm: SHA256
 # Project: inicio-proyecto
+>>>>>>> origin/main
 #
 # This hash ensures project integrity and L3 compliance
 # Verification: node scripts/generate_brik_hash.js --verify
 
+<<<<<<< HEAD
+38e98afedc081914aa425ca2e92a4404f1299ee962224291dd700b520a459b3c
+=======
 b24fad1074a843b2f1030ec7077cb2897304973e43eaa33531995d4ead206abf
+>>>>>>> origin/main

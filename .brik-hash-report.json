@@ -1,4 +1,17 @@
 {
+<<<<<<< HEAD
+  "brik_hash": "38e98afedc081914aa425ca2e92a4404f1299ee962224291dd700b520a459b3c",
+  "algorithm": "sha256",
+  "generated_at": "2025-08-31T10:50:26.676Z",
+  "generator_version": "1.0.0",
+  "project_root": "BRIK-Project-Initializer",
+  "components": {
+    "source_files_count": 216,
+    "configuration_files_count": 2,
+    "documentation_files_count": 5,
+    "total_project_size": 1637490,
+    "total_files_included": 216
+=======
   "brik_hash": "b24fad1074a843b2f1030ec7077cb2897304973e43eaa33531995d4ead206abf",
   "algorithm": "sha256",
   "generated_at": "2025-08-31T13:21:56.039Z",
@@ -10,6 +23,7 @@
     "documentation_files_count": 5,
     "total_project_size": 1850815,
     "total_files_included": 229
+>>>>>>> origin/main
   },
   "verification": {
     "reproducible": true,
