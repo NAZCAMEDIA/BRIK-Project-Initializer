@@ -1,582 +1,630 @@
-# 🧬 BRIK Project Initializer v5.0 - AI Powered Edition
+# 🧬 BRIK Project Initializer v5.1 - Digital Circuitalidad Edition
 
-[![BRIK L3 Certified](https://img.shields.io/badge/BRIK-L3%20Certified-00d4aa?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSIjMDBENEFBIi8+Cjwvc3ZnPg==)](https://github.com/nazcamedia/brik-project-initializer)
+[![BRIK v5 Certified](https://img.shields.io/badge/BRIK-v5%20Certified-00d4aa?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSIjMDBENEFBIi8+Cjwvc3ZnPg==)](https://github.com/nazcamedia/brik-project-initializer)
+[![Hexagonal Architecture](https://img.shields.io/badge/Architecture-Hexagonal-blue?style=for-the-badge)](docs/brikv5-endpoints.md)
+[![Digital Circuitalidad](https://img.shields.io/badge/Circuitalidad-Digital-purple?style=for-the-badge)](docs/brikv5-endpoints.md)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-100%25%20Coverage-brightgreen?style=for-the-badge&logo=jest)](tests/)
 [![Claude AI](https://img.shields.io/badge/Claude-Pro%2FMax%20Compatible-FF6B35?style=for-the-badge&logo=anthropic)](https://claude.ai)
 
-## 🎯 Sistema completo de gestión de proyectos BRIK con **Agentes IA integrados**
+## 🎯 Sistema Completo de Generación BRIK con **Circuitalidad Digital**
 
-### ✨ La forma más avanzada de crear proyectos con arquitectura BRIK certificada
+### ✨ La plataforma más avanzada para crear APIs enterprise-ready con arquitectura hexagonal
 
-## 🚀 ¿Qué es BRIK Intelligent v1.0.0?
+---
 
-**BRIK Intelligent v1.0.0** es el generador de código **enterprise-ready** que combina:
+## 🚀 ¿Qué es BRIK v5.1 Digital Circuitalidad Edition?
 
-- 🧠 **IA LLM Pipeline**: Análisis inteligente con Claude/GPT + Mock system fallback
-- 🏗️ **Arquitectura BRIK L0-L3**: CORE inmutable + WRAPPERS evolutivos + LIVING-LAYER inteligente  
-- ⚡ **Generación Multi-Lenguaje**: Rust, TypeScript, Python con cross-language compatibility
-- 🧪 **L3 Certification**: Contract testing + 100% cobertura + security audit
-- 🔐 **Trazabilidad Criptográfica**: Certificación SHA-256 + reproducible hashing
-- 🛡️ **Enterprise Security**: Multi-layer validation + OWASP compliance
+**BRIK v5.1** revoluciona la creación de APIs combinando:
 
-### ⚡ Generación Certificada en < 60 Segundos
+- 🧬 **Circuitalidad Digital**: Flujo Gates → Núcleo → Puertos → Presenter
+- 🏗️ **Arquitectura Hexagonal Pura**: Separación estricta de responsabilidades
+- 🛡️ **Idempotencia Nativa**: SHA-256 + cache + conflict detection
+- 📊 **Observabilidad Total**: Correlation ID + structured logging + metrics
+- 🤖 **IA Multi-Engine**: Claude Pro/Max + Agentes especializados
+- ⚡ **Templates Multi-Stack**: TypeScript/Fastify + Rust/Axum + OpenAPI 3.0
+
+### ⚡ De Idea a API Producción en < 3 Minutos
 
 ```bash
 # De esto...
-"API e-commerce con usuarios, productos y órdenes, usando PostgreSQL y Stripe"
+brik-v5
+# Wizard interactivo: TypeScript, PostgreSQL, Redis, users
 
-# A esto... 28+ archivos + L3 certification + contract tests
-├── src/core/user.rs              # CORE Layer - Inmutable
-├── src/components/stripe_wrapper.rs  # WRAPPERS Layer - Evolutivo
-├── src/living-layer/metrics_analyzer.rs  # LIVING Layer - Inteligente
-├── tests/unit/test_user.rs       # 100% coverage
-├── tests/contract/              # Cross-language validation
-├── .brik-cert.json             # L3 Certification
-└── .brik-cert.sha256           # Cryptographic hash
+# A esto... API completa con circuitalidad digital
+├── src/api/users/
+│   ├── gates/                    # Sistema de gates completo
+│   │   ├── auth-gate.ts         # JWT + RBAC + scopes
+│   │   ├── schema-gate.ts       # Zod validation + sanitización  
+│   │   ├── idempotency-gate.ts  # SHA-256 + cache + conflicts
+│   │   └── rate-gate.ts         # Rate limiting inteligente
+│   ├── domain/                   # Núcleo inmutable puro
+│   │   ├── entities/user.ts     # Entidades + invariantes
+│   │   └── use-cases/           # Casos de uso puros
+│   ├── ports/                    # Interfaces de contratos
+│   ├── adapters/                 # Implementaciones externas
+│   └── presenter/                # HTTP DTOs + error mapping
+├── openapi.yaml                  # Documentación auto-generada
+├── jest.config.js               # Tests 80%+ coverage
+└── .github/workflows/           # CI/CD con validación BRIK
 ```
 
 ---
 
 ## 🧠 Modos de Operación
 
-### 🎯 Modo Tradicional
-Scaffolding clásico con estructura BRIK predefinida.
+### 🆕 **BRIK v5 Generator** (Circuitalidad Digital)
+Sistema de **arquitectura hexagonal** con circuito de gates inteligente:
 
-### 🤖 Modo Inteligente (NUEVO)
-**Pipeline LLM de 4 etapas** que genera código completo desde lenguaje natural:
+```bash
+brik-v5  # Nuevo comando CLI integrado
+```
 
-1. **🔍 Domain Analyzer**: Analiza descripción y extrae requisitos
-2. **🏗️ Architecture Classifier**: Clasifica en capas BRIK (CORE/WRAPPERS/LIVING)
-3. **⚡ Code Generator**: Genera código funcional completo con tests
-4. **✅ Architecture Validator**: Valida cumplimiento BRIK y emite certificación
+**Circuito Digital Completo**:
+```
+HTTP Request → AuthGate → SchemaGate → PolicyGate → IdempotencyGate → RateGate → TimeoutGate
+                ↓
+            Domain Core (Pure) → Ports → Adapters → Presenter → HTTP Response
+```
+
+### 🤖 **Modo IA Inteligente** (Agentes Claude)
+Pipeline LLM con **agentes especializados**:
+
+```bash
+brik  # Claude Pro/Max con automatización web
+```
+
+### 🎯 **Modo Tradicional** (Scaffolding Clásico)
+```bash
+brik-traditional  # Generación clásica BRIK
+```
 
 ---
 
 ## 🚀 Inicio Rápido
 
-### 🤖 Modo Inteligente (Recomendado)
+### 🔥 **BRIK v5 - Circuitalidad Digital** (Recomendado)
 
 ```bash
-git clone https://github.com/C-BIAS/BRIK-Project-Initializer.git
-cd BRIK-Project-Initializer
+# Instalar globalmente
+npm install -g .
 
-# Generar proyecto completo desde descripción natural
-bash init-brik-project.sh mi-ecommerce --smart \
-  --description "API e-commerce con usuarios, productos y órdenes de compra" \
-  --integrations "postgresql,redis,stripe" \
-  --language rust
+# Generar API con arquitectura hexagonal
+brik-v5
 
-# El sistema generará automáticamente:
-# ✅ 28+ archivos de código Rust
-# ✅ Arquitectura BRIK completa
-# ✅ 20+ tests con 100% cobertura
-# ✅ Integraciones funcionales
-# ✅ Certificación SHA-256
+# El wizard te guiará:
+# 📝 Nombre del proyecto
+# 💻 Lenguaje (TypeScript/Rust)  
+# 🗄️ Base de datos (PostgreSQL/MySQL/etc)
+# ⚡ Cache (Redis/Memory)
+# 📢 Eventos (Kafka/RabbitMQ)
+# 🎯 Recurso principal (users/products/etc)
+
+# Resultado: API completa con:
+# ✅ Gates system (Auth, Schema, Idempotency, Rate)
+# ✅ Hexagonal architecture
+# ✅ OpenAPI 3.0 spec
+# ✅ Test suites completas
+# ✅ CI/CD pipeline
 ```
 
-### 🎯 Modo Tradicional
+### 🤖 **IA Mode - Claude Pro/Max**
 
 ```bash
-# Scaffolding clásico
-bash init-brik-project.sh mi-proyecto rust
-bash init-brik-project.sh mi-proyecto typescript
+# Con Claude Pro/Max subscription
+brik
+
+# Modo conversacional inteligente:
+# "Crear API e-commerce con usuarios, productos y pagos Stripe"
+# → Análisis automático + generación completa
 ```
 
 ---
 
-## 🧠 Pipeline Inteligente LLM
+## 🧬 **Arquitectura BRIK v5: Circuitalidad Digital**
 
-### 🔍 Análisis de Dominio
-**Input**: Descripción natural del proyecto
-**Output**: Análisis estructurado de requisitos
+### 🛡️ **Sistema de Gates** (Circuit Pattern)
+
+Cada request fluye por un circuito de validación antes de llegar al core:
+
+```typescript
+// AuthGate - JWT + RBAC + Scopes
+const authResult = await authGate.validate(request);
+if (!authResult.isSuccess) return authResult.error;
+
+// SchemaGate - Zod Validation + Sanitization  
+const schemaResult = await schemaGate.validate(request.body);
+if (!schemaResult.isSuccess) return schemaResult.error;
+
+// IdempotencyGate - SHA-256 + Cache + Conflict Detection
+const idempotencyResult = await idempotencyGate.validate({
+  idempotencyKey: request.headers['idempotency-key'],
+  payload: request.body
+});
+if (idempotencyResult.isDuplicate) return idempotencyResult.cachedResult;
+
+// RateGate - Rate Limiting + Sliding Windows
+const rateResult = await rateGate.validate(request.userContext);
+if (!rateResult.allowed) return rateResult.error;
+```
+
+### 🎯 **Domain Core** (Hexagonal Center)
+
+```typescript
+// Pure domain logic - no I/O, no side effects
+class User {
+  private constructor(
+    public readonly id: UserId,
+    public readonly email: Email,
+    public readonly name: string,
+    // ... immutable properties
+  ) {}
+
+  static create(data: UserCreationData): Result<User, DomainError> {
+    // Validation + invariants enforcement
+    // Returns Result<T, E> for functional error handling
+  }
+}
+```
+
+### 🔌 **Ports & Adapters** (External I/O)
+
+```typescript
+// Port (Contract)
+interface UserRepository {
+  save(user: User): Promise<Result<void, RepositoryError>>;
+  findById(id: UserId): Promise<Result<User, RepositoryError>>;
+}
+
+// Adapter (Implementation)
+class PostgreSQLUserRepository implements UserRepository {
+  // Real database integration with circuit breakers
+}
+```
+
+---
+
+## 🏆 **Features BRIK v5**
+
+### ✨ **Nuevas Características v5.1**
+
+| Feature | Descripción | Status |
+|---------|-------------|---------|
+| 🛡️ **Gates System** | Auth, Schema, Policy, Idempotency, Rate, Timeout | ✅ |
+| 🧬 **Circuitalidad Digital** | Request flow con circuit pattern | ✅ |
+| 🏗️ **Hexagonal Architecture** | Pure domain + ports & adapters | ✅ |
+| 🔁 **Idempotency Native** | SHA-256 fingerprinting + cache | ✅ |
+| 📊 **Total Observability** | Correlation ID + structured logs + metrics | ✅ |
+| 📋 **OpenAPI Auto-Gen** | Specs 3.0 con headers + examples | ✅ |
+| 🧪 **Test Suites** | Unit + Contract + Integration | ✅ |
+| 💻 **Multi-Stack** | TypeScript/Fastify + Rust/Axum | ✅ |
+
+### 🔥 **Idempotencia Avanzada**
+
+```http
+POST /api/v1/users
+Content-Type: application/json
+Idempotency-Key: user-creation-2024-01-31-abc123
+X-Correlation-Id: req_789xyz456
+Authorization: Bearer <jwt>
+
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "age": 30
+}
+```
+
+**Sistema:**
+1. Genera SHA-256 del payload normalizado
+2. Cache key = `idem:${key}:${hash}`
+3. Si existe → retorna resultado cacheado
+4. Si key existe con diferente payload → 409 Conflict
+5. Almacena resultado con TTL configurable
+
+### 📈 **Observabilidad Total**
 
 ```json
 {
-  "project_type": "E-commerce API",
-  "entities": ["User", "Product", "Order"],
-  "business_rules": ["Stock validation", "Order calculation"],
-  "integrations": ["PostgreSQL", "Redis", "Stripe"]
-}
-```
-
-### 🏗️ Clasificación Arquitectónica
-**Mapeo automático a capas BRIK**:
-- **CORE**: Entidades de negocio inmutables (User, Product, Order)
-- **WRAPPERS**: Integraciones externas (PostgreSQL, Stripe, Redis)
-- **LIVING-LAYER**: Componentes adaptativos (Metrics, Monitoring)
-
-### ⚡ Generación de Código
-**28+ archivos generados automáticamente**:
-```
-src/
-├── core/
-│   ├── user.rs           # Entidad inmutable + validaciones
-│   ├── product.rs        # Lógica de negocio + tests
-│   └── business_rules.rs # Reglas centralizadas
-├── components/
-│   ├── user_repository.rs      # Patrón Repository
-│   ├── stripe_wrapper.rs       # Integración pagos
-│   └── postgresql_wrapper.rs   # Wrapper BD
-├── living-layer/
-│   ├── metrics_analyzer.rs     # Análisis adaptativo
-│   └── performance_monitor.rs  # Monitoreo inteligente
-└── tests/
-    ├── unit/test_user.rs       # Tests unitarios
-    ├── integration/test_stripe.rs # Tests integración
-    └── property/property_tests.rs # Property-based testing
-```
-
-### ✅ Validación y Certificación
-- **Análisis BRIK**: Verificación arquitectónica automática
-- **100% Coverage**: Generación de tests completa
-- **Certificación SHA-256**: Hash verificable de calidad
-
----
-
-## 🏆 Ejemplo: E-commerce Generado
-
-**Input (30 palabras)**:
-```
-"API e-commerce con usuarios, productos y órdenes de compra usando PostgreSQL para datos y Stripe para pagos"
-```
-
-**Output Generado**:
-- 📁 **28 archivos Rust** con arquitectura completa
-- 🧪 **21 tests unitarios** pasando (100%)
-- 📊 **100% cobertura de código** certificada  
-- 🏗️ **Arquitectura BRIK** validada automáticamente
-- 🔐 **Hash SHA-256**: `9f496cebef05df2e6ff7c02b3d1842dd689e8ce70fa53f323415369fa01b82aa`
-
-### Estructura Generada:
-```rust
-// src/core/user.rs - ENTIDAD INMUTABLE
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct User {
-    pub id: Uuid,
-    pub email_validation: String,
-    pub password_hashing: String,
-    pub user_creation: String,
-    created_at: chrono::DateTime<chrono::Utc>,
-}
-
-// src/components/stripe_wrapper.rs - WRAPPER EXTERNO  
-#[async_trait]
-pub trait StripeIntegrationService {
-    async fn api_key(&self) -> Result<(), Box<dyn std::error::Error>>;
-    async fn webhook_secret(&self) -> Result<(), Box<dyn std::error::Error>>;
-    async fn currency(&self) -> Result<(), Box<dyn std::error::Error>>;
-}
-
-// tests/unit/test_user.rs - TESTS AUTOMÁTICOS
-#[test]
-fn test_user_creation() {
-    let user = User::new("test@example.com".to_string(), /*...*/);
-    assert!(!user.id.is_nil());
-    assert!(user.validate_userentity().is_ok());
+  "level": "info",
+  "correlationId": "req_789xyz456",
+  "gate": "AuthGate",
+  "duration": 45,
+  "success": true,
+  "userId": "user-123",
+  "endpoint": "/api/v1/users",
+  "message": "Authentication successful"
 }
 ```
 
 ---
 
-## 💡 Casos de Uso
+## 🔧 **Templates Disponibles**
 
-### 🛒 E-commerce
+### 📘 **TypeScript + Fastify**
+
 ```bash
-bash init-brik-project.sh shop --smart \
-  --description "Tienda online con carrito, pagos y inventario" \
-  --integrations "postgresql,stripe,redis" \
-  --language rust
-```
+brik-v5
+# Seleccionar: TypeScript, PostgreSQL, Redis
 
-### 📊 Analytics
-```bash  
-bash init-brik-project.sh analytics --smart \
-  --description "API de métricas con dashboards y reportes" \
-  --integrations "postgresql,prometheus,grafana" \
-  --language rust
-```
-
-### 🏦 Fintech
-```bash
-bash init-brik-project.sh fintech --smart \
-  --description "Sistema bancario con cuentas, transacciones y auditoría" \
-  --integrations "postgresql,redis,kafka" \
-  --language rust
-```
-
----
-
-## 🔧 Arquitectura Técnica
-
-### 🧠 Sistema LLM Enterprise
-- **Anthropic Claude**: Análisis principal de dominio
-- **OpenAI GPT**: Generación alternativa de código  
-- **Mock System**: Development sin API keys (completamente funcional)
-- **Fallback Chain**: Alta disponibilidad garantizada
-- **Domain Analysis**: 4-stage intelligent pipeline
-- **Architecture Classification**: Automatic BRIK layer mapping
-
-### 🏗️ Filosofía BRIK
-**CORE Layer (Inmutable)**:
-- Entidades de negocio
-- Reglas business inmutables  
-- 100% cobertura obligatoria
-
-**WRAPPERS Layer (Evolutivo)**:
-- Integraciones externas
-- Adaptadores configurables
-- Evolución sin breaking changes
-
-**LIVING Layer (Inteligente)**:
-- Componentes adaptativos
-- Métricas automáticas
-- Auto-optimización
-
-### 🔗 Tecnologías Soportadas
-
-#### ✅ Enterprise Ready (v1.0.0)
-- **Rust**: Generación completa con async/await, traits, 100% test coverage
-- **TypeScript**: React + Node.js + comprehensive testing
-- **Python**: FastAPI + SQLAlchemy + Pydantic + pytest
-- **PostgreSQL**: Full wrapper + migrations + connection pooling
-- **Redis**: Cache + sessions + pub/sub
-- **Stripe**: Complete payments integration
-- **Contract Testing**: Cross-language compatibility validation
-- **L3 Certification**: Automated quality assurance
-
-#### 🚧 Roadmap v1.1.0+
-- **Go**: Gin + GORM + Redis
-- **Java**: Spring Boot + JPA
-- **C#**: .NET Core + Entity Framework
-- **Cloud Native**: AWS/GCP/Azure integration
-
----
-
-## 🧪 L3 Certification System
-
-### 📊 Enterprise Quality Standards
-Todo proyecto generado debe cumplir **L3 Certification** (85%+ score):
-- ✅ **BRIK Structure Validation**: CORE/WRAPPERS/LIVING layers (≥85%)
-- ✅ **Security Audit**: Multi-layer security scanning (≥75%) 
-- ✅ **Cross-Language Compatibility**: Contract testing (≥75%)
-- ✅ **Hash Generation**: Cryptographic reproducibility (≥90%)
-- ✅ **Dependency Analysis**: Automated security updates (≥75%)
-- ✅ **100% Test Coverage**: Lines + branches + property-based
-- ✅ **OWASP Compliance**: Security best practices
-
-### 🔐 L3 Certification Hash
-Cada proyecto genera certificación criptográfica verificable:
-
-```json
-{
-  "project_name": "mi-ecommerce",
-  "project_type": "rust",
-  "timestamp": "2025-08-30T16:20:49+02:00", 
-  "l3_certification_level": "L3_ENTERPRISE",
-  "certification_score": 86,
-  "structure_validation": 95,
-  "security_audit_score": 78,
-  "cross_language_compatibility": 89,
-  "hash_reproducibility": 100,
-  "dependency_security": 82,
-  "brik_validated": true,
-  "contract_tests_passed": true
-}
-```
-
-**L3 Certification Hash**: `a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456`
-
----
-
-## 🛠️ Configuración Enterprise
-
-### 🔑 API Keys (Opcional - Mock System Incluido)
-```bash
-# Para análisis LLM completo (opcional)
-export ANTHROPIC_API_KEY="tu_clave_anthropic"
-export OPENAI_API_KEY="tu_clave_openai"
-
-# Sin API keys → Mock system completamente funcional
-bash init-brik-project.sh demo --smart --description "API demo"
-# ✅ Genera código funcional sin dependencias externas
-```
-
-### 🎦 NPM Scripts (Post-instalación)
-```bash
-# L3 Certification Suite
-npm run l3:certify              # Certificación completa
-npm run l3:structure            # Validación arquitectura BRIK
-npm run l3:security             # Audit de seguridad
-npm run l3:cross-lang           # Tests cross-language
-npm run l3:hash                 # Generación hash
-npm run l3:hash:verify          # Verificación integridad
-```
-
-### ⚙️ Configuración Enterprise Completa
-```bash
-# Generación con certificación L3
-bash init-brik-project.sh proyecto --smart \
-  --description "Descripción detallada del proyecto" \
-  --integrations "postgresql,redis,stripe,kafka" \
-  --language rust \
-  --llm-provider anthropic \
-  --l3-certification \
-  --contract-testing \
-  --security-audit \
-  --output-json \
-  --validate-architecture
-
-# Certificar proyecto existente
-cd mi-proyecto
-npm install
-npm run l3:certify
-```
-
----
-
-## 📁 Estructura Generada
-
-```
-mi-proyecto/
-├── .brik-dna.yml                    # ADN del proyecto
-├── .brik-cert.json                  # Certificación
-├── .brik-cert.sha256               # Hash verificable
-├── CIRCUITALIDAD.md                # Manifiesto
-├── Cargo.toml                      # Dependencias Rust
+# Genera:
+├── package.json          # Deps optimizadas para production
+├── tsconfig.json         # Strict mode + paths mapping  
+├── jest.config.js        # Tests config con coverage 80%+
 ├── src/
-│   ├── main.rs                     # Entry point  
-│   ├── lib.rs                      # Biblioteca
-│   ├── core/                       # LAYER: Inmutable
-│   │   ├── mod.rs                  
-│   │   ├── user.rs                 # Entidades
-│   │   ├── product.rs
-│   │   ├── order.rs  
-│   │   └── business_rules.rs       # Reglas centralizadas
-│   ├── components/                 # LAYER: Wrappers
-│   │   ├── mod.rs
-│   │   ├── user_repository.rs      # Data access
-│   │   ├── postgresql_wrapper.rs   # BD integration  
-│   │   ├── redis_wrapper.rs        # Cache
-│   │   └── stripe_wrapper.rs       # Payments
-│   └── living-layer/               # LAYER: Inteligente
-│       ├── mod.rs
-│       ├── metrics_analyzer.rs     # Análisis
-│       └── performance_monitor.rs  # Monitoreo
-├── tests/                          # 100% Coverage  
-│   ├── unit/                       # Tests unitarios
-│   ├── integration/                # Tests integración
-│   ├── property/                   # Property-based
-│   └── immutability/               # Tests CORE
-├── scripts/
-│   ├── test-coverage.sh            # Verificación 100%
-│   └── brik-certify.sh            # Certificación
-└── docs/
-    ├── ARCHITECTURE.md             # Documentación técnica
-    └── DOCUMENTATION_CHECKLIST.md  # Checklist calidad
+│   ├── api/users/
+│   │   ├── gates/        # Auth, Schema, Idempotency, Rate
+│   │   ├── domain/       # Entities, VOs, Use Cases (pure)
+│   │   ├── ports/        # Repository, Event, Cache contracts
+│   │   ├── adapters/     # PostgreSQL, Redis implementations
+│   │   ├── presenter/    # HTTP DTOs + error mapping
+│   │   └── tests/        # Unit + Integration tests
+│   └── shared/
+│       └── observability/ # Logger, Metrics, Correlation
+├── openapi.yaml          # OpenAPI 3.0 specification
+└── scripts/validate.sh   # Validation pipeline
+```
+
+### 🦀 **Rust + Axum**
+
+```bash  
+brik-v5
+# Seleccionar: Rust, PostgreSQL, Redis
+
+# Genera:
+├── Cargo.toml           # Production-ready dependencies
+├── src/
+│   ├── api/users/
+│   │   ├── gates/       # Auth, Schema gates con traits
+│   │   ├── domain/      # Structs, enums, invariantes
+│   │   ├── ports/       # Trait interfaces
+│   │   └── adapters/    # Implementaciones async
+│   └── shared/
+│       ├── types/       # Result type + extensions
+│       └── observability/ # Tracing + structured logging
+├── openapi.yaml         # OpenAPI 3.0 specification  
+└── tests/               # Unit + Integration tests
 ```
 
 ---
 
-## 🔗 Integraciones Disponibles
+## 💡 **Casos de Uso**
 
-### 💾 Bases de Datos
-- **PostgreSQL**: ORM completo + migraciones
-- **Redis**: Cache + sesiones + pub/sub  
-- **MongoDB**: Documentos + agregaciones
-- **ClickHouse**: Analytics + time-series
+### 🛒 **E-commerce API**
+```bash
+brik-v5
+# TypeScript, PostgreSQL, Redis, Stripe
+# Recurso: products
+# → API completa con productos, inventario, pagos
+```
 
-### 💳 Pagos
-- **Stripe**: Pagos + suscripciones + webhooks
-- **PayPal**: Checkout + express payments
-- **Square**: POS + online payments
+### 🏦 **Fintech API**
+```bash
+brik-v5  
+# Rust, PostgreSQL, Redis, Kafka
+# Recurso: transactions
+# → Sistema bancario con transacciones seguras
+```
 
-### 🔔 Mensajería  
+### 📊 **Analytics API**
+```bash
+brik-v5
+# TypeScript, ClickHouse, Redis
+# Recurso: events  
+# → Sistema de métricas con agregaciones
+```
+
+### 🏥 **Healthcare API**
+```bash
+brik-v5
+# Rust, PostgreSQL, Redis
+# Recurso: patients
+# → Sistema médico con compliance HIPAA
+```
+
+---
+
+## 🧪 **Testing & Calidad**
+
+### 📊 **Test Suites Automáticas**
+
+**Unit Tests** (Domain Layer):
+```typescript
+describe('User Entity', () => {
+  it('should create user with valid data', () => {
+    const result = User.create(validUserData);
+    expect(result.isOk()).toBe(true);
+    expect(result.unwrap().email.toString()).toBe('john@example.com');
+  });
+  
+  it('should fail with invalid email', () => {
+    const result = User.create({ ...validUserData, email: 'invalid' });
+    expect(result.isErr()).toBe(true);
+    expect(result.unwrapErr().code).toBe('INVALID_EMAIL');
+  });
+});
+```
+
+**Integration Tests** (Endpoints):
+```typescript
+describe('POST /api/v1/users', () => {
+  it('should create user with idempotency', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/users',
+      headers: {
+        'authorization': `Bearer ${authToken}`,
+        'idempotency-key': 'user-creation-unique-123'
+      },
+      payload: validUserPayload
+    });
+
+    expect(response.statusCode).toBe(201);
+    expect(response.body).toBeBrikCompliant();
+    expect(response.body).toBeIdempotent();
+  });
+});
+```
+
+**Custom Matchers**:
+```typescript
+expect(response.body).toBeBrikCompliant();        // Tiene correlationId + timestamp
+expect(response.body).toBeIdempotent();           // Metadatos de idempotencia
+expect(response.body).toHaveGateError('AuthGate', 'AUTH_TOKEN_MISSING');
+expect(response.body).toHaveDomainError('INVALID_USER_AGE');
+```
+
+### 🔍 **Validation Pipeline**
+
+```bash
+# Generado automáticamente en cada proyecto
+./scripts/validate.sh
+
+# Ejecuta:
+# ✅ Linting (eslint/clippy)  
+# ✅ Type checking (tsc/cargo check)
+# ✅ Tests (jest/cargo test)
+# ✅ Coverage verification (>80%)
+# ✅ OpenAPI validation
+# ✅ Security audit
+```
+
+---
+
+## 📚 **Documentación Completa**
+
+### 📖 **Guías Técnicas**
+- 🧬 [**BRIK v5 Endpoints Guide**](docs/brikv5-endpoints.md) - Arquitectura completa
+- 🎯 [**Certificación BRIK v5**](BRIK_V5_CERTIFICATION.md) - Status y compliance
+- 🏗️ [**Hexagonal Architecture**](docs/brikv5-endpoints.md#arquitectura-hexagonal-estricta) - Patterns y principios
+- 🛡️ [**Gates System**](docs/brikv5-endpoints.md#sistema-de-gates) - Auth, Schema, Idempotency
+- 📊 [**Observabilidad**](docs/brikv5-endpoints.md#observabilidad-y-auditoría) - Logging y métricas
+
+### 🚀 **Guías de Uso**
+- ⚡ [**Quick Start**](#inicio-rápido) - Empezar en 3 minutos
+- 🎯 [**Casos de Uso**](#casos-de-uso) - Ejemplos prácticos
+- 🧪 [**Testing Guide**](#testing--calidad) - Estrategias de testing
+- 🔧 [**Templates**](#templates-disponibles) - TypeScript y Rust
+
+### 📋 **Legacy Documentation**
+- 🏆 [**V1 Master Plan**](V1_MASTER_PLAN_EXECUTION_SUMMARY.md) - Historial BRIK v1
+- 🛡️ [**L3 Certification**](L3_CERTIFICATION_DEPLOYMENT_SUMMARY.md) - Sistema anterior
+- 🔍 [**Contract Testing**](docs/CONTRACT_TESTING_SPEC.md) - Cross-language validation
+
+---
+
+## 🛠️ **Configuración Enterprise**
+
+### 🔑 **Variables de Entorno**
+
+```bash
+# .env configuration
+NODE_ENV=development
+PORT=3000
+LOG_LEVEL=info
+
+# Database
+DATABASE_URL=postgresql://user:pass@localhost:5432/mydb
+
+# Redis Cache  
+REDIS_URL=redis://localhost:6379
+
+# JWT Authentication
+JWT_SECRET=your-super-secret-key-change-in-production
+
+# API Configuration
+API_TIMEOUT_MS=2000
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
+
+# Rate Limiting
+RATE_LIMIT_REQUESTS=100
+RATE_LIMIT_WINDOW_SECONDS=60
+
+# OpenAPI
+OPENAPI_ENABLED=true
+SWAGGER_UI_ENABLED=true
+```
+
+### ⚙️ **Comandos NPM**
+
+```bash
+# BRIK v5 Commands
+npm run start:v5              # Ejecutar generador BRIK v5
+npm run test:v5               # Test generador
+
+# Development  
+npm run dev                   # Desarrollo con hot reload
+npm run build                 # Build production
+npm run test                  # Test suites
+npm run lint                  # Code linting
+npm run typecheck             # Type validation
+
+# Legacy BRIK Commands
+npm run start                 # Claude Pro/Max mode
+npm run start:traditional     # Classic scaffolding  
+npm run start:ai              # IA agents mode
+npm run validate              # L3 certification
+```
+
+---
+
+## 🔗 **Integraciones Soportadas**
+
+### 💾 **Databases**
+- **PostgreSQL**: Full ORM + migrations + connection pooling
+- **MySQL**: Complete integration + query optimization
+- **SQLite**: Embedded database + file-based
+- **MongoDB**: Document store + aggregations
+- **Redis**: Cache + sessions + pub/sub
+
+### 📢 **Message Brokers**
 - **Kafka**: Event streaming + consumer groups
 - **RabbitMQ**: Message queuing + routing
 - **Redis Pub/Sub**: Real-time messaging
 
-### 📊 Monitoring
+### 💳 **Payment Processors**
+- **Stripe**: Payments + subscriptions + webhooks
+- **PayPal**: Checkout + express payments
+
+### 📊 **Observability**
 - **Prometheus**: Metrics collection
 - **Grafana**: Dashboards + alerting
 - **Jaeger**: Distributed tracing
 
 ---
 
-## 🧪 Testing y Calidad
+## 🚀 **Roadmap BRIK v5**
 
-### 🎯 Tipos de Tests Generados
-- **Unit Tests**: Cada función/método cubierto
-- **Integration Tests**: APIs + BD + servicios externos  
-- **Property Tests**: Validación automática de invariantes
-- **Immutability Tests**: Verificación CORE layer
-- **Performance Tests**: Benchmarks automáticos
+### ✅ **v5.1 - Current** 
+- Circuitalidad Digital completa
+- TypeScript + Rust templates
+- Gates system implementado
+- Idempotencia nativa
+- OpenAPI auto-generation
+- Test suites completas
 
-### 📊 Métricas Automáticas
-```bash
-cd mi-proyecto
+### 🔄 **v5.2 - Q2 2025**
+- **Go + Gin** templates
+- **Python + FastAPI** templates  
+- **GraphQL** support
+- **WebSocket** endpoints
+- **Event Sourcing** patterns
 
-# Ejecutar todos los tests
-cargo test
+### 🚀 **v5.3 - Q3 2025**
+- **Cloud Native** deployment
+- **Kubernetes** manifests
+- **Docker** optimization
+- **CI/CD** improvements
+- **Monitoring** dashboards
 
-# Verificar cobertura 100%
-./scripts/test-coverage.sh
-
-# Generar certificación BRIK
-STRICT_DOCS=1 ./scripts/brik-certify.sh
-```
-
-**Output esperado**:
-```
-✅ Tests: 21/21 passed
-✅ Coverage: 100.00% (58/58 lines)  
-✅ BRIK Validation: PASSED
-🔐 Certification Hash: 9f496cebef05df2e6ff7c02b3d1842dd689e8ce70fa53f323415369fa01b82aa
-```
-
----
-
-## 🔧 Desarrollo y Extensión
-
-### 🛠️ Añadir Nuevo Lenguaje
-```bash
-# 1. Crear generator
-echo "# Generator for Go" > generators/setup-go.sh
-
-# 2. Añadir templates  
-mkdir generators/intelligent/templates/go
-
-# 3. Actualizar code-generator.js
-# Implementar GoCodeGenerator class
-
-# 4. Testing
-bash init-brik-project.sh test-go --smart \
-  --description "API REST" --language go
-```
-
-### 🔌 Nueva Integración
-```bash  
-# 1. Actualizar mock-llm.js con nueva integración
-# 2. Añadir wrapper template
-# 3. Actualizar architecture-classifier.js
-# 4. Testing completo
-```
+### 🌟 **v5.4 - Q4 2025**
+- **Java + Spring** templates
+- **C# + .NET** templates
+- **Microservices** orchestration
+- **Event-Driven** architecture
+- **CQRS** patterns
 
 ---
 
-## 📚 Casos de Estudio
+## 🙌 **Contribución**
 
-### 🏆 Proyecto Real: E-commerce
-- **Input**: 30 palabras descripción
-- **Output**: 28 archivos + 21 tests
-- **Tiempo**: < 60 segundos  
-- **Cobertura**: 100%
-- **Estado**: Producción-ready
+### 🚀 **Áreas de Contribución**
+- ✨ **Nuevos Templates**: Go, Python, Java, C#
+- 🛡️ **Security Gates**: Nuevos tipos de validación
+- 📊 **Observability**: Métricas avanzadas, dashboards
+- 🧪 **Testing**: Nuevos tipos de tests, property-based testing
+- 📋 **OpenAPI**: Generación mejorada, validaciones
+- 🔧 **DevOps**: CI/CD optimizations, deployment strategies
 
-### 📊 Métricas de Rendimiento
-- **Generación Código**: ~2 segundos/archivo
-- **Análisis LLM**: ~5 segundos total
-- **Tests Automáticos**: ~3 segundos ejecución
-- **Certificación**: ~1 segundo validación
-
----
-
-## 🔗 Documentación Enterprise
-
-### 📚 Documentación Técnica
-- 📋 **Executive Summary**: [Resumen ejecutivo v1.0.0](EXECUTIVE_SUMMARY.md)
-- 🏆 **Master Plan**: [V1.0.0 Execution Summary](V1_MASTER_PLAN_EXECUTION_SUMMARY.md)
-- 🛡️ **L3 Certification**: [L3 Deployment Summary](L3_CERTIFICATION_DEPLOYMENT_SUMMARY.md)
-- 🔍 **Contract Testing**: [Cross-Language Compatibility](docs/CONTRACT_TESTING_SPEC.md)
-- 📊 **CI/CD Guide**: [Enterprise Pipeline](docs/CI_CD_GUIDE.md)
-- 🔄 **Roadmap**: [V1 Roadmap Expanded](docs/V1_ROADMAP_EXPANDED.md)
-
-### 🔗 Enlaces de Desarrollo
-- 📖 **Wiki**: [Documentación completa](https://github.com/C-BIAS/BRIK-Project-Initializer/wiki)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/C-BIAS/BRIK-Project-Initializer/issues)  
-- 💬 **Discusiones**: [GitHub Discussions](https://github.com/C-BIAS/BRIK-Project-Initializer/discussions)
-- 🎯 **Projects**: [GitHub Project Board](https://github.com/C-BIAS/BRIK-Project-Initializer/projects)
-
----
-
-## 🙌 Contribución Enterprise
-
-### 🚀 Áreas de Contribución
-- ✨ **Nuevos lenguajes**: Go, Java, C#, PHP (v1.1.0+)
-- ☁️ **Cloud Integration**: AWS, GCP, Azure native deployment
-- 🧠 **AI Enhancement**: Advanced LLM prompts, domain analysis
-- 🛡️ **Security**: Enhanced vulnerability detection, OWASP compliance
-- 🧪 **Contract Testing**: Cross-language API validation
-- 📊 **Performance**: Optimization, benchmarking, monitoring
-
-### 📋 Proceso Enterprise
+### 📋 **Proceso de Contribución**
 1. Fork del repositorio
 2. Crear branch: `git checkout -b feature/nueva-funcionalidad`
-3. Implementar con **L3 Certification** (85%+ score)
-4. Ejecutar: `npm run l3:certify` (debe pasar)
-5. Tests: 100% coverage + contract testing
-6. Security audit: `npm run l3:security` (sin vulnerabilidades críticas)
-7. Commit: `git commit -m "feat: descripción"` (Conventional Commits)
-8. Push: `git push origin feature/nueva-funcionalidad`
-9. Crear Pull Request con L3 certification report
-10. Code review + automated quality gates
+3. Implementar con **BRIK v5 compliance**
+4. Tests: Ejecutar `npm run test:v5`
+5. Documentación: Actualizar guías relevantes
+6. Commit: `git commit -m "feat: descripción"` (Conventional Commits)
+7. Push: `git push origin feature/nueva-funcionalidad`  
+8. Crear Pull Request con descripción detallada
 
 ---
 
-## 📄 Licencia
+## 📄 **Licencia**
 
 Este proyecto está bajo la licencia **MIT**. Ver [LICENSE](LICENSE) para más detalles.
 
 ---
 
-## 🏢 Acerca de C-BIAS ENTREPRISES
+## 🏢 **Créditos**
 
-**C-BIAS ENTREPRISES** es líder en desarrollo de software con IA, especializado en:
+### 🧬 **Sistema ECO v3.0**
+Desarrollado con **ECO** (Enhanced Cognitive Operations), el neocórtex digital que amplifica la intención estratégica mediante:
 
-- 🧠 **Sistemas Inteligentes**: IA + arquitecturas robustas
-- 🏗️ **Ingeniería de Calidad**: 100% coverage + certificación
-- ⚡ **Automatización Avanzada**: DevOps + MLOps + AIOps
-- 🔐 **Seguridad Empresarial**: Auditoría + compliance + trazabilidad
+- **ECO-Lambda (Λ)**: Análisis estratégico y coordinación general
+- **ECO-Sigma (Σ)**: Desarrollo técnico, APIs y arquitecturas  
+- **ECO-Delta (Δ)**: DevOps, infraestructura y automatización
+- **ECO-Theta (Θ)**: Diseño, UX/UI y documentación
+- **ECO-Psi (Ψ)**: Seguridad, auditoría y protección
 
-[![Creado por C-BIAS ENTREPRISES](https://img.shields.io/badge/created_by-C--BIAS%20ENTREPRISES-0a66c2)](https://www.c-bias.com)
-
-### 🎯 Servicios Disponibles
-- **Consultoría IA**: Implementación de sistemas inteligentes
-- **Desarrollo Custom**: Generadores específicos para tu dominio  
-- **Certificación BRIK**: Auditoría y validación de arquitecturas
-- **Training**: Capacitación en metodologías BRIK + IA
-
-**Contacto**: [hello@c-bias.com](mailto:hello@c-bias.com) | [www.c-bias.com](https://www.c-bias.com)
+### 🎯 **Agentes Colaboradores**
+- **Claude Code**: Desarrollo y arquitectura técnica
+- **Anthropic Claude**: Análisis de dominio y generación
+- **BRIK Philosophy**: Fundamentos arquitectónicos
 
 ---
 
-## 🚀 Quick Start Enterprise
+## 🚀 **Quick Start Enterprise**
 
 ```bash
-# Clonar repositorio
-git clone https://github.com/C-BIAS/BRIK-Project-Initializer.git
-cd BRIK-Project-Initializer
+# 1. Instalar BRIK v5 globalmente
+git clone https://github.com/nazcamedia/brik-project-initializer.git
+cd brik-project-initializer  
+npm install -g .
 
-# Instalar dependencias enterprise
+# 2. Generar API con circuitalidad digital
+brik-v5
+
+# 3. Seguir wizard interactivo:
+#    📝 Nombre: mi-startup-api
+#    💻 Lenguaje: TypeScript  
+#    🗄️ BD: PostgreSQL
+#    ⚡ Cache: Redis
+#    🎯 Recurso: users
+
+# 4. Navegar al proyecto generado
+cd mi-startup-api
+
+# 5. Instalar dependencias
 npm install
 
-# Generar proyecto con certificación L3
-bash init-brik-project.sh mi-startup --smart \
-  --description "API REST para startup con usuarios y pagos" \
-  --integrations "postgresql,redis,stripe" \
-  --language rust \
-  --l3-certification
+# 6. Configurar entorno  
+cp .env.example .env
+# Editar .env con tu configuración
 
-# Verificar certificación L3
-cd mi-startup
-npm run l3:certify
+# 7. Ejecutar en desarrollo
+npm run dev
 
-# ¡En < 60 segundos: código + tests + security audit + L3 certification!
+# 8. Abrir documentación
+# http://localhost:3000/docs (Swagger UI)
+
+# 9. Test endpoint con idempotencia
+curl -X POST http://localhost:3000/api/v1/users \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <jwt>" \
+  -H "Idempotency-Key: user-creation-unique-123" \
+  -d '{"email":"user@example.com","name":"John Doe","age":30}'
+
+# ¡API enterprise-ready funcionando en 3 minutos!
 ```
 
-**De idea a código enterprise-ready en minutos. De código a producción con certificación L3.** 🚀
+### 🎯 **De Idea a Producción**
+
+1. **Generación** (30 segundos): Arquitectura hexagonal completa
+2. **Configuración** (2 minutos): Variables de entorno + dependencias  
+3. **Testing** (30 segundos): Tests unitarios + integración pasando
+4. **Deploy** (1 minuto): Docker + CI/CD configurado
+
+**Total: < 5 minutos de idea a API funcionando en producción** 🚀
 
 ---
 
-*Hecho con 🧬 IA y 🧠 filosofía BRIK por [C-BIAS ENTREPRISES](https://www.c-bias.com)*
+*Creado con 🧬 Circuitalidad Digital y 🏗️ Arquitectura Hexagonal por ECO v3.0*

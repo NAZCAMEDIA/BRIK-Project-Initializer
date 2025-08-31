@@ -1,0 +1,643 @@
+openapi: 3.0.3
+info:
+  title: "{{PROJECT_NAME}} API"
+  description: "BRIK v5 API with circuitalidad digital and hexagonal architecture"
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Development server
+  - url: https://api.example.com/v1
+    description: Production server
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    CorrelationId:
+      name: X-Correlation-Id
+      in: header
+      description: Unique request correlation ID for tracing
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9_-]+$'
+        example: "req_abc123def456"
+
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      description: Unique key to ensure idempotent operations
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+        pattern: '^[a-zA-Z0-9_-]+$'
+        example: "user-creation-2024-01-15-abc123"
+
+    UserId:
+      name: id
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+
+    PaginationPage:
+      name: page
+      in: query
+      description: Page number (1-based)
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+
+    PaginationLimit:
+      name: limit
+      in: query
+      description: Number of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+        example: 20
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - type
+            - code
+            - message
+          properties:
+            type:
+              type: string
+              enum: [GATE_ERROR, DOMAIN_ERROR, PORT_ERROR, INTERNAL_ERROR]
+              example: "DOMAIN_ERROR"
+            code:
+              type: string
+              example: "VALIDATION_FAILED"
+            message:
+              type: string
+              example: "Email is required and must be a valid email address"
+            gate:
+              type: string
+              description: "Present when type is GATE_ERROR"
+              example: "SchemaGate"
+            port:
+              type: string
+              description: "Present when type is PORT_ERROR"
+              example: "UserRepository"
+            details:
+              type: object
+              description: "Additional error details"
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - age
+        - createdAt
+        - updatedAt
+        - version
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "John Doe"
+        age:
+          type: integer
+          minimum: 13
+          maximum: 150
+          example: 30
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00.000Z"
+        version:
+          type: integer
+          example: 1
+
+    UserProfile:
+      type: object
+      properties:
+        bio:
+          type: string
+          maxLength: 500
+          example: "Software developer and BRIK architecture enthusiast"
+        website:
+          type: string
+          format: uri
+          example: "https://johndoe.com"
+        avatarUrl:
+          type: string
+          format: uri
+          example: "https://example.com/avatars/johndoe.jpg"
+
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - name
+        - age
+      properties:
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "John Doe"
+        age:
+          type: integer
+          minimum: 13
+          maximum: 150
+          example: 30
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "John Updated"
+        age:
+          type: integer
+          minimum: 13
+          maximum: 150
+          example: 31
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+
+    CreateUserResponse:
+      type: object
+      required:
+        - user
+        - metadata
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        metadata:
+          type: object
+          properties:
+            correlationId:
+              type: string
+              example: "req_abc123def456"
+            idempotencyKey:
+              type: string
+              example: "user-creation-2024-01-15-abc123"
+            cached:
+              type: boolean
+              description: "true if this response was returned from idempotency cache"
+              example: false
+
+    PaginatedUsersResponse:
+      type: object
+      required:
+        - users
+        - pagination
+        - metadata
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          type: object
+          required:
+            - page
+            - limit
+            - total
+            - pages
+          properties:
+            page:
+              type: integer
+              example: 1
+            limit:
+              type: integer
+              example: 20
+            total:
+              type: integer
+              example: 150
+            pages:
+              type: integer
+              example: 8
+        metadata:
+          type: object
+          properties:
+            correlationId:
+              type: string
+              example: "req_abc123def456"
+
+    HealthCheck:
+      type: object
+      required:
+        - status
+        - timestamp
+        - version
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy, degraded]
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00.000Z"
+        version:
+          type: string
+          example: "1.0.0"
+        uptime:
+          type: integer
+          description: "Uptime in seconds"
+          example: 3600
+        dependencies:
+          type: object
+          properties:
+            database:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down, degraded]
+                response_time_ms:
+                  type: number
+            redis:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down, degraded]
+                response_time_ms:
+                  type: number
+
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid input or validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Unauthorized:
+      description: Unauthorized - Invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Forbidden:
+      description: Forbidden - Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Not Found - Resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Conflict:
+      description: Conflict - Resource already exists or idempotency conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    UnprocessableEntity:
+      description: Unprocessable Entity - Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    TooManyRequests:
+      description: Too Many Requests - Rate limit exceeded
+      headers:
+        X-RateLimit-Limit:
+          description: Request limit per time window
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          description: Remaining requests in current window
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          description: Time when the rate limit resets (Unix timestamp)
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ServiceUnavailable:
+      description: Service Unavailable - External service down
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API and its dependencies
+      operationId: healthCheck
+      security: []
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheck'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /users:
+    get:
+      summary: List users
+      description: Retrieve a paginated list of users
+      operationId: listUsers
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: sort
+          in: query
+          description: Sort field
+          schema:
+            type: string
+            enum: [created_at, updated_at, name]
+            default: created_at
+        - name: order
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: List of users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      summary: Create a new user
+      description: Creates a new user with idempotency support
+      operationId: createUser
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+            examples:
+              basic:
+                summary: Basic user creation
+                value:
+                  email: "john.doe@example.com"
+                  name: "John Doe"
+                  age: 30
+              with_profile:
+                summary: User with profile
+                value:
+                  email: "jane.doe@example.com"
+                  name: "Jane Doe"
+                  age: 28
+                  profile:
+                    bio: "Software engineer and tech enthusiast"
+                    website: "https://janedoe.com"
+      responses:
+        '201':
+          description: User created successfully
+          headers:
+            X-Correlation-Id:
+              description: Request correlation ID
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      description: Retrieve a specific user by their ID
+      operationId: getUserById
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user
+                  - metadata
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  metadata:
+                    type: object
+                    properties:
+                      correlationId:
+                        type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      summary: Update user
+      description: Update an existing user
+      operationId: updateUser
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user
+                  - metadata
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  metadata:
+                    type: object
+                    properties:
+                      correlationId:
+                        type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Delete user
+      description: Delete an existing user (admin only)
+      operationId: deleteUser
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '204':
+          description: User deleted successfully
+          headers:
+            X-Correlation-Id:
+              description: Request correlation ID
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Users
+    description: User management endpoints
