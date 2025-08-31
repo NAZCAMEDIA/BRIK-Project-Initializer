@@ -1,0 +1,51 @@
+{
+  "name": "@brik/claude-ai-cli",
+  "version": "1.0.0",
+  "description": "Claude AI with omniscient BRIK knowledge - Conversational CLI for DAAF-BRIK-Circuitalidad architecture",
+  "main": "brik-ai.js",
+  "bin": {
+    "brik-ai": "./brik-ai.js",
+    "brik": "./brik-ai.js"
+  },
+  "scripts": {
+    "start": "node brik-ai.js",
+    "dev": "node brik-ai.js",
+    "test": "node test/test-system.js",
+    "test-knowledge": "node src/knowledge/loader.js",
+    "test-context": "node src/claude/context-manager.js",
+    "install-global": "npm install -g .",
+    "link": "npm link"
+  },
+  "keywords": [
+    "brik",
+    "claude",
+    "ai",
+    "cli",
+    "conversational",
+    "architecture",
+    "daaf",
+    "circuitalidad",
+    "omniscient",
+    "development"
+  ],
+  "author": "NAZCAMEDIA - ECO System",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "figlet": "^1.6.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NAZCAMEDIA/BRIK-Project-Initializer"
+  },
+  "bugs": {
+    "url": "https://github.com/NAZCAMEDIA/BRIK-Project-Initializer/issues"
+  },
+  "homepage": "https://github.com/NAZCAMEDIA/BRIK-Project-Initializer#readme"
+}

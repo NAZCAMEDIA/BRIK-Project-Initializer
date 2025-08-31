@@ -1,15 +1,15 @@
 {
-  "brik_hash": "9fc55b9790171640d210198a74ae6f5f30f97b3980c62f9a8e9a77e63af0af74",
+  "brik_hash": "38e98afedc081914aa425ca2e92a4404f1299ee962224291dd700b520a459b3c",
   "algorithm": "sha256",
-  "generated_at": "2025-08-30T10:16:19.008Z",
+  "generated_at": "2025-08-31T10:50:26.676Z",
   "generator_version": "1.0.0",
-  "project_root": "refactor-plan",
+  "project_root": "BRIK-Project-Initializer",
   "components": {
-    "source_files_count": 195,
+    "source_files_count": 216,
     "configuration_files_count": 2,
     "documentation_files_count": 5,
-    "total_project_size": 1136401,
-    "total_files_included": 195
+    "total_project_size": 1637490,
+    "total_files_included": 216
   },
   "verification": {
     "reproducible": true,
