@@ -23,6 +23,7 @@
     "test:context": "node src/claude/context-manager.js",
     "test:v5": "node -e \"console.log('\\n🧬 Testing BRIK v5 Generator...\\n'); require('./brik-v5-generator.js')\"",
     "validate": "node l3_certification_suite.js",
+    "l3:certify": "node scripts/l3-project-certification.js",
     "setup": "npm install && node scripts/setup-ai.js",
     "configure": "node scripts/configure-ai.js",
     "install-global": "npm install -g .",
