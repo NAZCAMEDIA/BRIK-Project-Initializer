@@ -8,12 +8,24 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { execSync, spawn } = require('child_process');
-const chalk = require('chalk');
+const chalkModule = require('chalk');
+const chalk = chalkModule.default || chalkModule;
+const FailureMonitoringService = require('../monitoring/failure-monitoring-service');
 
 class BRIKExecutor {
   constructor() {
     this.actionHandlers = new Map();
     this.setupActionHandlers();
+    
+    // Initialize failure monitoring system
+    this.failureMonitoring = new FailureMonitoringService({
+      github: {
+        token: process.env.GITHUB_TOKEN,
+        owner: process.env.GITHUB_OWNER || 'NAZCAMEDIA',
+        repo: process.env.GITHUB_REPO || 'BRIK-Project-Initializer'
+      },
+      enabled: process.env.BRIK_FAILURE_MONITORING !== 'false'
+    });
   }
 
   /**
@@ -23,7 +35,6 @@ class BRIKExecutor {
     // Creación de proyectos
     this.actionHandlers.set('create_project_structure', this.createProjectStructure.bind(this));
     this.actionHandlers.set('create_api_project', this.createApiProject.bind(this));
-    this.actionHandlers.set('create_full_stack_project', this.createFullStackProject.bind(this));
     
     // Generación de código
     this.actionHandlers.set('generate_entity', this.generateEntity.bind(this));
@@ -33,7 +44,6 @@ class BRIKExecutor {
     
     // Análisis y restructuración
     this.actionHandlers.set('analyze_project', this.analyzeProject.bind(this));
-    this.actionHandlers.set('restructure_project', this.restructureProject.bind(this));
     
     // Testing y certificación
     this.actionHandlers.set('generate_tests', this.generateTests.bind(this));
@@ -54,19 +64,22 @@ class BRIKExecutor {
   }
 
   /**
-   * Ejecuta una acción específica
+   * Ejecuta una acción específica con monitoreo de fallos
    */
   async execute(action) {
     const { type, data } = action;
     
     console.log(chalk.dim(`🔧 Ejecutando: ${type}`));
     
-    const handler = this.actionHandlers.get(type);
-    if (!handler) {
-      throw new Error(`Tipo de acción no reconocido: ${type}`);
-    }
-    
-    return await handler(data);
+    // Use failure monitoring to wrap the execution
+    return await this.failureMonitoring.monitorExecution(async () => {
+      const handler = this.actionHandlers.get(type);
+      if (!handler) {
+        throw new Error(`Tipo de acción no reconocido: ${type}`);
+      }
+      
+      return await handler(data);
+    }, action);
   }
 
   /**
@@ -953,6 +966,45 @@ module.exports = BaseService;
     const { manager = 'npm', cwd = process.cwd() } = data;
     console.log(`📦 Instalando dependencias con ${manager}...`);
     execSync(`${manager} install`, { cwd, stdio: 'inherit' });
+  }
+
+  /**
+   * Gets failure monitoring statistics
+   * @returns {Object} Monitoring stats
+   */
+  getMonitoringStats() {
+    return this.failureMonitoring.getStats();
+  }
+
+  /**
+   * Tests the failure monitoring system
+   * @returns {Promise<Boolean>} Test result
+   */
+  async testFailureMonitoring() {
+    return await this.failureMonitoring.testMonitoring();
+  }
+
+  /**
+   * Manually trigger failure monitoring test
+   * @param {String} testType - Type of test failure to simulate
+   * @returns {Promise<void>}
+   */
+  async simulateFailure(testType = 'test_failure') {
+    const testAction = {
+      type: testType,
+      data: { 
+        test: true, 
+        purpose: 'monitoring_system_test',
+        timestamp: new Date().toISOString()
+      }
+    };
+    
+    try {
+      await this.execute(testAction);
+    } catch (error) {
+      console.log('✅ Test failure captured by monitoring system');
+      throw error;
+    }
   }
 }
 
