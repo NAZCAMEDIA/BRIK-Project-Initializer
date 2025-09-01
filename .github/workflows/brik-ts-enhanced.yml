@@ -265,7 +265,7 @@ jobs:
       working-directory: ${{ matrix.project }}
       run: |
         echo "🔧 Validating build performance..."
-        time npm run build
+        npm run build
         
     - name: "✅ L2 Gate Validation"
       run: |
