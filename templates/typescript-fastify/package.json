@@ -15,7 +15,7 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "typecheck": "tsc --noEmit",
     "openapi:generate": "ts-node scripts/generate-openapi.ts",
-    "openapi:validate": "swagger-validator openapi.yaml"
+    "openapi:validate": "swagger-cli validate openapi.yaml"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
@@ -49,7 +49,7 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.2",
-    "swagger-validator": "^1.0.0"
+    "@apidevtools/swagger-cli": "^4.0.4"
   },
   "engines": {
     "node": ">=18.0.0"

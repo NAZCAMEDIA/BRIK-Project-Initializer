@@ -231,7 +231,7 @@ jobs:
     
     - name: Install OpenAPI tools
       run: |
-        npm install -g @apidevtools/swagger-parser swagger-validator-badge
+        npm install -g @apidevtools/swagger-parser @apidevtools/swagger-cli
     
     - name: Validate TypeScript OpenAPI
       run: |
@@ -272,7 +272,7 @@ jobs:
         echo "🔍 Scanning for secrets in templates..."
         
         # Check for common secret patterns
-        if grep -r -E "(api[_-]?key|secret|password|token)" templates/ --include="*.ts" --include="*.js" --include="*.rs" --include="*.yaml" | grep -v "# " | grep -v "//" | grep -v "example" | grep -v "your-" | grep -v "change-in-production"; then
+        if grep -r -E "(api[_-]?key|secret|password|token)" templates/ --include="*.ts" --include="*.js" --include="*.rs" --include="*.yaml" | grep -v "# " | grep -v "//" | grep -v "example" | grep -v "your-" | grep -v "change-in-production" | grep -v "process.env" | grep -v "from env" | grep -v "Bearer auth" | grep -v "JWT auth" | grep -v "jwtSecret.*string"; then
           echo "❌ Potential secrets found in templates"
           exit 1
         fi

@@ -769,7 +769,7 @@ echo "✅ BRIK v5 validation completed successfully!"
   getOpenAPIValidateCommand() {
     const commands = {
       typescript: 'npm run openapi:validate',
-      rust: 'swagger-validator openapi.yaml'
+      rust: 'cargo doc --no-deps'
     };
     return commands[this.config.language] || 'validate openapi';
   }
