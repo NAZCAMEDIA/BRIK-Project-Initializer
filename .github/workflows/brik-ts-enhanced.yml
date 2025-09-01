@@ -171,9 +171,8 @@ jobs:
         else
           echo "Coverage file not found, checking alternative methods..."
           RAW_COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1 || echo "0")
-          # Strip ANSI color codes first, then extract only digits
-          CLEAN_COVERAGE=$(echo "$RAW_COVERAGE" | sed 's/\x1b\[[0-9;]*m//g')
-          COVERAGE=$(echo "$CLEAN_COVERAGE" | sed 's/[^0-9]//g')
+          # Strip ANSI color codes and extract only digits  
+          COVERAGE=$(echo "$RAW_COVERAGE" | sed -E 's/\x1B\[[0-9;]*m//g' | sed -E 's/[^0-9]//g')
           echo "Coverage extracted: ${COVERAGE}%"
           echo "COVERAGE=${COVERAGE}" >> $GITHUB_ENV
         fi
@@ -181,6 +180,8 @@ jobs:
     - name: "✅ Verify L1 coverage (≥80%)"
       working-directory: ${{ matrix.project }}
       run: |
+        # Clean any remaining ANSI codes from COVERAGE variable
+        COVERAGE=${COVERAGE//[^0-9]/}
         echo "Coverage for ${{ matrix.project }}: ${COVERAGE}%"
         if [ -z "$COVERAGE" ] || [ "$COVERAGE" -eq 0 ]; then
           echo "⚠️ Could not extract coverage, checking jest output..."
@@ -323,9 +324,8 @@ jobs:
         else
           echo "Using fallback coverage extraction..."
           RAW_COVERAGE=$(npx jest --coverage --silent 2>/dev/null | grep "All files" | awk -F'|' '{print $2}' | head -1 || echo "0")
-          # Strip ANSI color codes first, then extract only digits
-          CLEAN_COVERAGE=$(echo "$RAW_COVERAGE" | sed 's/\x1b\[[0-9;]*m//g')
-          COVERAGE=$(echo "$CLEAN_COVERAGE" | sed 's/[^0-9]//g')
+          # Strip ANSI color codes and extract only digits
+          COVERAGE=$(echo "$RAW_COVERAGE" | sed -E 's/\x1B\[[0-9;]*m//g' | sed -E 's/[^0-9]//g')
           echo "L3 Coverage: ${COVERAGE}%"
           echo "L3_COVERAGE=${COVERAGE}" >> $GITHUB_ENV
         fi
@@ -333,6 +333,8 @@ jobs:
     - name: "✅ Verify L3 coverage (≥95%)"
       working-directory: demo-ts
       run: |
+        # Clean any remaining ANSI codes from L3_COVERAGE variable
+        L3_COVERAGE=${L3_COVERAGE//[^0-9]/}
         if [ -z "$L3_COVERAGE" ] || [ "$L3_COVERAGE" -eq 0 ]; then
           echo "❌ L3 FAILED: Could not extract coverage"
           exit 1
