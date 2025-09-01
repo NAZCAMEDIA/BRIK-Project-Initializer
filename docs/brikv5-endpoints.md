@@ -4,6 +4,13 @@
 
 BRIK v5 introduce un sistema de **circuitalidad digital** para endpoints web con arquitectura hexagonal pura, idempotencia nativa, observabilidad integral y seguridad por capas. Cada endpoint funciona como un circuito autónomo con gates, núcleo inmutable y puertos especializados.
 
+## Principios BRIK v5
+
+- Modularidad y extensibilidad.
+- Simplicidad en la integración.
+- Documentación clara y reproducible.
+- Enfoque en developer experience.
+
 ## 1. PRINCIPIOS BRIK v5 Y CIRCUITALIDAD
 
 ### Filosofía Core
