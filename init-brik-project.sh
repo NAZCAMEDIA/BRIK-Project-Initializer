@@ -452,7 +452,7 @@ case "$PROJECT_TYPE" in
     # Verifica por función 100%
     if echo "$REPORT" | grep -E '\s[0-9]+\.[0-9]+%$' | grep -v '100.0%$' >/dev/null; then
       echo "❌ Alguna función Go no tiene 100%"; exit 4; fi
-    TOTAL=$(echo "$REPORT" | grep -E '^total:' | awk '{print $3}' | tr -d '%')
+    TOTAL=$(echo "$REPORT" | sed 's/\x1b\[[0-9;]*m//g' | grep -E '^total:' | awk '{print $3}' | tr -d '%')
     INT=${TOTAL%.*}
     if [[ -z "${INT:-}" || "$INT" -lt 100 ]]; then echo "❌ Cobertura total insuficiente: ${TOTAL}%"; exit 4; fi
     echo "✅ Cobertura OK: 100% por función y total";;
