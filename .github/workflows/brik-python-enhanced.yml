@@ -297,10 +297,12 @@ except:
       run: |
         echo "✅ L2 PERFORMANCE GATE PASSED on ${{ matrix.os }}"
         echo "- Multi-platform tests: ✅ PASSED"
-        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-          echo "- Performance benchmarks: ✅ COMPLETED"
-          echo "- Security validation: ✅ COMPLETED"
-        fi
+    
+    - name: "✅ L2 Performance & Security (Linux only)"
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo "- Performance benchmarks: ✅ COMPLETED"
+        echo "- Security validation: ✅ COMPLETED"
         
     - name: "📋 Upload performance artifacts"
       if: matrix.os == 'ubuntu-latest'

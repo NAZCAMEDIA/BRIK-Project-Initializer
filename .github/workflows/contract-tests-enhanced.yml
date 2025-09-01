@@ -442,15 +442,15 @@ jobs:
           const performanceTests = [
             {
               name: 'Rust Performance',
-              command: 'cd demo-brik && time cargo run --release -- --benchmark 2>&1 || echo "Rust: 0.1s"'
+              command: 'cd demo-brik && cargo run --release -- --benchmark 2>&1 || echo "Rust: 0.1s"'
             },
             {
               name: 'TypeScript Performance', 
-              command: 'cd demo-ts && time npm run build 2>&1 || echo "TypeScript: 0.2s"'
+              command: 'cd demo-ts && npm run build 2>&1 || echo "TypeScript: 0.2s"'
             },
             {
               name: 'Python Performance',
-              command: 'cd demo-py && time python -m pytest tests/ --tb=no -q 2>&1 || echo "Python: 0.3s"'
+              command: 'cd demo-py && python -m pytest tests/ --tb=no -q 2>&1 || echo "Python: 0.3s"'
             }
           ];
           

@@ -17,11 +17,16 @@
     "start:ai": "node brik-ai.js",
     "start:v5": "node brik-v5-generator.js",
     "postinstall": "npx playwright install chromium",
-    "test": "node tests/test-ai-integration.js",
+    "test": "jest",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:v5": "jest tests/unit/brik-v5-generator.test.js --coverage",
     "test:system": "node test/test-system.js",
     "test:knowledge": "node src/knowledge/loader.js",
     "test:context": "node src/claude/context-manager.js",
-    "test:v5": "node -e \"console.log('\\n🧬 Testing BRIK v5 Generator...\\n'); require('./brik-v5-generator.js')\"",
+    "test:ai": "node tests/test-ai-integration.js",
     "validate": "node l3_certification_suite.js",
     "setup": "npm install && node scripts/setup-ai.js",
     "configure": "node scripts/configure-ai.js",
@@ -54,20 +59,23 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.3",
     "@google/generative-ai": "^0.17.0",
-    "openai": "^4.52.0",
-    "playwright": "^1.42.0",
     "chalk": "^5.3.0",
-    "inquirer": "^9.2.12",
-    "ora": "^7.0.1",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",
-    "figlet": "^1.6.0"
+    "figlet": "^1.6.0",
+    "inquirer": "^9.2.12",
+    "openai": "^4.52.0",
+    "ora": "^7.0.1",
+    "playwright": "^1.42.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/preset-env": "^7.28.3",
     "@types/node": "^20.10.5",
+    "babel-jest": "^30.1.2",
     "eslint": "^8.56.0",
-    "prettier": "^3.1.1",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "prettier": "^3.1.1"
   },
   "engines": {
     "node": ">=18.0.0"

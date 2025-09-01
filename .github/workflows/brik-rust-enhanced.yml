@@ -249,10 +249,12 @@ jobs:
       run: |
         echo "✅ L2 PERFORMANCE GATE PASSED on ${{ matrix.os }}"
         echo "- Multi-platform tests: ✅ PASSED"
-        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-          echo "- Benchmarks: ✅ COMPLETED"
-          echo "- Performance validation: ✅ PASSED"
-        fi
+    
+    - name: "✅ L2 Benchmarks (Linux only)"
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo "- Benchmarks: ✅ COMPLETED"
+        echo "- Performance validation: ✅ PASSED"
 
   # 🏆 GATE L3: Production Readiness + Certification
   level-3-certification:
