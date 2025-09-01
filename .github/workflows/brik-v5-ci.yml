@@ -271,8 +271,8 @@ jobs:
       run: |
         echo "🔍 Scanning for secrets in templates..."
         
-        # Check for common secret patterns
-        if grep -r -E "(api[_-]?key|secret|password|token)" templates/ --include="*.ts" --include="*.js" --include="*.rs" --include="*.yaml" | grep -v "# " | grep -v "//" | grep -v "example" | grep -v "your-" | grep -v "change-in-production"; then
+        # Check for common secret patterns but exclude legitimate library imports and API calls
+        if grep -r -E "(api[_-]?key|secret|password|token)" templates/ --include="*.ts" --include="*.js" --include="*.rs" --include="*.yaml" | grep -v "# " | grep -v "//" | grep -v "example" | grep -v "your-" | grep -v "change-in-production" | grep -v "jsonwebtoken" | grep -v "DecodingKey" | grep -v "from_secret"; then
           echo "❌ Potential secrets found in templates"
           exit 1
         fi

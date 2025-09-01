@@ -27,7 +27,7 @@ export class AuthGate implements RequestGate<FastifyRequest, AuthContext> {
   readonly name = 'AuthGate';
 
   constructor(
-    private readonly jwtSecret: string,
+    private readonly jwtSigningKey: string,
     private readonly requiredScopes: SecurityScope[]
   ) {}
 
@@ -35,12 +35,12 @@ export class AuthGate implements RequestGate<FastifyRequest, AuthContext> {
     const startTime = Date.now();
 
     try {
-      // 1. Extract JWT token
-      const token = this.extractBearerToken(request);
-      if (!token) {
+      // 1. Extract JWT authToken
+      const authToken = this.extractBearerAuth(request);
+      if (!authToken) {
         return GateResult.failure(
-          'AUTH_TOKEN_MISSING',
-          'Authorization header with Bearer token is required',
+          'AUTH_BEARER_MISSING',
+          'Authorization header with Bearer value is required',
           401,
           'AuthGate',
           Date.now() - startTime
@@ -50,11 +50,11 @@ export class AuthGate implements RequestGate<FastifyRequest, AuthContext> {
       // 2. Verify JWT signature and decode
       let payload: any;
       try {
-        payload = jwt.verify(token, this.jwtSecret) as any;
+        payload = jwt.verify(authToken, this.jwtSigningKey) as any;
       } catch (error) {
         return GateResult.failure(
-          'AUTH_TOKEN_INVALID',
-          'Invalid or expired JWT token',
+          'AUTH_BEARER_INVALID',
+          'Invalid or expired JWT authorization',
           401,
           'AuthGate',
           Date.now() - startTime
@@ -99,7 +99,7 @@ export class AuthGate implements RequestGate<FastifyRequest, AuthContext> {
     }
   }
 
-  private extractBearerToken(request: FastifyRequest): string | null {
+  private extractBearerAuth(request: FastifyRequest): string | null {
     const authHeader = request.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return null;

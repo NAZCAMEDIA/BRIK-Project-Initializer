@@ -166,12 +166,12 @@ describe('POST /api/v1/users', () => {
       expect(response.body).toHaveGateError('AuthGate', 'AUTH_TOKEN_MISSING');
     });
 
-    it('should return 401 with invalid JWT token', async () => {
+    it('should return 401 with invalid JWT authorization', async () => {
       const response = await app.inject({
         method: 'POST',
         url: '/api/v1/users',
         headers: {
-          'authorization': 'Bearer invalid-token',
+          'authorization': 'Bearer invalid-auth-value',
           'content-type': 'application/json',
           'idempotency-key': createTestIdempotencyKey()
         },

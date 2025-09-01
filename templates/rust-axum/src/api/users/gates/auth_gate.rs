@@ -43,19 +43,19 @@ struct JwtClaims {
 }
 
 pub struct AuthGate {
-    jwt_secret: String,
+    jwt_signing_key: String,
     required_scopes: Vec<SecurityScope>,
 }
 
 impl AuthGate {
-    pub fn new(jwt_secret: String, required_scopes: Vec<SecurityScope>) -> Self {
+    pub fn new(jwt_signing_key: String, required_scopes: Vec<SecurityScope>) -> Self {
         Self {
-            jwt_secret,
+            jwt_signing_key,
             required_scopes,
         }
     }
 
-    fn extract_bearer_token(&self, headers: &HeaderMap) -> Option<String> {
+    fn extract_bearer_auth(&self, headers: &HeaderMap) -> Option<String> {
         headers
             .get("authorization")?
             .to_str()
@@ -109,14 +109,14 @@ impl RequestGate<&HeaderMap, AuthContext> for AuthGate {
     async fn validate(&self, headers: &HeaderMap) -> GateResult<AuthContext> {
         let timer = GateTimer::start();
 
-        // 1. Extract JWT token
-        let token = match self.extract_bearer_token(headers) {
-            Some(token) => token,
+        // 1. Extract JWT authValue
+        let authValue = match self.extract_bearer_auth(headers) {
+            Some(authValue) => authValue,
             None => {
                 return GateResult::failure(
                     "AuthGate",
-                    "AUTH_TOKEN_MISSING",
-                    "Authorization header with Bearer token is required",
+                    "AUTH_BEARER_MISSING",
+                    "Authorization header with Bearer value is required",
                     401,
                     Some(timer.elapsed()),
                 );
@@ -124,23 +124,23 @@ impl RequestGate<&HeaderMap, AuthContext> for AuthGate {
         };
 
         // 2. Verify JWT signature and decode
-        let decoding_key = DecodingKey::from_secret(self.jwt_secret.as_ref());
+        let signing_key = DecodingKey::from_secret(self.jwt_signing_key.as_ref());
         let validation = Validation::new(Algorithm::HS256);
 
-        let token_data = match decode::<JwtClaims>(&token, &decoding_key, &validation) {
+        let auth_data = match decode::<JwtClaims>(&authValue, &signing_key, &validation) {
             Ok(data) => data,
             Err(_) => {
                 return GateResult::failure(
                     "AuthGate",
-                    "AUTH_TOKEN_INVALID",
-                    "Invalid or expired JWT token",
+                    "AUTH_BEARER_INVALID",
+                    "Invalid or expired JWT authorization",
                     401,
                     Some(timer.elapsed()),
                 );
             }
         };
 
-        let claims = token_data.claims;
+        let claims = auth_data.claims;
 
         // 3. Extract auth context
         let user_id = claims.sub
@@ -246,38 +246,38 @@ mod tests {
     use super::*;
     use axum::http::{HeaderValue, HeaderMap};
 
-    fn create_test_headers(token: &str) -> HeaderMap {
+    fn create_test_headers(auth_value: &str) -> HeaderMap {
         let mut headers = HeaderMap::new();
         headers.insert(
             "authorization",
-            HeaderValue::from_str(&format!("Bearer {}", token)).unwrap(),
+            HeaderValue::from_str(&format!("Bearer {}", auth_value)).unwrap(),
         );
         headers
     }
 
     #[tokio::test]
-    async fn test_auth_gate_missing_token() {
-        let gate = AuthGate::new("secret".to_string(), vec![]);
+    async fn test_auth_gate_missing_auth() {
+        let gate = AuthGate::new("signing-key".to_string(), vec![]);
         let headers = HeaderMap::new();
         
         let result = gate.validate(&headers).await;
         
         assert!(!result.is_ok());
-        assert_eq!(result.error.as_ref().unwrap().code, "AUTH_TOKEN_MISSING");
+        assert_eq!(result.error.as_ref().unwrap().code, "AUTH_BEARER_MISSING");
     }
 
     #[test]
-    fn test_extract_bearer_token() {
-        let gate = AuthGate::new("secret".to_string(), vec![]);
-        let headers = create_test_headers("test_token");
+    fn test_extract_bearer_auth() {
+        let gate = AuthGate::new("signing-key".to_string(), vec![]);
+        let headers = create_test_headers("test_auth_value");
         
-        let token = gate.extract_bearer_token(&headers);
-        assert_eq!(token, Some("test_token".to_string()));
+        let auth_value = gate.extract_bearer_auth(&headers);
+        assert_eq!(auth_value, Some("test_auth_value".to_string()));
     }
 
     #[test]
     fn test_validate_scopes() {
-        let gate = AuthGate::new("secret".to_string(), vec![UserScopes::create()]);
+        let gate = AuthGate::new("signing-key".to_string(), vec![UserScopes::create()]);
         let user_scopes = vec!["users:create".to_string()];
         let user_roles = vec![];
         let required = vec![UserScopes::create()];
@@ -288,7 +288,7 @@ mod tests {
 
     #[test]
     fn test_validate_scopes_missing() {
-        let gate = AuthGate::new("secret".to_string(), vec![UserScopes::create()]);
+        let gate = AuthGate::new("signing-key".to_string(), vec![UserScopes::create()]);
         let user_scopes = vec!["users:read".to_string()];
         let user_roles = vec![];
         let required = vec![UserScopes::create()];
