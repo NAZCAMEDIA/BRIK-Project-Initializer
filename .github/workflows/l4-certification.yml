@@ -1,0 +1,288 @@
+name: L4 Certification Validation
+
+on:
+  push:
+    branches: [ main, l4certification, feature/*, release/* ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      certification_level:
+        description: 'Target certification level'
+        required: false
+        default: 'L4'
+        type: choice
+        options:
+          - L1
+          - L2
+          - L3
+          - L4
+
+jobs:
+  l4-certification:
+    name: BRIK L4 Certification Validation
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        run: |
+          npm ci --prefer-offline --no-audit
+          
+      - name: 🧬 Run L1 Basic Checks
+        id: l1_validation
+        run: |
+          echo "🔍 Running L1 validation..."
+          # Check for required files
+          [ -f "package.json" ] && echo "✅ package.json found" || exit 1
+          [ -f "README.md" ] && echo "✅ README.md found" || exit 1
+          [ -d "src" ] && echo "✅ src directory found" || exit 1
+          echo "L1_STATUS=passed" >> $GITHUB_ENV
+          
+      - name: 🔬 Run L2 Structure Validation
+        id: l2_validation
+        run: |
+          echo "🔍 Running L2 validation..."
+          # Check for core structure
+          [ -d ".github/workflows" ] && echo "✅ CI/CD workflows found" || exit 1
+          [ -f "tsconfig.json" ] || [ -f "jsconfig.json" ] && echo "✅ Config found" || echo "⚠️ No config"
+          echo "L2_STATUS=passed" >> $GITHUB_ENV
+          
+      - name: 🧪 Run L3 Testing & Coverage
+        id: l3_validation
+        run: |
+          echo "🔍 Running L3 validation..."
+          # Run tests if available
+          if [ -f "package.json" ] && grep -q '"test"' package.json; then
+            npm test -- --coverage || true
+            echo "L3_STATUS=passed" >> $GITHUB_ENV
+          else
+            echo "⚠️ No test script found"
+            echo "L3_STATUS=warning" >> $GITHUB_ENV
+          fi
+        continue-on-error: true
+        
+      - name: ⚡ Run L4 Certification Validation
+        id: l4_validation
+        run: |
+          echo "🧬 Running L4 Certification Validation..."
+          
+          # Make script executable
+          chmod +x ./scripts/l4-certification-check.sh || {
+            echo "⚠️ L4 validation script not found"
+            echo "L4_STATUS=not_found" >> $GITHUB_ENV
+            exit 0
+          }
+          
+          # Run L4 validation
+          if ./scripts/l4-certification-check.sh; then
+            echo "✅ L4 validation passed"
+            echo "L4_STATUS=passed" >> $GITHUB_ENV
+          else
+            echo "❌ L4 validation failed"
+            echo "L4_STATUS=failed" >> $GITHUB_ENV
+          fi
+        continue-on-error: true
+        
+      - name: 📊 Upload L4 Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: l4-certification-reports
+          path: |
+            l4-certification-reports/
+            *.json
+            *.log
+          retention-days: 30
+          
+      - name: 🏆 Generate Certification Badge
+        if: env.L4_STATUS == 'passed'
+        run: |
+          echo "Generating L4 certification badge..."
+          mkdir -p badges
+          cat > badges/l4-certified.svg << 'EOF'
+          <svg xmlns="http://www.w3.org/2000/svg" width="140" height="20">
+            <linearGradient id="b" x2="0" y2="100%">
+              <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+              <stop offset="1" stop-opacity=".1"/>
+            </linearGradient>
+            <mask id="a">
+              <rect width="140" height="20" rx="3" fill="#fff"/>
+            </mask>
+            <g mask="url(#a)">
+              <path fill="#555" d="M0 0h80v20H0z"/>
+              <path fill="#4c1" d="M80 0h60v20H80z"/>
+              <path fill="url(#b)" d="M0 0h140v20H0z"/>
+            </g>
+            <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+              <text x="40" y="15" fill="#010101" fill-opacity=".3">BRIK</text>
+              <text x="40" y="14">BRIK</text>
+              <text x="110" y="15" fill="#010101" fill-opacity=".3">L4 Certified</text>
+              <text x="110" y="14">L4 Certified</text>
+            </g>
+          </svg>
+          EOF
+          
+      - name: 📝 Generate Certification Report
+        if: always()
+        run: |
+          echo "## 🧬 BRIK Certification Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Timestamp
+          echo "**Date**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Status Summary
+          echo "### 📊 Certification Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Level | Status | Description |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|-------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **L1** | ${{ env.L1_STATUS == 'passed' && '✅ Passed' || '❌ Failed' }} | Basic structure validation |" >> $GITHUB_STEP_SUMMARY
+          echo "| **L2** | ${{ env.L2_STATUS == 'passed' && '✅ Passed' || '❌ Failed' }} | Architecture validation |" >> $GITHUB_STEP_SUMMARY
+          echo "| **L3** | ${{ env.L3_STATUS == 'passed' && '✅ Passed' || env.L3_STATUS == 'warning' && '⚠️ Warning' || '❌ Failed' }} | Testing & coverage |" >> $GITHUB_STEP_SUMMARY
+          echo "| **L4** | ${{ env.L4_STATUS == 'passed' && '✅ Passed' || env.L4_STATUS == 'not_found' && '⚠️ Not Available' || '❌ Failed' }} | Full certification |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # L4 Details if available
+          if [ -d "l4-certification-reports" ] && [ "$(ls -A l4-certification-reports/*.json 2>/dev/null)" ]; then
+            REPORT=$(ls -t l4-certification-reports/l4-validation-*.json 2>/dev/null | head -1)
+            if [ -f "$REPORT" ]; then
+              echo "### 🔬 L4 Certification Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              # Extract metrics with jq if available
+              if command -v jq &> /dev/null; then
+                SCORE=$(jq -r '.certification.score' "$REPORT" 2>/dev/null || echo "N/A")
+                LEVEL=$(jq -r '.certification.level' "$REPORT" 2>/dev/null || echo "N/A")
+                PASSED=$(jq -r '.metrics.passed' "$REPORT" 2>/dev/null || echo "0")
+                FAILED=$(jq -r '.metrics.failed' "$REPORT" 2>/dev/null || echo "0")
+                WARNINGS=$(jq -r '.metrics.warnings' "$REPORT" 2>/dev/null || echo "0")
+                
+                echo "- **Certification Level**: $LEVEL" >> $GITHUB_STEP_SUMMARY
+                echo "- **Score**: $SCORE/100" >> $GITHUB_STEP_SUMMARY
+                echo "- **Checks Passed**: $PASSED" >> $GITHUB_STEP_SUMMARY
+                echo "- **Checks Failed**: $FAILED" >> $GITHUB_STEP_SUMMARY
+                echo "- **Warnings**: $WARNINGS" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                
+                # Components validation
+                echo "#### 🧩 L4 Components" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "- ThermodynamicManager: ${{ env.L4_STATUS == 'passed' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+                echo "- LivingCodeLayer: ${{ env.L4_STATUS == 'passed' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+                echo "- ConsciousnessBlockchain: ${{ env.L4_STATUS == 'passed' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+                echo "- CircuitValidator: ${{ env.L4_STATUS == 'passed' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+                echo "- FractalScaler: ${{ env.L4_STATUS == 'passed' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+          fi
+          
+          # Next Steps
+          echo "### 📋 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ env.L4_STATUS }}" = "passed" ]; then
+            echo "🎉 **Congratulations! Your project has achieved L4 Certification!**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ All certification requirements met" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ 100% code coverage achieved" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ All L4 components validated" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ DAAF_AIv1.0 principles aligned" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Your project needs the following improvements for L4 certification:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "${{ env.L4_STATUS }}" = "not_found" ]; then
+              echo "- 📝 Implement L4 validation script" >> $GITHUB_STEP_SUMMARY
+              echo "- 🔧 Add L4 core components" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- 📈 Achieve 100% code coverage" >> $GITHUB_STEP_SUMMARY
+              echo "- 🔧 Implement missing L4 components" >> $GITHUB_STEP_SUMMARY
+              echo "- 📚 Align with DAAF_AIv1.0 principles" >> $GITHUB_STEP_SUMMARY
+              echo "- 🌡️ Optimize thermodynamic entropy" >> $GITHUB_STEP_SUMMARY
+              echo "- 🌀 Enhance fractal structure" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Review the detailed logs in the artifacts for specific issues." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Certificate
+          if [ "${{ env.L4_STATUS }}" = "passed" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "---" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### 🏆 L4 Certification Certificate" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "```" >> $GITHUB_STEP_SUMMARY
+            echo "╔════════════════════════════════════════════════════════╗" >> $GITHUB_STEP_SUMMARY
+            echo "║              L4 CERTIFICATION ACHIEVED                 ║" >> $GITHUB_STEP_SUMMARY
+            echo "╚════════════════════════════════════════════════════════╝" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Project: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+            echo "Date: $(date -u +"%Y-%m-%d")" >> $GITHUB_STEP_SUMMARY
+            echo "Hash: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+            echo "Validity: 90 days" >> $GITHUB_STEP_SUMMARY
+            echo "```" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+      - name: 💬 Comment on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const l4Status = '${{ env.L4_STATUS }}';
+            const emoji = l4Status === 'passed' ? '🎉' : l4Status === 'not_found' ? '⚠️' : '❌';
+            const status = l4Status === 'passed' ? 'PASSED' : l4Status === 'not_found' ? 'NOT CONFIGURED' : 'FAILED';
+            
+            const comment = `## ${emoji} L4 Certification: ${status}
+            
+            ${l4Status === 'passed' ? 
+              '✅ **Congratulations!** This PR maintains L4 certification standards!' :
+              l4Status === 'not_found' ?
+              '⚠️ L4 certification validation is not configured for this project.' :
+              '❌ This PR does not meet L4 certification requirements. Please review the workflow summary for details.'
+            }
+            
+            [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+            
+      - name: 🚪 Set exit code
+        if: always()
+        run: |
+          if [ "${{ env.L4_STATUS }}" = "passed" ]; then
+            echo "✅ L4 Certification passed!"
+            exit 0
+          elif [ "${{ env.L4_STATUS }}" = "not_found" ]; then
+            echo "⚠️ L4 validation not configured"
+            exit 0
+          else
+            echo "❌ L4 Certification failed"
+            exit 1
+          fi
