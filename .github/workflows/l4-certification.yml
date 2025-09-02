@@ -101,7 +101,7 @@ jobs:
         
       - name: 📊 Upload L4 Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: l4-certification-reports
           path: |
