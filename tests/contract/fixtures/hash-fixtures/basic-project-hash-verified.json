@@ -1,0 +1,42 @@
+{
+  "test_case_id": "basic-project-hash",
+  "test_name": "Basic Project Hash Test",
+  "verified_hash": "75496bf091160a9174042c44da69289108cac7983685fda1b4e63178b50a830e",
+  "verified_at": "2025-09-02T10:08:35.890Z",
+  "implementations": {
+    "rust": {
+      "hash": "75496bf091160a9174042c44da69289108cac7983685fda1b4e63178b50a830e",
+      "notes": "Rust implementation"
+    },
+    "typescript": {
+      "hash": "75496bf091160a9174042c44da69289108cac7983685fda1b4e63178b50a830e",
+      "notes": "TypeScript implementation"
+    },
+    "python": {
+      "hash": "75496bf091160a9174042c44da69289108cac7983685fda1b4e63178b50a830e",
+      "notes": "Python implementation"
+    }
+  },
+  "input_data": {
+    "name": "hash-test-basic",
+    "description": "Basic project for hash consistency testing",
+    "version": "1.0.0",
+    "language": "rust",
+    "architecture": "traditional",
+    "certification_level": "L1",
+    "coverage_target": 80,
+    "features": [
+      {
+        "name": "cli",
+        "enabled": true,
+        "configuration": {
+          "framework": "clap"
+        }
+      }
+    ],
+    "integrations": [],
+    "generated_at": "2024-08-30T10:00:00.000Z",
+    "generator_version": "1.0.0",
+    "llm_enhanced": false
+  }
+}

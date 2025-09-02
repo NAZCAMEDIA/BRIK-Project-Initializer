@@ -1,0 +1,107 @@
+{
+  "test_case_id": "complex-project-hash",
+  "test_name": "Complex Project Hash Test",
+  "verified_hash": "30bd0c53a8c203e457a48623f8b5c7265891bcf7700bf8c3ade7d6debe36e5c0",
+  "verified_at": "2025-09-02T10:08:39.492Z",
+  "implementations": {
+    "rust": {
+      "hash": "30bd0c53a8c203e457a48623f8b5c7265891bcf7700bf8c3ade7d6debe36e5c0",
+      "notes": "Rust implementation"
+    },
+    "typescript": {
+      "hash": "30bd0c53a8c203e457a48623f8b5c7265891bcf7700bf8c3ade7d6debe36e5c0",
+      "notes": "TypeScript implementation"
+    },
+    "python": {
+      "hash": "30bd0c53a8c203e457a48623f8b5c7265891bcf7700bf8c3ade7d6debe36e5c0",
+      "notes": "Python implementation"
+    }
+  },
+  "input_data": {
+    "name": "hash-test-complex",
+    "description": "Complex multi-feature project for comprehensive hash testing",
+    "version": "2.1.0-beta.3",
+    "language": "typescript",
+    "architecture": "intelligent",
+    "certification_level": "L3",
+    "coverage_target": 95,
+    "features": [
+      {
+        "name": "api_server",
+        "enabled": true,
+        "configuration": {
+          "framework": "express",
+          "port": 3000,
+          "middleware": [
+            "cors",
+            "helmet",
+            "compression"
+          ]
+        },
+        "dependencies": [
+          "logging",
+          "monitoring"
+        ]
+      },
+      {
+        "name": "authentication",
+        "enabled": true,
+        "configuration": {
+          "strategy": "jwt",
+          "providers": [
+            "oauth2",
+            "saml"
+          ],
+          "session_timeout": 3600
+        }
+      },
+      {
+        "name": "database",
+        "enabled": true,
+        "configuration": {
+          "type": "postgresql",
+          "migrations": true,
+          "connection_pool": 10
+        }
+      }
+    ],
+    "integrations": [
+      {
+        "type": "database",
+        "provider": "postgresql",
+        "configuration": {
+          "host": "localhost",
+          "port": 5432,
+          "database": "test_db",
+          "ssl": true
+        },
+        "required": true,
+        "health_check": {
+          "endpoint": "postgres://localhost:5432/health",
+          "timeout_ms": 5000
+        }
+      },
+      {
+        "type": "monitoring",
+        "provider": "prometheus",
+        "configuration": {
+          "port": 9090,
+          "metrics_path": "/metrics",
+          "scrape_interval": "15s"
+        },
+        "required": false
+      }
+    ],
+    "generated_at": "2024-08-30T15:45:30.123Z",
+    "generator_version": "1.0.0",
+    "llm_enhanced": true,
+    "author": "BRIK Hash Test Suite",
+    "repository": "https://github.com/test/complex-hash-project",
+    "license": "MIT",
+    "tags": [
+      "complex",
+      "multi-feature",
+      "hash-testing"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "test_case_id": "minimal-project-hash",
+  "test_name": "Minimal Project Hash Test",
+  "verified_hash": "2f1401651e549b4700c8aa1999c6ba64eda241d83727f1e22ddd2ad8af30b1c5",
+  "verified_at": "2025-09-02T10:08:45.389Z",
+  "implementations": {
+    "rust": {
+      "hash": "2f1401651e549b4700c8aa1999c6ba64eda241d83727f1e22ddd2ad8af30b1c5",
+      "notes": "Rust implementation"
+    },
+    "typescript": {
+      "hash": "2f1401651e549b4700c8aa1999c6ba64eda241d83727f1e22ddd2ad8af30b1c5",
+      "notes": "TypeScript implementation"
+    },
+    "python": {
+      "hash": "2f1401651e549b4700c8aa1999c6ba64eda241d83727f1e22ddd2ad8af30b1c5",
+      "notes": "Python implementation"
+    }
+  },
+  "input_data": {
+    "name": "hash-test-minimal",
+    "description": "Minimal project configuration with only required fields",
+    "version": "0.1.0",
+    "language": "python",
+    "architecture": "traditional",
+    "certification_level": "L0",
+    "coverage_target": 70,
+    "features": [],
+    "integrations": [],
+    "generated_at": "2024-08-30T08:00:00.000Z",
+    "generator_version": "1.0.0",
+    "llm_enhanced": false
+  }
+}
